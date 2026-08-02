@@ -1,0 +1,7 @@
+{
+  "question": "What is the difference between few-shot and zero-shot prompting?",
+  "rationale": "Zero-shot prompting asks the model to perform a task without any examples, relying entirely on knowledge gained during pre-training. Few-shot prompting provides 2-8 labelled input-output examples in the prompt, which helps the model infer the expected reasoning pattern and output format without updating any model weights.",
+  "answer": "Zero-shot uses no examples and relies on pre-trained knowledge alone. Few-shot provides 2-8 labelled examples to guide the model's reasoning and output format.",
+  "num_demos": 2,
+  "demo_mode": true
+}

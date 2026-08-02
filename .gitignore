@@ -1,0 +1,67 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+*.pyd
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+MANIFEST
+
+# ── Virtual environments ───────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+ENV/
+pip-wheel-metadata/
+
+# ── Environment variables ──────────────────────────────────────────────────────
+# Keep .env.example committed; ignore the real secret file
+.env
+!.env.example
+
+# ── pytest ─────────────────────────────────────────────────────────────────────
+.pytest_cache/
+.cache/
+*.pytest_cache
+
+# ── Coverage ───────────────────────────────────────────────────────────────────
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# ── Type checkers ──────────────────────────────────────────────────────────────
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+.pyre/
+
+# ── Jupyter ────────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── IDE / Editors ──────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+.codemie/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+
+# ── OS ─────────────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+ehthumbs.db

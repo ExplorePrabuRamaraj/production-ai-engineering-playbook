@@ -1,0 +1,122 @@
+# Week 1 — AI Engineering Foundations
+
+> Part of the [Production AI Engineering Playbook](../README.md)
+
+---
+
+## Objective
+
+Establish the core vocabulary and tooling for production AI engineering. By the end of Week 1, you will understand the fundamental patterns that make AI systems reliable in production — typed prompt programs, context-aware retrieval, agent memory, and automated evaluation — and have runnable code demonstrating each.
+
+---
+
+## Topics Covered
+
+Week 1 maps one topic per day across the five production AI engineering verticals:
+
+| Day | Topic | Vertical | Status |
+|---|---|---|---|
+| [W1D1](W1D1-dspy-programmatic-prompts/) | DSPy & Programmatic Prompts | Prompt Engineering & Schemas | ✅ Complete |
+| W1D2 | "Lost in the Middle" Decay | Context Engineering & Tokens | 🔜 Coming |
+| W1D3 | Naive vs. Agentic RAG | Advanced RAG | 🔜 Coming |
+| W1D4 | Model Context Protocol (MCP) Intro | MCP & Tool Integration | 🔜 Coming |
+| W1D5 | Episodic vs. Semantic Memory | Agent Memory & Capabilities | 🔜 Coming |
+| W1D6 | State Graphs (LangGraph) | Multi-Agent Orchestration | 🔜 Coming |
+| W1D7 | LLM-as-a-Judge Evals | Production Evals & Guardrails | 🔜 Coming |
+
+---
+
+## Learning Outcomes
+
+After completing Week 1, you will be able to:
+
+- Replace hand-crafted prompt strings with typed, optimizable DSPy programs
+- Identify and mitigate "lost in the middle" accuracy decay in long-context LLM calls
+- Explain when naive RAG fails and when agentic RAG patterns are warranted
+- Integrate external tools with LLMs via the Model Context Protocol
+- Design agent memory systems using episodic and semantic memory patterns
+- Model multi-step agent workflows as typed state graphs with LangGraph
+- Implement LLM-as-a-Judge evaluation pipelines to measure output quality automatically
+
+---
+
+## Daily Lessons
+
+### [W1D1 — DSPy & Programmatic Prompts](W1D1-dspy-programmatic-prompts/)
+
+**Vertical:** Prompt Engineering & Schemas  
+**Core problem:** A hand-crafted prompt that works today will silently fail next quarter — and you won't know why.  
+**Solution:** DSPy replaces prompt strings with typed Python programs that compile to optimal prompts automatically using `BootstrapFewShot` and the teleprompter.
+
+**Key concepts:** Signature, Predict, ChainOfThought, BootstrapFewShot, teleprompter.compile()  
+**Status:** ✅ Complete — [Start here →](W1D1-dspy-programmatic-prompts/README.md)
+
+---
+
+### W1D2 — "Lost in the Middle" Decay
+
+**Vertical:** Context Engineering & Tokens  
+**Core problem:** LLMs reliably recall information at the start and end of a context window — accuracy degrades for content buried in the middle. Naive document stuffing causes silent accuracy drops.  
+**Solution:** Position-aware retrieval ordering and context compression strategies.
+
+**Status:** 🔜 Coming soon
+
+---
+
+### W1D3 — Naive vs. Agentic RAG
+
+**Vertical:** Advanced RAG  
+**Core problem:** Single-retrieval RAG fails on multi-hop questions that require synthesizing information from multiple sources.  
+**Solution:** Agentic RAG iteratively plans, retrieves, and validates before committing to an answer.
+
+**Status:** 🔜 Coming soon
+
+---
+
+### W1D4 — Model Context Protocol (MCP) Intro
+
+**Vertical:** MCP & Tool Integration  
+**Core problem:** Unstructured tool descriptions bleed into prompts and degrade reliability. Ad-hoc tool wiring breaks when tool APIs change.  
+**Solution:** MCP formalizes the tool contract between your LLM and external systems with a typed, versioned interface.
+
+**Status:** 🔜 Coming soon
+
+---
+
+### W1D5 — Episodic vs. Semantic Memory
+
+**Vertical:** Agent Memory & Capabilities  
+**Core problem:** Agents that store everything in context "memory" forget between sessions and hit token limits on long tasks.  
+**Solution:** Durable episodic memory (what happened) and semantic memory (what is true) patterns enable continuity across interactions.
+
+**Status:** 🔜 Coming soon
+
+---
+
+### W1D6 — State Graphs (LangGraph)
+
+**Vertical:** Multi-Agent Orchestration  
+**Core problem:** LLM agents without explicit state management produce non-deterministic, unauditable behavior.  
+**Solution:** State graphs make agent flow inspectable, testable, and resumable — each node is a pure function on a typed state object.
+
+**Status:** 🔜 Coming soon
+
+---
+
+### W1D7 — LLM-as-a-Judge Evals
+
+**Vertical:** Production Evals & Guardrails  
+**Core problem:** Human evaluation doesn't scale. Without automated quality measurement, accuracy regressions go undetected until users report them.  
+**Solution:** LLM-as-a-Judge enables continuous, automated quality scoring — with calibration against human labels to keep scores meaningful.
+
+**Status:** 🔜 Coming soon
+
+---
+
+## Prerequisites
+
+- Python 3.10+
+- Basic familiarity with LLM APIs (OpenAI, Anthropic, or equivalent)
+- `pip` and a virtual environment tool
+
+All PoC demos run offline in `DEMO_MODE=true` — no API key required.

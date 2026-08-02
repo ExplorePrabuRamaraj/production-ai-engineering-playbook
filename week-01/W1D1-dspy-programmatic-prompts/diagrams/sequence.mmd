@@ -1,0 +1,34 @@
+sequenceDiagram
+    %% W1D1 — DSPy ChainOfThought Request + Compilation Flow
+    autonumber
+    actor Dev as Developer
+    participant App as Application
+    participant DSPy as DSPy Runtime
+    participant LM as LM Backend
+
+    Note over Dev,LM: Inference Path
+    Dev->>App: python src/main.py
+    App->>DSPy: cot(question="...")
+    DSPy->>DSPy: Load compiled demos from program state
+    DSPy->>DSPy: Format prompt (signature + demos)
+    DSPy->>LM: POST /chat/completions
+    LM-->>DSPy: Raw completion text
+    DSPy->>DSPy: Parse rationale and answer fields
+    alt Parsing succeeds
+        DSPy-->>App: Prediction(rationale, answer)
+    else Parsing fails
+        DSPy->>LM: Retry with format correction hint
+        LM-->>DSPy: Corrected completion
+        DSPy-->>App: Prediction(rationale, answer)
+    end
+    App-->>Dev: Print typed results
+
+    Note over Dev,LM: Compilation Path (one-time, offline)
+    Dev->>DSPy: teleprompter.compile(cot, trainset)
+    loop For each training example
+        DSPy->>LM: Forward pass
+        LM-->>DSPy: Prediction
+        DSPy->>DSPy: Score with metric function
+    end
+    DSPy->>DSPy: Collect passing demos
+    DSPy-->>Dev: Compiled program with optimal few-shots embedded

@@ -1,0 +1,4 @@
+{
+  "question": "What is the difference between few-shot and zero-shot prompting?",
+  "mode": "chain_of_thought"
+}

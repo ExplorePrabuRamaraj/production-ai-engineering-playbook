@@ -1,0 +1,36 @@
+%% W1D1 — DSPy & Programmatic Prompts — Architecture Overview
+graph LR
+    subgraph "Input Layer"
+        Q[User Query]
+        Cfg[Config\nAPI Key + Model]
+    end
+
+    subgraph "DSPy Program"
+        Sig[Signature\nTyped I/O Contract]
+        CoT[ChainOfThought\nPredictor Module]
+    end
+
+    subgraph "Optimizer Layer"
+        TP[BootstrapFewShot\nTeleprompter]
+        Met[Metric Function\ne.g. F1 / Exact Match]
+        DS[(Trainset\n20-200 examples)]
+    end
+
+    subgraph "LM Backend"
+        LM[OpenAI GPT-4o-mini\nor Local Model]
+    end
+
+    subgraph "Output Layer"
+        Pred[Prediction\nrationale + answer]
+        Log[Trace Log]
+    end
+
+    Q --> Sig
+    Cfg --> LM
+    Sig --> CoT
+    DS --> TP
+    Met --> TP
+    TP -->|compiles demos| CoT
+    CoT -->|structured prompt| LM
+    LM -->|completion| Pred
+    LM --> Log
