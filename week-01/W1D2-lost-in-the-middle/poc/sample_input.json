@@ -1,0 +1,35 @@
+{
+  "query": "Why does the checkout process fail on mobile Safari?",
+  "documents": [
+    {
+      "id": "doc_1",
+      "text": "FAQ: How to reset your password via email link.",
+      "relevance_score": 0.10
+    },
+    {
+      "id": "doc_2",
+      "text": "Shipping destinations and estimated delivery times by region.",
+      "relevance_score": 0.15
+    },
+    {
+      "id": "doc_3",
+      "text": "Checkout fails on Safari 16+ due to CSP header blocking WebKit fetch.",
+      "relevance_score": 0.92
+    },
+    {
+      "id": "doc_4",
+      "text": "Payment gateway timeout when cart total exceeds $500 on mobile.",
+      "relevance_score": 0.88
+    },
+    {
+      "id": "doc_5",
+      "text": "Promo codes expire at midnight UTC, not at midnight local time.",
+      "relevance_score": 0.20
+    },
+    {
+      "id": "doc_6",
+      "text": "Payment retry: 3 attempts before surfacing error to the user.",
+      "relevance_score": 0.75
+    }
+  ]
+}

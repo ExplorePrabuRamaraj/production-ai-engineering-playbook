@@ -1,0 +1,24 @@
+sequenceDiagram
+    %% W1D2 — Lost in the Middle: Position-Aware Context Assembly Flow
+    autonumber
+    actor User
+    participant App as Application
+    participant VDB as Vector Database
+    participant Reranker as LiTM Reranker
+    participant LLM as LLM GPT-4o
+
+    User->>App: Submit query
+    App->>VDB: Similarity search top-K
+    VDB-->>App: Docs with scores [0.92, 0.88, 0.75, 0.20, 0.15, 0.10]
+    Note over App: Naive order puts 0.92 and 0.88 at middle positions — dead zone
+    App->>Reranker: Apply position-aware ordering
+    Reranker->>Reranker: Sort descending by relevance score
+    Reranker->>Reranker: Interleave: even-ranked to start, odd-ranked to end
+    Reranker->>Reranker: Check token budget per document
+    Reranker-->>App: Reordered [0.92, 0.75, 0.15, 0.10, 0.20, 0.88]
+    Note over App: Position 0: 0.92 doc (Primacy zone, attention=1.0)
+    Note over App: Position 5: 0.88 doc (Recency zone, attention=1.0)
+    App->>LLM: Assembled context with high-relevance docs at boundaries
+    LLM->>LLM: Attend strongly to positions 0 and 5
+    LLM-->>App: Grounded answer citing both edge documents
+    App-->>User: Final response with correct diagnosis

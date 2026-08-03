@@ -1,0 +1,40 @@
+%% W1D2 — Lost in the Middle Decay — Context Position Architecture
+graph LR
+    subgraph "Input Layer"
+        Q[User Query]
+        VDB[(Vector Database)]
+    end
+
+    subgraph "Retrieval Layer"
+        RET[Retrieved Docs\nwith Relevance Scores]
+        FILT[Relevance Filter\nThreshold >= 0.3]
+    end
+
+    subgraph "Reranking Layer"
+        SORT[Sort by Relevance\nDescending]
+        LITM[LiTM-Aware Interleave\nBest Docs to Edges]
+        BUDGET[Token Budget\nConstraint Check]
+    end
+
+    subgraph "Context Window"
+        PRI[Primacy Zone\nPositions 0-1\nAttention Weight ~1.0]
+        MID[Middle Zone\nPositions 2 to N-2\nAttention Weight ~0.4]
+        REC[Recency Zone\nPositions N-2 to N-1\nAttention Weight ~1.0]
+    end
+
+    LLM[LLM\nGPT-4o or Claude]
+    ANS[Grounded Answer]
+
+    Q -->|similarity search| VDB
+    VDB -->|ranked results with scores| RET
+    RET -->|score threshold| FILT
+    FILT -->|filtered docs| SORT
+    SORT -->|interleave even-odd| LITM
+    LITM -->|check token count| BUDGET
+    BUDGET -->|high-relevance docs| PRI
+    BUDGET -->|low-relevance docs| MID
+    BUDGET -->|high-relevance docs| REC
+    PRI --> LLM
+    MID --> LLM
+    REC --> LLM
+    LLM --> ANS

@@ -1,0 +1,39 @@
+{
+  "query": "Why does the checkout process fail on mobile Safari?",
+  "attention_weights_for_6_docs": {
+    "position_0": 1.0,
+    "position_1": 0.8854,
+    "position_2": 0.5854,
+    "position_3": 0.5854,
+    "position_4": 0.8854,
+    "position_5": 1.0
+  },
+  "strategies": {
+    "naive": {
+      "ordering": ["doc_1", "doc_2", "doc_3", "doc_4", "doc_5", "doc_6"],
+      "note": "doc_3 (0.92) and doc_4 (0.88) land at positions 2 and 3 — the dead zone",
+      "mean_effective_score": 0.369,
+      "min_effective_score": 0.1,
+      "max_effective_score": 0.75
+    },
+    "relevance_sorted": {
+      "ordering": ["doc_3", "doc_4", "doc_6", "doc_5", "doc_2", "doc_1"],
+      "note": "Best doc at position 0 is good; doc_4 at position 1 is also strong",
+      "mean_effective_score": 0.4147,
+      "min_effective_score": 0.10,
+      "max_effective_score": 0.92
+    },
+    "litm_aware": {
+      "ordering": ["doc_3", "doc_6", "doc_2", "doc_1", "doc_5", "doc_4"],
+      "note": "doc_3 (0.92) at position 0, doc_4 (0.88) at position 5 — both at attention peaks",
+      "mean_effective_score": 0.4646,
+      "min_effective_score": 0.0585,
+      "max_effective_score": 0.92
+    }
+  },
+  "improvement": {
+    "litm_vs_naive_pct": 26.0,
+    "litm_vs_sorted_pct": 12.0,
+    "recommendation": "Use LiTM-aware ordering: doc_3 (score 0.92) at position 0, doc_4 (score 0.88) at position 5"
+  }
+}

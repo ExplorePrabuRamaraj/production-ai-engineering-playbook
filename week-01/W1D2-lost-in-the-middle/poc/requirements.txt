@@ -1,0 +1,7 @@
+# Core — context engineering and token management
+openai>=1.30.0,<2.0.0
+tiktoken>=0.7.0,<1.0.0        # Token counting for context budget management
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
