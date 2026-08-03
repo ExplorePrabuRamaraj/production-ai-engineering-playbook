@@ -17,7 +17,7 @@ Week 1 maps one topic per day across the five production AI engineering vertical
 | Day | Topic | Vertical | Status |
 |---|---|---|---|
 | [W1D1](W1D1-dspy-programmatic-prompts/) | DSPy & Programmatic Prompts | Prompt Engineering & Schemas | ✅ Complete |
-| W1D2 | "Lost in the Middle" Decay | Context Engineering & Tokens | 🔜 Coming |
+| [W1D2](W1D2-lost-in-the-middle/) | "Lost in the Middle" Decay | Context Engineering & Tokens | ✅ Complete |
 | W1D3 | Naive vs. Agentic RAG | Advanced RAG | 🔜 Coming |
 | W1D4 | Model Context Protocol (MCP) Intro | MCP & Tool Integration | 🔜 Coming |
 | W1D5 | Episodic vs. Semantic Memory | Agent Memory & Capabilities | 🔜 Coming |
@@ -53,13 +53,14 @@ After completing Week 1, you will be able to:
 
 ---
 
-### W1D2 — "Lost in the Middle" Decay
+### [W1D2 — "Lost in the Middle" Decay](W1D2-lost-in-the-middle/)
 
 **Vertical:** Context Engineering & Tokens  
 **Core problem:** LLMs reliably recall information at the start and end of a context window — accuracy degrades for content buried in the middle. Naive document stuffing causes silent accuracy drops.  
-**Solution:** Position-aware retrieval ordering and context compression strategies.
+**Solution:** LiTM-aware document ordering places the highest-relevance documents at context boundaries (positions 0 and N-1) where transformer attention peaks, recovering up to 26% of mean effective retrieval score over naive ordering.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** U-shaped attention, primacy bias, recency bias, middle dead zone, LiTM-aware interleaving, effective attention score  
+**Status:** ✅ Complete — [Start here →](W1D2-lost-in-the-middle/README.md)
 
 ---
 

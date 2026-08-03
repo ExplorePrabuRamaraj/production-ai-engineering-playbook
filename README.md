@@ -48,7 +48,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 | Day | Topic | Vertical | Status |
 |---|---|---|---|
 | [W1D1](week-01/W1D1-dspy-programmatic-prompts/) | DSPy & Programmatic Prompts | Prompt Engineering & Schemas | ✅ Complete |
-| W1D2 | "Lost in the Middle" Decay | Context Engineering & Tokens | 🔜 Coming |
+| [W1D2](week-01/W1D2-lost-in-the-middle/) | "Lost in the Middle" Decay | Context Engineering & Tokens | ✅ Complete |
 | W1D3 | Naive vs. Agentic RAG | Advanced RAG | 🔜 Coming |
 | W1D4 | Model Context Protocol (MCP) Intro | MCP & Tool Integration | 🔜 Coming |
 | W1D5 | Episodic vs. Semantic Memory | Agent Memory & Capabilities | 🔜 Coming |
@@ -97,7 +97,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 
 | Week | Theme | Progress |
 |---|---|---|
-| [Week 1](week-01/) | Foundations | 1 / 7 days |
+| [Week 1](week-01/) | Foundations | 2 / 7 days |
 | Week 2 | Intermediate Patterns | 0 / 7 days |
 | Week 3 | Advanced Techniques | 0 / 7 days |
 | Week 4 | Production & Scale | 0 / 7 days |
