@@ -1,0 +1,21 @@
+# W1D3 — Naive vs. Agentic RAG
+# Install: pip install -r requirements.txt
+
+# LLM client — used for decomposition, validation, and synthesis in live mode
+openai>=1.30.0,<2.0.0
+
+# Data validation — used for typed config dataclass
+# (stdlib dataclasses sufficient for this PoC; pydantic available if you extend)
+pydantic>=2.0.0,<3.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# Numeric utilities — used for similarity computation in demo mode
+numpy>=1.24.0,<2.0.0
+
+# Optional: vector store clients (uncomment the one you use in live mode)
+# faiss-cpu>=1.7.4          # Local FAISS index (CPU build)
+# pinecone-client>=3.0.0    # Pinecone hosted vector store
+# weaviate-client>=4.0.0    # Weaviate hosted vector store

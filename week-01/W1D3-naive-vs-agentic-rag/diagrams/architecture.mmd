@@ -1,0 +1,52 @@
+%% W1D3 — Naive vs. Agentic RAG — Architecture Overview
+%% Shows the structural difference between single-pass retrieval and the agentic reasoning loop
+graph LR
+    subgraph "Input Layer"
+        UserQuery[User Query]
+        Classifier[Query Classifier\nSingle-hop vs Multi-hop]
+    end
+
+    subgraph "Naive RAG Path"
+        NaiveEmbed[Embed Query\ntext-embedding-3-small]
+        VectorSearch1[Vector Search\nTop-K Chunks]
+        NaiveLLM[LLM Call\nSingle Pass]
+    end
+
+    subgraph "Agentic RAG Path"
+        Decomposer[Query Decomposer\nLLM — Sub-questions]
+        AgentLoop[Retrieval Loop\nPer Sub-question]
+        Validator[Evidence Validator\nSimilarity + Semantic Check]
+        Reformulator[Query Reformulator\nRetry on Failure]
+        Synthesiser[Answer Synthesiser\nLLM — Multi-evidence]
+    end
+
+    subgraph "Retrieval Tool"
+        EmbedSQ[Embed Sub-question]
+        VectorSearch2[Vector Store\nHNSW Index]
+        ChunkFilter[Chunk Filter\nSimilarity Threshold]
+    end
+
+    subgraph "Output Layer"
+        NaiveOut[Single-hop Answer]
+        AgentOut[Multi-hop Answer\nWith Citations]
+        Unanswerable[Partial Answer\nGap Flagged]
+    end
+
+    UserQuery --> Classifier
+    Classifier -->|single-hop| NaiveEmbed
+    Classifier -->|multi-hop| Decomposer
+
+    NaiveEmbed --> VectorSearch1
+    VectorSearch1 --> NaiveLLM
+    NaiveLLM --> NaiveOut
+
+    Decomposer -->|sub-questions list| AgentLoop
+    AgentLoop --> EmbedSQ
+    EmbedSQ --> VectorSearch2
+    VectorSearch2 --> ChunkFilter
+    ChunkFilter -->|chunks + scores| Validator
+    Validator -->|pass| Synthesiser
+    Validator -->|fail| Reformulator
+    Reformulator -->|rephrased query| AgentLoop
+    Reformulator -->|max retries exceeded| Unanswerable
+    Synthesiser --> AgentOut

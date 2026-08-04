@@ -1,0 +1,20 @@
+{
+  "query": "My order was marked delivered but I never received it — what do I do and does my Gold membership change my options?",
+  "naive_rag": {
+    "sub_questions": [
+      "My order was marked delivered but I never received it — what do I do and does my Gold membership change my options?"
+    ],
+    "retrieval_calls": 1,
+    "chunks_used": 1,
+    "answer": "Standard members must report missing or undelivered orders within 7 days of the expected delivery date to qualify for a replacement or refund. [1]"
+  },
+  "agentic_rag": {
+    "sub_questions": [
+      "My order was marked delivered but I never received it — what do I do?",
+      "Does my Gold membership change my options?"
+    ],
+    "retrieval_calls": 2,
+    "chunks_used": 2,
+    "answer": "Standard members must report missing or undelivered orders within 7 days of the expected delivery date to qualify for a replacement or refund. [1] Gold members receive an extended 30-day dispute window for lost or undelivered orders and qualify for expedited replacement shipping at no additional charge. [2]"
+  }
+}

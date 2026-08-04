@@ -18,7 +18,7 @@ Week 1 maps one topic per day across the five production AI engineering vertical
 |---|---|---|---|
 | [W1D1](W1D1-dspy-programmatic-prompts/) | DSPy & Programmatic Prompts | Prompt Engineering & Schemas | ✅ Complete |
 | [W1D2](W1D2-lost-in-the-middle/) | "Lost in the Middle" Decay | Context Engineering & Tokens | ✅ Complete |
-| W1D3 | Naive vs. Agentic RAG | Advanced RAG | 🔜 Coming |
+| [W1D3](W1D3-naive-vs-agentic-rag/) | Naive vs. Agentic RAG | Advanced RAG | ✅ Complete |
 | W1D4 | Model Context Protocol (MCP) Intro | MCP & Tool Integration | 🔜 Coming |
 | W1D5 | Episodic vs. Semantic Memory | Agent Memory & Capabilities | 🔜 Coming |
 | W1D6 | State Graphs (LangGraph) | Multi-Agent Orchestration | 🔜 Coming |
@@ -64,13 +64,14 @@ After completing Week 1, you will be able to:
 
 ---
 
-### W1D3 — Naive vs. Agentic RAG
+### [W1D3 — Naive vs. Agentic RAG](W1D3-naive-vs-agentic-rag/)
 
 **Vertical:** Advanced RAG  
-**Core problem:** Single-retrieval RAG fails on multi-hop questions that require synthesizing information from multiple sources.  
-**Solution:** Agentic RAG iteratively plans, retrieves, and validates before committing to an answer.
+**Core problem:** Single-retrieval RAG fails on multi-hop questions that require synthesizing information from multiple sources. Naive RAG fetches by surface similarity and has no awareness of whether the retrieved evidence actually answers the query.  
+**Solution:** Agentic RAG decomposes the query into atomic sub-questions, retrieves targeted evidence per sub-question, validates each result against a similarity threshold, reformulates and retries on failure, then synthesises a final answer with inline citations.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** QueryDecomposer, ChunkRetriever, evidence validation, reformulation retry, multi-hop retrieval, retrieval-as-tool-call  
+**Status:** ✅ Complete — [Start here →](W1D3-naive-vs-agentic-rag/README.md)
 
 ---
 

@@ -1,0 +1,44 @@
+%% W1D3 — Naive vs. Agentic RAG — Request Flow
+%% Shows the iterative retrieval loop, validation branches, and reformulation retry path
+sequenceDiagram
+    autonumber
+    actor User
+    participant App as Application
+    participant Classifier as Query Classifier
+    participant Decomposer as Query Decomposer
+    participant Retriever as Vector Store
+    participant Validator as Evidence Validator
+    participant LLM as LLM (Synthesis)
+
+    User->>App: Submit multi-hop query
+    App->>Classifier: Classify query type
+    Classifier-->>App: multi-hop — route to agentic pipeline
+
+    App->>Decomposer: Decompose query into sub-questions
+    Decomposer->>LLM: Decomposition prompt
+    LLM-->>Decomposer: ["sub-question 1", "sub-question 2"]
+    Decomposer-->>App: Sub-question list (deduplicated)
+
+    loop For each sub-question
+        App->>Retriever: retrieve(sub-question, top_k=5)
+        Retriever-->>App: chunks with similarity scores
+
+        App->>Validator: validate(chunks, sub-question)
+        alt Similarity >= threshold AND semantic match
+            Validator-->>App: evidence accepted (confidence: high)
+        else Similarity < threshold OR semantic mismatch
+            Validator-->>App: evidence rejected
+            App->>Retriever: retrieve(reformulated sub-question)
+            Retriever-->>App: new chunks
+            alt Reformulation succeeds
+                Validator-->>App: evidence accepted (confidence: medium)
+            else Max retries exceeded
+                Validator-->>App: sub-question unanswerable
+            end
+        end
+    end
+
+    Note over App,LLM: Synthesis prompt includes all accepted evidence and any unanswerable flags
+    App->>LLM: Synthesise answer from validated evidence
+    LLM-->>App: Answer with inline citations
+    App-->>User: Final response (partial if any sub-question unanswerable)

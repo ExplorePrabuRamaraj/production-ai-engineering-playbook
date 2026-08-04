@@ -1,0 +1,8 @@
+{
+  "query": "My order was marked delivered but I never received it — what do I do and does my Gold membership change my options?",
+  "options": {
+    "pipeline": "both",
+    "top_k": 5,
+    "similarity_threshold": 0.70
+  }
+}
