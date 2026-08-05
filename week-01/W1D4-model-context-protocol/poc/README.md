@@ -87,7 +87,7 @@ All 20+ tests pass offline — no API key, no network access required.
 ## File Structure
 
 ```
-03_poc-code/
+poc/
 ├── src/
 │   ├── main.py          # Entry point — demonstrates full MCP session
 │   ├── mcp_core.py      # MCPServer, MCPClient, run_mcp_session (core protocol logic)
