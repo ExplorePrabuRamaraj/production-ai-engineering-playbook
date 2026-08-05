@@ -19,7 +19,7 @@ Week 1 maps one topic per day across the five production AI engineering vertical
 | [W1D1](W1D1-dspy-programmatic-prompts/) | DSPy & Programmatic Prompts | Prompt Engineering & Schemas | ✅ Complete |
 | [W1D2](W1D2-lost-in-the-middle/) | "Lost in the Middle" Decay | Context Engineering & Tokens | ✅ Complete |
 | [W1D3](W1D3-naive-vs-agentic-rag/) | Naive vs. Agentic RAG | Advanced RAG | ✅ Complete |
-| W1D4 | Model Context Protocol (MCP) Intro | MCP & Tool Integration | 🔜 Coming |
+| [W1D4](W1D4-model-context-protocol/) | Model Context Protocol (MCP) Intro | MCP & Tool Integration | ✅ Complete |
 | W1D5 | Episodic vs. Semantic Memory | Agent Memory & Capabilities | 🔜 Coming |
 | W1D6 | State Graphs (LangGraph) | Multi-Agent Orchestration | 🔜 Coming |
 | W1D7 | LLM-as-a-Judge Evals | Production Evals & Guardrails | 🔜 Coming |
@@ -75,13 +75,14 @@ After completing Week 1, you will be able to:
 
 ---
 
-### W1D4 — Model Context Protocol (MCP) Intro
+### [W1D4 — Model Context Protocol (MCP) Intro](W1D4-model-context-protocol/)
 
 **Vertical:** MCP & Tool Integration  
-**Core problem:** Unstructured tool descriptions bleed into prompts and degrade reliability. Ad-hoc tool wiring breaks when tool APIs change.  
-**Solution:** MCP formalizes the tool contract between your LLM and external systems with a typed, versioned interface.
+**Core problem:** Unstructured tool descriptions bleed into prompts and degrade reliability. Ad-hoc tool wiring breaks silently when upstream APIs change — schema drift causes 15–25% of agent reliability incidents.  
+**Solution:** MCP formalises the tool contract between your LLM and external systems with a typed, versioned, JSON-RPC 2.0 interface. The server owns its schema; every connected client fetches the live schema at session start — one update propagates everywhere.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** Resources, Tools, Prompts, capability negotiation, `isError` vs. JSON-RPC errors, stdio vs. HTTP+SSE transport  
+**Status:** ✅ Complete — [Start here →](W1D4-model-context-protocol/README.md)
 
 ---
 

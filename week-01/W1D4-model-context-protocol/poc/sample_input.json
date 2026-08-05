@@ -1,0 +1,21 @@
+{
+  "description": "Sample MCP session input — demonstrates tool requests sent through an MCPClient",
+  "server_name": "demo-crm-server",
+  "tool_requests": [
+    {
+      "name": "lookup_account",
+      "arguments": {
+        "customer_id": "CUST-3300",
+        "account_region": "eu-west-1"
+      }
+    },
+    {
+      "name": "update_account_status",
+      "arguments": {
+        "customer_id": "CUST-2042",
+        "new_status": "active",
+        "reason": "Payment of $145.50 received — account reinstated per policy"
+      }
+    }
+  ]
+}

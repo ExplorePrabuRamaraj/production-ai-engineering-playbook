@@ -1,0 +1,47 @@
+%% W1D4 — Model Context Protocol (MCP) Intro — Session Lifecycle & Tool Call Flow
+%% Shows: full MCP session from initialisation through tool call with error branch
+
+sequenceDiagram
+    %% W1D4 — MCP Session Lifecycle and Tool Invocation
+    autonumber
+    actor User
+    participant Host as Host Application
+    participant Client as MCP Client
+    participant Server as MCP Server (CRM)
+    participant CRM as Salesforce API
+
+    User->>Host: Submit query: "What is the status of account CUST-8823?"
+    Host->>Client: Start MCP session
+
+    Note over Client,Server: Phase 1 — Initialisation
+    Client->>Server: initialize {protocolVersion: "2024-11-05", capabilities: {}}
+    Server-->>Client: {capabilities: {tools: {}, resources: {}}, serverInfo: {name: "crm-server"}}
+
+    Note over Client,Server: Phase 2 — Capability Discovery
+    Client->>Server: tools/list {}
+    Server-->>Client: [{name: "lookup_account", description: "...", inputSchema: {...}}]
+    Client->>Host: Register tool schemas in context
+
+    Note over Host: Phase 3 — LLM Reasoning
+    Host->>Host: LLM selects tool: lookup_account\nGenerates args: {customer_id: "CUST-8823", account_region: "us-east-1"}
+
+    Note over Client,Server: Phase 4 — Tool Execution
+    Client->>Server: tools/call {name: "lookup_account", arguments: {customer_id: "CUST-8823", account_region: "us-east-1"}}
+    Server->>Server: Validate input against JSON Schema
+    Server->>CRM: GET /accounts/CUST-8823?region=us-east-1\nAuthorization: Bearer <token>
+
+    alt CRM responds successfully
+        CRM-->>Server: {status: "active", tier: "gold", balance: 0}
+        Server-->>Client: {content: [{type: "text", text: "..."}], isError: false}
+        Client-->>Host: Tool result delivered
+        Host-->>User: "Account CUST-8823 is active, tier: gold, balance: $0"
+    else CRM returns error or validation fails
+        CRM-->>Server: 422 Missing required field: account_region
+        Server-->>Client: {content: [{type: "text", text: "CRM error: missing account_region"}], isError: true}
+        Note over Client,Host: isError:true returned — LLM can reason about failure
+        Client-->>Host: Tool error delivered
+        Host-->>User: "I could not retrieve account details. Please verify the account region and try again."
+    end
+
+    Note over Client,Server: Phase 5 — Clean Shutdown
+    Client->>Server: Session closed (transport closed)

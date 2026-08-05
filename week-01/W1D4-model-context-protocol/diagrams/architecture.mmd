@@ -1,0 +1,46 @@
+%% W1D4 — Model Context Protocol (MCP) Intro — System Architecture
+%% Shows: Host runtime with embedded LLM connecting to multiple MCP servers
+%% via stdio (local) and HTTP+SSE (remote) transports
+
+graph LR
+    subgraph "Host Application"
+        LLM[LLM Runtime\nClaude / GPT-4o]
+        ClientA[MCP Client A\nstdio transport]
+        ClientB[MCP Client B\nHTTP+SSE transport]
+        ClientC[MCP Client C\nHTTP+SSE transport]
+        ToolReg[Tool Registry\nCapability Selector]
+    end
+
+    subgraph "Local MCP Servers (stdio)"
+        FSServer[File System Server\nResources: read files\nTools: write files]
+        CodeServer[Code Execution Server\nTools: run_python\nTools: run_shell]
+    end
+
+    subgraph "Remote MCP Servers (HTTP+SSE)"
+        CRMServer[CRM Server\nTools: lookup_account\nTools: update_case]
+        DBServer[Database Server\nResources: query_results\nTools: execute_query]
+    end
+
+    subgraph "Downstream Systems"
+        FileStore[(File System\n/data/allowed/)]
+        CRMApi[Salesforce API\nREST v58]
+        Postgres[(PostgreSQL\nInternal DB)]
+    end
+
+    LLM -->|tool selection| ToolReg
+    ToolReg -->|scoped tool set| ClientA
+    ToolReg -->|scoped tool set| ClientB
+    ToolReg -->|scoped tool set| ClientC
+
+    ClientA -->|JSON-RPC 2.0\nover stdin/stdout| FSServer
+    ClientA -->|JSON-RPC 2.0\nover stdin/stdout| CodeServer
+    ClientB -->|JSON-RPC 2.0\nover HTTP POST\nSSE responses| CRMServer
+    ClientC -->|JSON-RPC 2.0\nover HTTP POST\nSSE responses| DBServer
+
+    FSServer -->|read/write| FileStore
+    CRMServer -->|REST calls\nBearer token| CRMApi
+    DBServer -->|SQL queries\nasyncpg| Postgres
+
+    FSServer -->|tools/list\nresources/list| ClientA
+    CRMServer -->|tools/list| ClientB
+    DBServer -->|resources/list\ntools/list| ClientC

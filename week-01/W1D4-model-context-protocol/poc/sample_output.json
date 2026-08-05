@@ -1,0 +1,28 @@
+{
+  "server_name": "demo-crm-server",
+  "tools_discovered": ["lookup_account", "update_account_status"],
+  "resources_discovered": ["config://crm/regions"],
+  "tool_calls": [
+    {
+      "tool": "lookup_account",
+      "arguments": {
+        "customer_id": "CUST-3300",
+        "account_region": "eu-west-1"
+      },
+      "result": "{\"customer_id\": \"CUST-3300\", \"status\": \"active\", \"tier\": \"platinum\", \"balance_usd\": 0.0}",
+      "is_error": false,
+      "latency_ms": 0.12
+    },
+    {
+      "tool": "update_account_status",
+      "arguments": {
+        "customer_id": "CUST-2042",
+        "new_status": "active",
+        "reason": "Payment of $145.50 received — account reinstated per policy"
+      },
+      "result": "{\"customer_id\": \"CUST-2042\", \"previous_status\": \"suspended\", \"new_status\": \"active\", \"reason\": \"Payment of $145.50 received — account reinstated per policy\"}",
+      "is_error": false,
+      "latency_ms": 0.08
+    }
+  ]
+}
