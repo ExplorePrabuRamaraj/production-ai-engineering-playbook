@@ -1,0 +1,22 @@
+{
+  "user_id": "alice_42",
+  "session_id": "sess_demo_001",
+  "turns": [
+    {
+      "query": "My payment keeps failing with error E-402 again. This is the third time this month."
+    }
+  ],
+  "context": {
+    "description": "Returning customer with a recurring payment failure. Prior sessions exist in the episodic store.",
+    "prior_sessions": [
+      {
+        "session_id": "sess_prior_001",
+        "summary": "First E-402 report — escalated to Tier 2, OAuth token expiry suspected"
+      },
+      {
+        "session_id": "sess_prior_002",
+        "summary": "Second E-402 report — token refresh attempted, issue recurred"
+      }
+    ]
+  }
+}

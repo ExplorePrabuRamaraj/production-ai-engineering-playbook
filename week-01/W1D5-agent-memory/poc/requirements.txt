@@ -1,0 +1,20 @@
+# W1D5 — Episodic vs. Semantic Memory
+# Install: pip install -r requirements.txt
+
+# LLM API client — used in live mode for chat completions
+openai>=1.30.0,<2.0.0
+
+# Schema validation — used in config dataclass and output validation
+pydantic>=2.0.0,<3.0.0
+
+# Vector database client — swap in-memory store for production Qdrant
+# Uncomment when connecting to a real Qdrant instance
+# qdrant-client>=1.9.0,<2.0.0
+
+# Sentence embeddings — alternative to OpenAI embeddings for self-hosted mode
+# Uncomment if running without OpenAI API key but with local embeddings
+# sentence-transformers>=3.0.0,<4.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0  # Required if extending PoC with async write paths

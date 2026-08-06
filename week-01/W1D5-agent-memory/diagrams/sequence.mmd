@@ -1,0 +1,61 @@
+%% W1D5 — Episodic vs. Semantic Memory — Request Flow
+%% Shows the full lifecycle: user turn → memory retrieval → working memory
+%% assembly → LLM call → async episodic write → session-close promotion trigger.
+
+sequenceDiagram
+    autonumber
+    actor User
+    participant Agent as Agent Runtime
+    participant Router as Memory Router
+    participant EpiDB as Episodic Store
+    participant SemDB as Semantic Store
+    participant LLM as LLM GPT-4o-mini
+    participant Pipeline as Promotion Pipeline
+
+    User->>Agent: Submit query (session_id, user_id, text)
+    Agent->>Router: Route memory retrieval (query, user_id, token_budget=2000)
+
+    Router->>EpiDB: Hybrid search (filter: user_id, top_k=3, score=0.7*sim+0.3*recency)
+    EpiDB-->>Router: Top-3 episodic events with scores
+
+    Router->>SemDB: Relevance search (query embedding, top_k=2)
+    SemDB-->>Router: Top-2 semantic facts with confidence scores
+
+    Note over Router: Enforce token budget:\nepisodic <= 1200 tokens\nsemantic <= 800 tokens
+
+    Router-->>Agent: Assembled memory context (episodic block + semantic block)
+
+    Agent->>LLM: Prompt = system + memory context + current turn
+    Note over LLM: Memory blocks wrapped in\nstructural delimiters\nto prevent prompt injection
+
+    alt Response generated successfully
+        LLM-->>Agent: Generated response text + token usage
+        Agent-->>User: Return response
+        Agent-)EpiDB: Async write: serialise event (user_id, session_id, timestamp, content, embedding)
+        Note over Agent,EpiDB: Fire-and-forget — does not\nblock the user response
+    else LLM call fails or times out
+        LLM-->>Agent: Error or timeout
+        Agent-->>User: Fallback response (graceful degradation)
+        Agent-)EpiDB: Async write: error event with metadata
+    end
+
+    Note over User,Agent: Session continues for N turns\n(steps 1-12 repeat per turn)
+
+    User->>Agent: Session close signal
+    Agent-)Pipeline: Trigger promotion job (session_id, resolved=true)
+    Note over Pipeline: Runs async — does not\nblock session close response
+
+    Pipeline->>EpiDB: Fetch resolved events (last 24h, unprocessed)
+    EpiDB-->>Pipeline: Batch of episodic events
+
+    Pipeline->>Pipeline: Cluster events by semantic pattern
+
+    alt Cluster has >= 3 independent events
+        Pipeline->>LLM: Summarise cluster into candidate semantic fact
+        LLM-->>Pipeline: Candidate fact text
+        Pipeline->>Pipeline: Validate fact (length, non-contradiction, confidence)
+        Pipeline->>SemDB: Write validated fact (text, provenance_ids, valid_until TTL)
+        Note over SemDB: Fact available for\nnext session retrieval
+    else Cluster has < 3 events
+        Pipeline->>Pipeline: Skip promotion — insufficient evidence
+    end

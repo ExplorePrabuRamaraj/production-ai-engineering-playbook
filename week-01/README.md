@@ -20,7 +20,7 @@ Week 1 maps one topic per day across the five production AI engineering vertical
 | [W1D2](W1D2-lost-in-the-middle/) | "Lost in the Middle" Decay | Context Engineering & Tokens | ✅ Complete |
 | [W1D3](W1D3-naive-vs-agentic-rag/) | Naive vs. Agentic RAG | Advanced RAG | ✅ Complete |
 | [W1D4](W1D4-model-context-protocol/) | Model Context Protocol (MCP) Intro | MCP & Tool Integration | ✅ Complete |
-| W1D5 | Episodic vs. Semantic Memory | Agent Memory & Capabilities | 🔜 Coming |
+| [W1D5](W1D5-agent-memory/) | Episodic vs. Semantic Memory | Agent Memory & Capabilities | ✅ Complete |
 | W1D6 | State Graphs (LangGraph) | Multi-Agent Orchestration | 🔜 Coming |
 | W1D7 | LLM-as-a-Judge Evals | Production Evals & Guardrails | 🔜 Coming |
 
@@ -86,13 +86,14 @@ After completing Week 1, you will be able to:
 
 ---
 
-### W1D5 — Episodic vs. Semantic Memory
+### [W1D5 — Episodic vs. Semantic Memory](W1D5-agent-memory/)
 
 **Vertical:** Agent Memory & Capabilities  
-**Core problem:** Agents that store everything in context "memory" forget between sessions and hit token limits on long tasks.  
-**Solution:** Durable episodic memory (what happened) and semantic memory (what is true) patterns enable continuity across interactions.
+**Core problem:** Naive context stuffing (full conversation history in every prompt) collapses in production — context overflow, cost explosion ($235/day at 500 conversations), and no cross-session recall.  
+**Solution:** A dual-memory architecture separates episodic memory (time-stamped, user-scoped events with hybrid similarity+recency retrieval) from semantic memory (validated, generalised facts promoted asynchronously via a gated pipeline). Replaces ~8,000 tokens of raw history with ~2,000 tokens of relevant context — a 78% token cost reduction.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** EpisodicMemory, SemanticMemory, PromotionPipeline, MemoryRouter, recency-weighted retrieval, token budget assembly, injection-safe context delimiters  
+**Status:** ✅ Complete — [Start here →](W1D5-agent-memory/README.md)
 
 ---
 

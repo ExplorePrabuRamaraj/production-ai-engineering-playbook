@@ -1,0 +1,49 @@
+%% W1D5 — Episodic vs. Semantic Memory — System Architecture
+%% Shows the dual-memory architecture with separate read/write paths,
+%% working memory assembly, and the async promotion pipeline.
+
+graph LR
+    subgraph "Inference Path"
+        UserTurn[User Turn\nCurrent Query]
+        MemRouter[Memory Router\nToken Budget Enforcer]
+        WorkingMem[Working Memory\nContext Assembler]
+        LLMCall[LLM Inference\nGPT-4o-mini]
+        AgentResp[Agent Response\nto User]
+    end
+
+    subgraph "Episodic Store"
+        EpiWrite[Async Event Writer\nFire-and-Forget]
+        EpiDB[(Episodic Vector DB\nQdrant / Chroma)]
+        EpiRead[Episodic Retriever\nSimilarity + Recency Score]
+    end
+
+    subgraph "Semantic Store"
+        SemDB[(Semantic Index\nValidated Facts)]
+        SemRead[Semantic Retriever\nRelevance Search]
+    end
+
+    subgraph "Promotion Pipeline (Async)"
+        Cluster[Event Clustering\nGroup by Pattern]
+        Summarise[LLM Summarisation\nExtract Candidate Fact]
+        Validate[Quality Validator\nMin Evidence >= 3]
+        SemWrite[Semantic Fact Writer\nWith Provenance + TTL]
+    end
+
+    UserTurn -->|query embedding| MemRouter
+    MemRouter -->|user_id + query| EpiRead
+    MemRouter -->|query| SemRead
+    EpiRead -->|top-3 events| WorkingMem
+    SemRead -->|top-2 facts| WorkingMem
+    UserTurn --> WorkingMem
+    WorkingMem -->|assembled context\nmax 2000 tokens| LLMCall
+    LLMCall --> AgentResp
+    AgentResp -->|event serialised| EpiWrite
+    EpiWrite -->|embedding + metadata| EpiDB
+    EpiRead -->|hybrid search\nfilter by user_id| EpiDB
+
+    EpiDB -->|resolved events\nlast 24h| Cluster
+    Cluster -->|event clusters| Summarise
+    Summarise -->|candidate fact| Validate
+    Validate -->|passed threshold| SemWrite
+    SemWrite -->|fact + provenance + TTL| SemDB
+    SemRead --> SemDB
