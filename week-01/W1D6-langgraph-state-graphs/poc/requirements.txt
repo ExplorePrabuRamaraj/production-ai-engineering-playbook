@@ -1,0 +1,22 @@
+# W1D6 — State Graphs (LangGraph)
+# Install: pip install -r requirements.txt
+
+# LangGraph — stateful multi-actor graph runtime with checkpointing
+langgraph>=0.2.0,<0.3.0
+
+# LangChain OpenAI integration — used in live mode for LLM node calls
+langchain-openai>=0.1.0,<0.2.0
+
+# LangGraph SQLite checkpointer — persistence backend for demo and staging
+# (PostgreSQL backend available via langgraph-checkpoint-postgres for production)
+langgraph-checkpoint-sqlite>=1.0.0,<2.0.0
+
+# OpenAI Python client — direct API access in live node functions
+openai>=1.30.0,<2.0.0
+
+# Pydantic — optional schema validation for state fields
+pydantic>=2.0.0,<3.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0   # required for async node tests

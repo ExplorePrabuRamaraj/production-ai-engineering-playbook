@@ -52,7 +52,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 | [W1D3](week-01/W1D3-naive-vs-agentic-rag/) | Naive vs. Agentic RAG | Advanced RAG | ✅ Complete |
 | [W1D4](week-01/W1D4-model-context-protocol/) | Model Context Protocol (MCP) Intro | MCP & Tool Integration | ✅ Complete |
 | [W1D5](week-01/W1D5-agent-memory/) | Episodic vs. Semantic Memory | Agent Memory & Capabilities | ✅ Complete |
-| W1D6 | State Graphs (LangGraph) | Multi-Agent Orchestration | 🔜 Coming |
+| [W1D6](week-01/W1D6-langgraph-state-graphs/) | State Graphs (LangGraph) | Multi-Agent Orchestration | ✅ Complete |
 | W1D7 | LLM-as-a-Judge Evals | Production Evals & Guardrails | 🔜 Coming |
 
 ### Week 2 — Intermediate Patterns
@@ -97,7 +97,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 
 | Week | Theme | Progress |
 |---|---|---|
-| [Week 1](week-01/) | Foundations | 5 / 7 days |
+| [Week 1](week-01/) | Foundations | 6 / 7 days |
 | Week 2 | Intermediate Patterns | 0 / 7 days |
 | Week 3 | Advanced Techniques | 0 / 7 days |
 | Week 4 | Production & Scale | 0 / 7 days |

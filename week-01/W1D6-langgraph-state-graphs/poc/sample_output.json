@@ -1,0 +1,17 @@
+{
+  "risk_score": 0.86,
+  "risk_label": "high_risk",
+  "flags": [
+    "indemnify",
+    "liability",
+    "arbitration",
+    "warrant",
+    "termination for cause",
+    "liquidated damages"
+  ],
+  "human_approved": true,
+  "clauses_extracted": 6,
+  "summary": "Document review complete. Risk score: 0.86 (high_risk). Flags raised: indemnify, liability, arbitration, warrant, termination for cause, liquidated damages. Approved by human reviewer. Clauses reviewed: 6.",
+  "model": "demo",
+  "latency_ms": 0
+}

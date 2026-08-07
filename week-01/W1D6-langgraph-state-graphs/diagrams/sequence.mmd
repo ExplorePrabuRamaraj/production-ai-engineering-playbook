@@ -1,0 +1,49 @@
+%% W1D6 — State Graphs (LangGraph) — Execution Flow with Human-in-the-Loop
+%% Shows how state is passed between nodes, how the checkpointer persists state,
+%% and how a human-in-the-loop interrupt pause and resume works.
+sequenceDiagram
+    autonumber
+    actor Caller as Caller (App / API)
+    participant Graph as LangGraph Runtime
+    participant Ingest as Node: Ingest
+    participant Classify as Node: Classify
+    participant Router as Conditional Edge
+    participant HumanNode as Node: Human Approval
+    participant Finalise as Node: Finalise
+    participant Store as Checkpointer (SQLite)
+    participant Tracer as LangSmith Tracer
+
+    Caller->>Graph: invoke(initial_state, config{thread_id})
+    Graph->>Tracer: start_trace(thread_id)
+    Graph->>Ingest: execute(state)
+    Ingest-->>Graph: partial_update{clauses, flags}
+    Graph->>Store: save_checkpoint(state, node="classify")
+    Graph->>Tracer: log_node(Ingest, state_snapshot)
+
+    Graph->>Classify: execute(state)
+    Classify-->>Graph: partial_update{risk_score=0.87, risk_label="high_risk"}
+    Graph->>Store: save_checkpoint(state, node="router")
+    Graph->>Tracer: log_node(Classify, state_snapshot)
+
+    Graph->>Router: evaluate(state.risk_label)
+    alt risk_label == "high_risk"
+        Router-->>Graph: route_to="human_approval"
+        Graph->>HumanNode: interrupt_before — pause execution
+        Graph->>Store: save_interrupt_checkpoint(state, node="human_approval")
+        Graph-->>Caller: GraphInterrupt raised — thread_id returned
+        Note over Caller,Store: Human reviews document via UI.\nSubmits approval decision.
+        Caller->>Graph: resume(thread_id, state_update{human_approved=true})
+        Graph->>Store: load_checkpoint(thread_id)
+        Graph->>HumanNode: execute(state with human_approved=true)
+        HumanNode-->>Graph: partial_update{human_approved=true}
+        Graph->>Store: save_checkpoint(state, node="finalise")
+    else risk_label == "low_risk"
+        Router-->>Graph: route_to="finalise"
+        Note over Graph,Finalise: Low-risk path skips human approval node.
+    end
+
+    Graph->>Finalise: execute(state)
+    Finalise-->>Graph: partial_update{summary="Contract reviewed..."}
+    Graph->>Store: save_checkpoint(state, node="END")
+    Graph->>Tracer: log_node(Finalise, state_snapshot)
+    Graph-->>Caller: final_state (all fields populated)

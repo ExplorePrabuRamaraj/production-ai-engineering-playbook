@@ -21,7 +21,7 @@ Week 1 maps one topic per day across the five production AI engineering vertical
 | [W1D3](W1D3-naive-vs-agentic-rag/) | Naive vs. Agentic RAG | Advanced RAG | ✅ Complete |
 | [W1D4](W1D4-model-context-protocol/) | Model Context Protocol (MCP) Intro | MCP & Tool Integration | ✅ Complete |
 | [W1D5](W1D5-agent-memory/) | Episodic vs. Semantic Memory | Agent Memory & Capabilities | ✅ Complete |
-| W1D6 | State Graphs (LangGraph) | Multi-Agent Orchestration | 🔜 Coming |
+| [W1D6](W1D6-langgraph-state-graphs/) | State Graphs (LangGraph) | Multi-Agent Orchestration | ✅ Complete |
 | W1D7 | LLM-as-a-Judge Evals | Production Evals & Guardrails | 🔜 Coming |
 
 ---
@@ -97,13 +97,14 @@ After completing Week 1, you will be able to:
 
 ---
 
-### W1D6 — State Graphs (LangGraph)
+### [W1D6 — State Graphs (LangGraph)](W1D6-langgraph-state-graphs/)
 
 **Vertical:** Multi-Agent Orchestration  
-**Core problem:** LLM agents without explicit state management produce non-deterministic, unauditable behavior.  
-**Solution:** State graphs make agent flow inspectable, testable, and resumable — each node is a pure function on a typed state object.
+**Core problem:** LLM agents without explicit state management produce non-deterministic, unauditable behaviour — failures mid-workflow lose all intermediate work, and there is no principled place to pause for human input.  
+**Solution:** LangGraph models workflows as typed state graphs: each node is a pure function on `DocumentReviewState`, conditional edges route by state value at runtime, and a checkpointer persists every node transition — enabling mid-run recovery, resume, and human-in-the-loop interrupts.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `TypedDict` state schema, pure node functions, `add_conditional_edges`, `route_by_risk`, `interrupt_before`, `MemorySaver`/`SqliteSaver` checkpointers, `recursion_limit` guard  
+**Status:** ✅ Complete — [Start here →](W1D6-langgraph-state-graphs/README.md)
 
 ---
 

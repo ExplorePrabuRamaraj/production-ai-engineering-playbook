@@ -1,0 +1,53 @@
+%% W1D6 — State Graphs (LangGraph) — Architecture Overview
+%% Shows the components of a LangGraph state graph: state schema, nodes,
+%% conditional edges, checkpointer, and observability integration.
+graph LR
+    subgraph "Input Layer"
+        Caller[Caller\nApp or API]
+        InitState[Initial State\nTypedDict]
+    end
+
+    subgraph "LangGraph Runtime"
+        Start([START])
+        NodeIngest[Node: Ingest\nExtract + Chunk]
+        NodeClassify[Node: Classify\nRisk or Intent Scorer]
+        Router{Conditional\nEdge Router}
+        NodeLowPath[Node: Auto-Process\nLow-risk path]
+        NodeHighPath[Node: Human Approval\nHigh-risk path]
+        NodeFinalise[Node: Finalise\nSummarise + Store]
+        End([END])
+    end
+
+    subgraph "State Layer"
+        StateObj[(Shared State\nTypedDict)]
+    end
+
+    subgraph "Persistence Layer"
+        Checkpointer[(Checkpointer\nSQLite or Postgres)]
+    end
+
+    subgraph "Observability"
+        Tracer[LangSmith\nPer-node Trace]
+    end
+
+    Caller -->|invoke with initial_state| InitState
+    InitState --> Start
+    Start --> NodeIngest
+    NodeIngest -->|read + write| StateObj
+    NodeIngest --> NodeClassify
+    NodeClassify -->|read + write| StateObj
+    NodeClassify --> Router
+    Router -->|low_risk| NodeLowPath
+    Router -->|high_risk| NodeHighPath
+    NodeLowPath -->|read + write| StateObj
+    NodeHighPath -->|interrupt + resume| StateObj
+    NodeLowPath --> NodeFinalise
+    NodeHighPath --> NodeFinalise
+    NodeFinalise -->|read + write| StateObj
+    NodeFinalise --> End
+    End -->|final state| Caller
+    NodeIngest -.->|checkpoint after node| Checkpointer
+    NodeClassify -.->|checkpoint after node| Checkpointer
+    NodeHighPath -.->|interrupt checkpoint| Checkpointer
+    NodeFinalise -.->|checkpoint after node| Checkpointer
+    StateObj -.->|state snapshot| Tracer
