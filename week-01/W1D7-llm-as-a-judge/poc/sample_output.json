@@ -1,0 +1,24 @@
+{
+  "verdict": {
+    "criteria": {
+      "relevance": {
+        "score": 3,
+        "rationale": ""
+      },
+      "accuracy": {
+        "score": 1,
+        "rationale": "Response states all items are refundable within 30 days, but the reference explicitly excludes opened software from the return policy."
+      },
+      "completeness": {
+        "score": 2,
+        "rationale": "Response addresses the general return window but omits the opened software exclusion that is directly relevant to this query."
+      }
+    },
+    "overall": "fail",
+    "confidence": "high"
+  },
+  "needs_human_review": true,
+  "summary": "Overall: FAIL (confidence: high)\n  relevance: 3/3\n  accuracy: 1/3 — Response states all items are refundable within 30 days, but the reference explicitly excludes opened software from the return policy.\n  completeness: 2/3 — Response addresses the general return window but omits the opened software exclusion that is directly relevant to this query.",
+  "model": "gpt-4o-mini",
+  "parse_attempts": 1
+}

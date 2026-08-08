@@ -53,7 +53,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 | [W1D4](week-01/W1D4-model-context-protocol/) | Model Context Protocol (MCP) Intro | MCP & Tool Integration | ✅ Complete |
 | [W1D5](week-01/W1D5-agent-memory/) | Episodic vs. Semantic Memory | Agent Memory & Capabilities | ✅ Complete |
 | [W1D6](week-01/W1D6-langgraph-state-graphs/) | State Graphs (LangGraph) | Multi-Agent Orchestration | ✅ Complete |
-| W1D7 | LLM-as-a-Judge Evals | Production Evals & Guardrails | 🔜 Coming |
+| [W1D7](week-01/W1D7-llm-as-a-judge/) | LLM-as-a-Judge Evals | Production Evals & Guardrails | ✅ Complete |
 
 ### Week 2 — Intermediate Patterns
 
@@ -97,7 +97,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 
 | Week | Theme | Progress |
 |---|---|---|
-| [Week 1](week-01/) | Foundations | 6 / 7 days |
+| [Week 1](week-01/) | Foundations | 7 / 7 days ✅ |
 | Week 2 | Intermediate Patterns | 0 / 7 days |
 | Week 3 | Advanced Techniques | 0 / 7 days |
 | Week 4 | Production & Scale | 0 / 7 days |

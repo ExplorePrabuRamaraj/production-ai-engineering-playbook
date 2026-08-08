@@ -1,0 +1,12 @@
+# W1D7 — LLM-as-a-Judge Evals
+# Install: pip install -r requirements.txt
+
+# LLM API client — used for both generator and judge model calls
+openai>=1.30.0,<2.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0   # Required for any async test extensions
+
+# Optional: structured output validation (used in production extension)
+pydantic>=2.0.0,<3.0.0

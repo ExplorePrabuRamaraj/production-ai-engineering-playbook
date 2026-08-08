@@ -22,7 +22,7 @@ Week 1 maps one topic per day across the five production AI engineering vertical
 | [W1D4](W1D4-model-context-protocol/) | Model Context Protocol (MCP) Intro | MCP & Tool Integration | ✅ Complete |
 | [W1D5](W1D5-agent-memory/) | Episodic vs. Semantic Memory | Agent Memory & Capabilities | ✅ Complete |
 | [W1D6](W1D6-langgraph-state-graphs/) | State Graphs (LangGraph) | Multi-Agent Orchestration | ✅ Complete |
-| W1D7 | LLM-as-a-Judge Evals | Production Evals & Guardrails | 🔜 Coming |
+| [W1D7](W1D7-llm-as-a-judge/) | LLM-as-a-Judge Evals | Production Evals & Guardrails | ✅ Complete |
 
 ---
 
@@ -108,13 +108,14 @@ After completing Week 1, you will be able to:
 
 ---
 
-### W1D7 — LLM-as-a-Judge Evals
+### [W1D7 — LLM-as-a-Judge Evals](W1D7-llm-as-a-judge/)
 
 **Vertical:** Production Evals & Guardrails  
-**Core problem:** Human evaluation doesn't scale. Without automated quality measurement, accuracy regressions go undetected until users report them.  
-**Solution:** LLM-as-a-Judge enables continuous, automated quality scoring — with calibration against human labels to keep scores meaningful.
+**Core problem:** Rule-based checks miss semantic failures — responses that are correctly formatted but factually wrong, policy-violating, or critically incomplete. Human review does not scale beyond a few hundred responses per day.  
+**Solution:** A second LLM evaluates each response against a versioned rubric (relevance, accuracy, completeness), produces a structured `pass / review / fail` verdict with per-criterion rationales, and routes failures to a human review queue — all without a human in the hot path.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** Versioned `RUBRICS`, `CriterionVerdict` (score 1–3), `JudgeVerdict.needs_human_review()`, sentinel delimiters (prompt injection mitigation), `temperature=0.0` for auditable scores, retry-with-correction-hint on malformed JSON  
+**Status:** ✅ Complete — [Start here →](W1D7-llm-as-a-judge/README.md)
 
 ---
 

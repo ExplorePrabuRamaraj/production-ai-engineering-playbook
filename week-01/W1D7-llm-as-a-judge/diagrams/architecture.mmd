@@ -1,0 +1,45 @@
+%% W1D7 — LLM-as-a-Judge Evals — System Architecture Overview
+graph LR
+    subgraph "Input Assembly"
+        UserPrompt[User Prompt]
+        CandidateResp[Candidate Response]
+        RefMaterial[Reference Material\nGround Truth / Context]
+        RubricReg[Rubric Registry\nVersioned Criteria]
+    end
+
+    subgraph "Judge Pipeline"
+        PromptBuilder[Judge Prompt\nBuilder]
+        PIIRedact[PII Redactor\nEntity Stripper]
+        JudgeModel[Judge LLM\nTemp=0.0]
+        OutputParser[Output Parser\nJSON Schema Validator]
+        RetryHandler[Retry Handler\nMax 2 Attempts]
+    end
+
+    subgraph "Calibration Layer"
+        CalibSet[(Calibration Set\nHuman Labels)]
+        AgreementMonitor[Agreement Rate\nMonitor]
+        DriftAlert[Drift Alert\nSLA Threshold]
+    end
+
+    subgraph "Verdict Routing"
+        VerdictStore[(Verdict Store\nTime-Series)]
+        HumanQueue[Human Review\nQueue]
+        Dashboard[Eval Dashboard\nRolling Metrics]
+    end
+
+    UserPrompt --> PIIRedact
+    CandidateResp --> PIIRedact
+    RefMaterial --> PIIRedact
+    PIIRedact --> PromptBuilder
+    RubricReg -->|versioned rubric| PromptBuilder
+    PromptBuilder --> JudgeModel
+    JudgeModel --> OutputParser
+    OutputParser -->|parse failure| RetryHandler
+    RetryHandler -->|correction hint| JudgeModel
+    OutputParser -->|valid verdict| VerdictStore
+    OutputParser -->|confidence=low OR verdict=fail| HumanQueue
+    VerdictStore --> Dashboard
+    VerdictStore --> AgreementMonitor
+    CalibSet --> AgreementMonitor
+    AgreementMonitor -->|below SLA| DriftAlert
+    DriftAlert --> HumanQueue
