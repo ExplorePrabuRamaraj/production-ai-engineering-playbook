@@ -1,0 +1,15 @@
+# W2D1 — Type-Safe Schemas with Pydantic AI
+# Pin to compatible ranges — not exact versions — to allow security patches.
+
+# Core: Pydantic AI agent framework with structured output and auto-retry
+pydantic-ai>=0.0.13,<1.0.0
+
+# Core: Pydantic v2 for schema definition and field-level validation
+pydantic>=2.0.0,<3.0.0
+
+# LLM provider client (used by pydantic-ai under the hood for OpenAI models)
+openai>=1.30.0,<2.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0    # required for testing async Pydantic AI agent calls

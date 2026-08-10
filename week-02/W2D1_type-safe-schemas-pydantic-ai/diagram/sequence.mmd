@@ -1,0 +1,46 @@
+%% W2D1 — Type-Safe Schemas with Pydantic AI — Validation Loop Sequence
+sequenceDiagram
+    autonumber
+    actor Dev as Developer
+    participant App as Application
+    participant Agent as Pydantic AI Agent
+    participant Schema as Schema Serialiser
+    participant LLM as LLM Provider
+    participant Val as Pydantic Validator
+
+    Dev->>App: Call analyse(user_text)
+    App->>Agent: agent.run(user_text)
+    Agent->>Schema: model_json_schema(ReviewAnalysis)
+    Schema-->>Agent: JSON Schema dict
+    Agent->>Agent: Build system prompt with injected schema
+    Agent->>LLM: POST /chat/completions (messages with schema)
+    LLM-->>Agent: Raw text response
+
+    alt JSON parsing fails
+        Agent->>Agent: Append parse error to messages
+        Note over Agent: Retry attempt 1
+        Agent->>LLM: POST /chat/completions (with error context)
+        LLM-->>Agent: Corrected raw text response
+    end
+
+    Agent->>Val: ReviewAnalysis.model_validate(parsed_dict)
+
+    alt Pydantic validation passes
+        Val-->>Agent: Validated ReviewAnalysis instance
+        Agent-->>App: result.data (typed ReviewAnalysis)
+        App-->>Dev: ReviewAnalysis(sentiment=POSITIVE, confidence=0.95, ...)
+    else Pydantic validation fails
+        Val-->>Agent: ValidationError (field name + message)
+        Agent->>Agent: Append ValidationError to messages
+        Note over Agent: Retry attempt 2
+        Agent->>LLM: POST /chat/completions (with field-level error)
+        LLM-->>Agent: Corrected response
+        Agent->>Val: ReviewAnalysis.model_validate(corrected_dict)
+        alt Second validation passes
+            Val-->>Agent: Validated ReviewAnalysis instance
+            Agent-->>App: result.data (typed ReviewAnalysis)
+        else Retries exhausted
+            Agent-->>App: raise UnexpectedModelBehavior
+            App-->>Dev: Route to error queue
+        end
+    end

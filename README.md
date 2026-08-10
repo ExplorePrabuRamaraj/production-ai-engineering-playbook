@@ -59,7 +59,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 
 | Day | Topic | Vertical | Status |
 |---|---|---|---|
-| W2D1 | Type-Safe Schemas (Pydantic AI) | Prompt Engineering & Schemas | 🔜 Coming |
+| [W2D1](week-02/W2D1_type-safe-schemas-pydantic-ai/) | Type-Safe Schemas (Pydantic AI) | Prompt Engineering & Schemas | ✅ Complete |
 | W2D2 | KV Caching & Token Trimming | Context Engineering & Tokens | 🔜 Coming |
 | W2D3 | GraphRAG & Knowledge Graphs | Advanced RAG | 🔜 Coming |
 | W2D4 | Custom MCP Server Build | MCP & Tool Integration | 🔜 Coming |
@@ -98,7 +98,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 | Week | Theme | Progress |
 |---|---|---|
 | [Week 1](week-01/) | Foundations | 7 / 7 days ✅ |
-| Week 2 | Intermediate Patterns | 0 / 7 days |
+| [Week 2](week-02/) | Intermediate Patterns | 1 / 7 days |
 | Week 3 | Advanced Techniques | 0 / 7 days |
 | Week 4 | Production & Scale | 0 / 7 days |
 
@@ -106,31 +106,67 @@ No ML research background required. Python proficiency and basic LLM familiarity
 
 ## Repository Structure
 
+Each completed day follows a consistent layout. The per-day template is shown once below (W1D1), followed by a listing of all days with their unique core module names.
+
 ```
 production-ai-engineering-playbook/
-├── week-01/                               # Week 1 — Foundations
-│   ├── README.md
-│   └── W1D1-dspy-programmatic-prompts/
-│       ├── README.md                      # Day overview and quick start
-│       ├── docs/
-│       │   └── technical-document.md      # 21-section deep-dive
-│       ├── diagrams/
-│       │   ├── architecture.mmd           # Mermaid architecture diagram
-│       │   └── sequence.mmd               # Mermaid sequence diagram
-│       └── poc/
-│           ├── src/
-│           │   ├── main.py                # Entry point
-│           │   ├── dspy_core.py           # Signatures, predictors, teleprompter
-│           │   └── config.py              # Config from environment variables
-│           ├── tests/
-│           │   └── test_dspy.py           # 16 pytest tests (no API key needed)
-│           ├── requirements.txt
-│           ├── .env.example
-│           ├── sample_input.json
-│           └── sample_output.json
+├── README.md
 ├── CONTRIBUTING.md
 ├── ROADMAP.md
-└── README.md
+│
+├── week-01/                                        # Week 1 — Foundations (7 / 7 ✅)
+│   ├── README.md
+│   │
+│   ├── W1D1-dspy-programmatic-prompts/             # ── template for all Week 1 days ──
+│   │   ├── README.md                               # Day overview, learning objectives, run guide
+│   │   ├── docs/
+│   │   │   ├── technical-document.md               # 21-section practitioner deep-dive
+│   │   │   └── dspy-layman-scenarios.md            # Business scenarios (no ML background needed)
+│   │   ├── diagrams/                               # Mermaid source files
+│   │   │   ├── architecture.mmd
+│   │   │   └── sequence.mmd
+│   │   └── poc/
+│   │       ├── README.md                           # PoC quick-start and expected output
+│   │       ├── src/
+│   │       │   ├── main.py                         # Entry point — demo + live mode
+│   │       │   ├── dspy_core.py                    # Core logic (pure, independently testable)
+│   │       │   └── config.py                       # Config loaded from environment variables
+│   │       ├── tests/
+│   │       │   └── test_dspy.py                    # pytest unit tests (all run offline)
+│   │       ├── requirements.txt
+│   │       ├── .env.example
+│   │       ├── sample_input.json
+│   │       └── sample_output.json
+│   │
+│   ├── W1D2-lost-in-the-middle/                    # core: lost_in_middle_core.py | test: test_lost_in_middle.py
+│   ├── W1D3-naive-vs-agentic-rag/                  # core: rag_core.py            | test: test_rag_core.py
+│   ├── W1D4-model-context-protocol/                # core: mcp_core.py            | test: test_mcp_core.py
+│   ├── W1D5-agent-memory/                          # core: memory_core.py         | test: test_memory_core.py
+│   ├── W1D6-langgraph-state-graphs/                # core: state_graph_core.py    | test: test_state_graph.py
+│   └── W1D7-llm-as-a-judge/                        # core: judge_core.py          | test: test_judge.py
+│
+└── week-02/                                        # Week 2 — Intermediate Patterns (1 / 7)
+    ├── README.md
+    └── W2D1_type-safe-schemas-pydantic-ai/         # ⚠ underscore separator; diagram/ (singular)
+        ├── README.md
+        ├── docs/
+        │   ├── technical-document.md
+        │   └── type-safe-schemas-pydantic-ai-layman-scenarios.md
+        ├── diagram/                                 # singular — differs from Week 1 convention
+        │   ├── architecture.mmd
+        │   └── sequence.mmd
+        └── poc/
+            ├── README.md
+            ├── src/
+            │   ├── main.py
+            │   ├── pydantic_schemas_core.py
+            │   └── config.py
+            ├── tests/
+            │   └── test_pydantic_schemas.py
+            ├── requirements.txt
+            ├── .env.example
+            ├── sample_input.json
+            └── sample_output.json
 ```
 
 ---

@@ -1,0 +1,39 @@
+%% W2D1 — Type-Safe Schemas with Pydantic AI — Architecture Overview
+graph LR
+    subgraph "Application Layer"
+        App[Application Code]
+        Schema[Pydantic BaseModel\nOutput Schema]
+    end
+
+    subgraph "Pydantic AI Agent"
+        SchemaSerializer[Schema Serialiser\nJSON Schema Builder]
+        PromptBuilder[Prompt Builder\nInjects Schema into System Prompt]
+        RetryOrchestrator[Retry Orchestrator\nManages Validation Loop]
+        Validator[Pydantic Validator\nField-Level Type Checks]
+    end
+
+    subgraph "LLM Provider"
+        LLM[LLM API\nOpenAI / Anthropic / Ollama]
+        NativeStructured[Native Structured Output\nJSON Schema Mode]
+    end
+
+    subgraph "Output"
+        ValidResult[Validated Result\nTyped BaseModel Instance]
+        RetryLog[Retry Log\nValidation Error + Offending Response]
+        ErrorQueue[Error Queue\nExhausted Retries]
+    end
+
+    App -->|defines| Schema
+    App -->|invokes agent.run| RetryOrchestrator
+    Schema -->|model_json_schema| SchemaSerializer
+    SchemaSerializer -->|schema string| PromptBuilder
+    PromptBuilder -->|messages list| RetryOrchestrator
+    RetryOrchestrator -->|prompt + messages| LLM
+    LLM -->|raw text response| Validator
+    LLM -->|structured output| NativeStructured
+    NativeStructured -->|pre-validated JSON| Validator
+    Validator -->|passes| ValidResult
+    Validator -->|fails| RetryLog
+    RetryLog -->|correction hint appended| RetryOrchestrator
+    RetryOrchestrator -->|retries exhausted| ErrorQueue
+    ValidResult -->|returns result.data| App

@@ -1,0 +1,16 @@
+{
+  "review_analysis": {
+    "sentiment": "positive",
+    "confidence": 0.92,
+    "key_topics": ["battery life", "build quality", "value for money"],
+    "summary": "Reviewer is highly satisfied with battery endurance and build, considers it good value."
+  },
+  "ticket_triage": {
+    "urgency": "high",
+    "department": "billing",
+    "refund_involved": true,
+    "one_line_summary": "Customer charged twice for the same order, requesting immediate refund."
+  },
+  "model": "demo",
+  "retry_count": 0
+}
