@@ -1,0 +1,11 @@
+{
+  "original_tokens": 387,
+  "final_tokens": 387,
+  "eviction_ratio": 0.0,
+  "summary_injected": false,
+  "messages_before": 10,
+  "messages_after": 10,
+  "model": "demo",
+  "latency_ms": 0,
+  "cache_note": "In live mode, the system message would carry cache_control headers to enable server-side KV cache reuse on Anthropic/OpenAI."
+}

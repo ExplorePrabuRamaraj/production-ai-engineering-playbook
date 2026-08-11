@@ -1,0 +1,47 @@
+%% W2D2 — KV Caching & Token Trimming — Request Flow
+%% Shows the per-turn lifecycle: token counting, trimming decision, cache hit/miss, and generation
+
+sequenceDiagram
+    autonumber
+    actor User
+    participant App as Application
+    participant Enforcer as Token Budget\nEnforcer
+    participant Tokeniser as tiktoken /\ncount_tokens
+    participant LLMProvider as LLM Provider\nAPI
+    participant KVCache as KV Cache\nPool
+
+    User->>App: Send message (turn N)
+    App->>Enforcer: assemble_prompt(history, new_message)
+    Enforcer->>Tokeniser: count_tokens(dynamic_suffix)
+    Tokeniser-->>Enforcer: token_count = 9,200
+
+    alt Token count exceeds budget (e.g. budget = 8,000)
+        Enforcer->>Enforcer: evict_oldest_turns() until count <= budget
+        Note over Enforcer: Evicts complete user+assistant pairs\nNever splits a turn or tool call pair
+        alt Eviction > 50% of history
+            Enforcer->>LLMProvider: summarise(evicted_turns)
+            LLMProvider-->>Enforcer: summary_text (200 tokens)
+            Enforcer->>Enforcer: inject summary as synthetic system message
+        end
+    end
+
+    Enforcer-->>App: trimmed_prompt (token_count <= 8,000)
+    App->>LLMProvider: POST /messages\n  static_prefix + cache_control\n  dynamic_suffix (trimmed)
+
+    LLMProvider->>KVCache: lookup(static_prefix_hash)
+
+    alt Cache HIT — prefix seen recently
+        KVCache-->>LLMProvider: KV tensors for static prefix
+        Note over LLMProvider: Skips prefill for cached tokens\nPrefill only the dynamic suffix
+    else Cache MISS — first call or TTL expired
+        LLMProvider->>LLMProvider: prefill(static_prefix)\ncompute K, V tensors
+        LLMProvider->>KVCache: store(prefix_hash, KV_tensors, TTL=5min)
+        Note over LLMProvider: Full prefill cost this turn only
+    end
+
+    LLMProvider->>LLMProvider: prefill(dynamic_suffix)\ngenerate response tokens
+    LLMProvider-->>App: response\n  + cache_read_input_tokens\n  + cache_creation_input_tokens
+
+    App->>App: append(turn N) to history
+    App->>App: log cache_hit_rate = cache_read / total_input
+    App-->>User: Display response

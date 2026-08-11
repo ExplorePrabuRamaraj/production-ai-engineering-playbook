@@ -60,7 +60,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 | Day | Topic | Vertical | Status |
 |---|---|---|---|
 | [W2D1](week-02/W2D1_type-safe-schemas-pydantic-ai/) | Type-Safe Schemas (Pydantic AI) | Prompt Engineering & Schemas | ✅ Complete |
-| W2D2 | KV Caching & Token Trimming | Context Engineering & Tokens | 🔜 Coming |
+| [W2D2](week-02/W2D2_kv-caching-token-trimming/) | KV Caching & Token Trimming | Context Engineering & Tokens | ✅ Complete |
 | W2D3 | GraphRAG & Knowledge Graphs | Advanced RAG | 🔜 Coming |
 | W2D4 | Custom MCP Server Build | MCP & Tool Integration | 🔜 Coming |
 | W2D5 | Reflection & Self-Correction Loops | Agent Memory & Capabilities | 🔜 Coming |
@@ -98,7 +98,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 | Week | Theme | Progress |
 |---|---|---|
 | [Week 1](week-01/) | Foundations | 7 / 7 days ✅ |
-| [Week 2](week-02/) | Intermediate Patterns | 1 / 7 days |
+| [Week 2](week-02/) | Intermediate Patterns | 2 / 7 days |
 | Week 3 | Advanced Techniques | 0 / 7 days |
 | Week 4 | Production & Scale | 0 / 7 days |
 

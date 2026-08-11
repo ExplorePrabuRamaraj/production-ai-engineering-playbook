@@ -1,0 +1,41 @@
+{
+  "system_prompt": "You are a helpful customer support assistant for a retail bank. Help customers with account enquiries, transaction disputes, and product questions. Always confirm the customer's identity before discussing account details.",
+  "conversation": [
+    {
+      "role": "user",
+      "content": "Hi, I need help with my account."
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! I'd be happy to help. Could you please confirm your account number and date of birth for security purposes?"
+    },
+    {
+      "role": "user",
+      "content": "My account number is 12345678 and my date of birth is 15 March 1985."
+    },
+    {
+      "role": "assistant",
+      "content": "Thank you, I've confirmed your identity. How can I help you today?"
+    },
+    {
+      "role": "user",
+      "content": "I see a transaction for $47.50 on 3 August that I don't recognise. It says 'ACME STORE 0042'."
+    },
+    {
+      "role": "assistant",
+      "content": "I can see that transaction on your account. ACME STORE 0042 is a retail merchant. Would you like me to raise a dispute for this transaction?"
+    },
+    {
+      "role": "user",
+      "content": "Yes please. Also, can you tell me my current balance?"
+    },
+    {
+      "role": "assistant",
+      "content": "I've raised a dispute for the $47.50 transaction. You should receive a provisional credit within 5 business days. Your current balance is $2,340.18."
+    },
+    {
+      "role": "user",
+      "content": "Great, thank you. One more thing — can you explain the overdraft fees on my account?"
+    }
+  ]
+}

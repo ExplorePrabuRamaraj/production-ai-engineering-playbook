@@ -1,0 +1,9 @@
+# W2D2 — KV Caching & Token Trimming
+# Core dependencies
+
+openai>=1.30.0,<2.0.0        # LLM API client (live mode)
+tiktoken>=0.7.0,<1.0.0       # OpenAI BPE tokeniser — used for exact token counting before trimming
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0

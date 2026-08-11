@@ -1,0 +1,49 @@
+%% W2D2 — KV Caching & Token Trimming — System Architecture
+%% Shows the two-layer approach: server-side KV cache + client-side token budget enforcer
+
+graph LR
+    subgraph "Prompt Assembly"
+        StaticPrefix[Static Prefix\nSystem Prompt + Docs]
+        DynamicSuffix[Dynamic Suffix\nConversation History]
+        NewMessage[Current User\nMessage]
+    end
+
+    subgraph "Client-Side Token Budget Enforcer"
+        TokenCounter[Token Counter\ntiktoken / count_tokens]
+        BudgetCheck{Budget\nExceeded?}
+        SlidingWindow[Sliding Window\nEvict Oldest Turns]
+        ImportanceScore[Importance Scorer\nTF-IDF Relevance]
+        SummaryCompressor[Summary Compressor\nLLM Compression Call]
+    end
+
+    subgraph "Provider Infrastructure"
+        CacheCheck{KV Cache\nHit?}
+        KVCachePool[(KV Cache Pool\nKey-Value Tensors)]
+        PrefillEngine[Prefill Engine\nRecompute Tokens]
+        GenerationEngine[Generation Engine\nAutoregressive Decode]
+    end
+
+    subgraph "Response"
+        LLMOutput[LLM Response]
+        CacheStats[Cache Usage\nMetrics]
+        UpdatedHistory[Updated\nConversation History]
+    end
+
+    StaticPrefix -->|cache_control header| CacheCheck
+    DynamicSuffix --> TokenCounter
+    NewMessage --> TokenCounter
+    TokenCounter --> BudgetCheck
+    BudgetCheck -->|No — submit as-is| CacheCheck
+    BudgetCheck -->|Yes — evict turns| SlidingWindow
+    SlidingWindow -->|Large eviction >50%| SummaryCompressor
+    SlidingWindow -->|Small eviction| ImportanceScore
+    ImportanceScore --> CacheCheck
+    SummaryCompressor -->|Summary injected| CacheCheck
+    CacheCheck -->|Hit — reuse tensors| KVCachePool
+    CacheCheck -->|Miss — compute & store| PrefillEngine
+    KVCachePool --> GenerationEngine
+    PrefillEngine --> KVCachePool
+    PrefillEngine --> GenerationEngine
+    GenerationEngine --> LLMOutput
+    GenerationEngine --> CacheStats
+    LLMOutput --> UpdatedHistory

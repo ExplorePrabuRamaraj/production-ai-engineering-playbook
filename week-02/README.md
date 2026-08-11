@@ -17,7 +17,7 @@ Week 2 maps one intermediate topic per day across the five production AI enginee
 | Day | Topic | Vertical | Status |
 |---|---|---|---|
 | [W2D1](W2D1_type-safe-schemas-pydantic-ai/) | Type-Safe Schemas (Pydantic AI) | Prompt Engineering & Schemas | ✅ Complete |
-| W2D2 | KV Caching & Token Trimming | Context Engineering & Tokens | 🔜 Coming |
+| [W2D2](W2D2_kv-caching-token-trimming/) | KV Caching & Token Trimming | Context Engineering & Tokens | ✅ Complete |
 | W2D3 | GraphRAG & Knowledge Graphs | Advanced RAG | 🔜 Coming |
 | W2D4 | Custom MCP Server Build | MCP & Tool Integration | 🔜 Coming |
 | W2D5 | Reflection & Self-Correction Loops | Agent Memory & Capabilities | 🔜 Coming |
@@ -53,13 +53,14 @@ After completing Week 2, you will be able to:
 
 ---
 
-### W2D2 — KV Caching & Token Trimming
+### [W2D2 — KV Caching & Token Trimming](W2D2_kv-caching-token-trimming/)
 
 **Vertical:** Context Engineering & Tokens  
-**Core problem:** Repeated large system prompts and static context are re-tokenised and processed from scratch on every request, wasting compute and increasing latency.  
-**Solution:** KV cache prefix reuse amortises the cost of static context across requests; token trimming strategies remove low-value context before it reaches the model.
+**Core problem:** Every LLM call recomputes attention over the full context window — a 50-turn conversation sees latency spike 40–60% per request and costs grow proportionally. At 128k token limits, naive append-only context eventually overflows, silently truncating the most recent user message.  
+**Solution:** Two-layer approach — server-side KV cache (`cache_control` headers on Anthropic, automatic prefix caching on OpenAI) reuses static prefix attention weights; client-side `prepare_context()` enforces a hard token budget via sliding window eviction, atomic tool pair removal, and summary compression at the 50% eviction threshold.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `prepare_context()`, `trim_to_budget()`, `count_messages_tokens()`, atomic tool_call/tool_result eviction, `build_compression_summary()`, `inject_summary()`, Anthropic `cache_control`, `cache_read_input_tokens`  
+**Status:** ✅ Complete — [Start here →](W2D2_kv-caching-token-trimming/README.md)
 
 ---
 
