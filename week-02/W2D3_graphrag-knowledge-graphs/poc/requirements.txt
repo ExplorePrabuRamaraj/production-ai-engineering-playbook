@@ -1,0 +1,22 @@
+# W2D3 — GraphRAG & Knowledge Graphs
+# Pin to compatible ranges (not exact versions) for reproducibility across Python 3.10+
+
+# LLM API client — used for entity extraction and answer generation in live mode
+openai>=1.30.0,<2.0.0
+
+# Schema validation — used for structured entity/relationship output from LLM
+pydantic>=2.0.0,<3.0.0
+
+# Environment variable loading from .env file
+python-dotenv>=1.0.0,<2.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0    # Required for any async test variants
+
+# Optional: production graph store (comment in when scaling beyond 500k nodes)
+# neo4j>=5.0.0,<6.0.0     # Neo4j Python driver for persistent graph storage
+
+# Optional: true Leiden community detection (comment in for production use)
+# leidenalg>=0.10.0        # Leiden algorithm — requires python-igraph
+# python-igraph>=0.11.0    # Graph backend for leidenalg

@@ -1,0 +1,52 @@
+{
+  "query": "Who approved Contract_42 and which policy governs it?",
+  "graph_nodes": 7,
+  "graph_edges": 7,
+  "communities": 1,
+  "results": [
+    {
+      "text": "Entity: Alice (type: Person). Reached via path: alice.",
+      "source": "graph",
+      "rrf_score": 0.016393,
+      "provenance": "alice"
+    },
+    {
+      "text": "Alice reviewed and signed Contract_42 on 2024-03-15.",
+      "source": "vector",
+      "rrf_score": 0.016129,
+      "provenance": ""
+    },
+    {
+      "text": "Entity: Contract_42 (type: Document). Reached via path: contract_42.",
+      "source": "graph",
+      "rrf_score": 0.016129,
+      "provenance": "contract_42"
+    },
+    {
+      "text": "Entity: Bob (type: Person). Reached via path: alice -[REPORTS_TO]-> bob.",
+      "source": "graph",
+      "rrf_score": 0.015385,
+      "provenance": "alice -[REPORTS_TO]-> bob"
+    },
+    {
+      "text": "Entity: Policy_GDPR_17 (type: Policy). Reached via path: contract_42 -[GOVERNED_BY]-> policy_gdpr_17.",
+      "source": "graph",
+      "rrf_score": 0.015385,
+      "provenance": "contract_42 -[GOVERNED_BY]-> policy_gdpr_17"
+    },
+    {
+      "text": "Policy GDPR Article 17 governs all data processing contracts.",
+      "source": "vector",
+      "rrf_score": 0.015152,
+      "provenance": ""
+    },
+    {
+      "text": "Community 000 (7 entities): Cluster containing Alice, Bob, Contract_42, Policy_GDPR_17, Legal_Department and 2 more. These entities are densely interconnected in the source corpus.",
+      "source": "graph_community",
+      "rrf_score": 0.014493,
+      "provenance": "community:c000"
+    }
+  ],
+  "model": "demo",
+  "latency_ms": 0
+}

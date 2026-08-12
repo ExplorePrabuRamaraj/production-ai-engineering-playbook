@@ -18,7 +18,7 @@ Week 2 maps one intermediate topic per day across the five production AI enginee
 |---|---|---|---|
 | [W2D1](W2D1_type-safe-schemas-pydantic-ai/) | Type-Safe Schemas (Pydantic AI) | Prompt Engineering & Schemas | ✅ Complete |
 | [W2D2](W2D2_kv-caching-token-trimming/) | KV Caching & Token Trimming | Context Engineering & Tokens | ✅ Complete |
-| W2D3 | GraphRAG & Knowledge Graphs | Advanced RAG | 🔜 Coming |
+| [W2D3](W2D3_graphrag-knowledge-graphs/) | GraphRAG & Knowledge Graphs | Advanced RAG | ✅ Complete |
 | W2D4 | Custom MCP Server Build | MCP & Tool Integration | 🔜 Coming |
 | W2D5 | Reflection & Self-Correction Loops | Agent Memory & Capabilities | 🔜 Coming |
 | W2D6 | Supervisor vs. Swarm Networks | Multi-Agent Orchestration | 🔜 Coming |
@@ -64,13 +64,14 @@ After completing Week 2, you will be able to:
 
 ---
 
-### W2D3 — GraphRAG & Knowledge Graphs
+### [W2D3 — GraphRAG & Knowledge Graphs](W2D3_graphrag-knowledge-graphs/)
 
 **Vertical:** Advanced RAG  
-**Core problem:** Flat vector retrieval misses entity relationships — queries that require understanding how concepts connect (not just which documents contain them) return poor results from a standard embedding index.  
-**Solution:** Graph-enhanced retrieval encodes relationships between entities explicitly, enabling multi-hop traversal and relationship-aware ranking.
+**Core problem:** Naive RAG splits documents into isolated chunks. When a question requires understanding how entities relate across multiple documents — "who approved this contract and which policy governs it?" — the chunk containing the approver and the chunk containing the policy may never land in the same top-k result. On entity-dense corpora, multi-hop queries return incomplete answers in 30–60% of cases with flat vector retrieval.  
+**Solution:** GraphRAG extracts entities and typed relationships at index time to build a property graph. At query time, graph traversal from seed entities runs in parallel with vector search; Reciprocal Rank Fusion (RRF) merges both ranked lists into a single context that preserves relationship chains across documents.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `build_knowledge_graph`, `detect_communities`, `traverse_graph`, `rrf_merge`, `hybrid_retrieve`, `Entity`, `Relationship`, `Community`, `RetrievalResult`, Leiden community detection proxy, RRF k=60, `HOP_DEPTH`, `MAX_NODES_PER_TRAVERSAL`  
+**Status:** ✅ Complete — [Start here →](W2D3_graphrag-knowledge-graphs/README.md)
 
 ---
 

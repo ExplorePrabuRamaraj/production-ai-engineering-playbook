@@ -1,0 +1,42 @@
+%% W2D3 — GraphRAG & Knowledge Graphs — Query-Time Request Flow
+%% Shows hybrid retrieval: parallel vector search + graph traversal, RRF merge, LLM generation
+
+sequenceDiagram
+    autonumber
+    actor User
+    participant App as Application Layer
+    participant QNer as Query NER
+    participant VStore as Vector Store
+    participant GStore as Graph Store
+    participant RRFMerger as RRF Merger
+    participant LLM as LLM Generator
+
+    User->>App: Submit multi-hop query
+    App->>QNer: Extract entities from query
+    QNer-->>App: Entity list (e.g. [Alice, Contract_42])
+
+    App->>VStore: Embed query + cosine search top-K
+    App->>GStore: Seed traversal with extracted entities
+
+    Note over VStore,GStore: Both searches run in parallel
+
+    VStore-->>App: Ranked chunk list (vector results)
+    GStore->>GStore: Traverse N-hop neighbourhood\n+ fetch community summaries
+    GStore-->>App: Ranked graph context\n(nodes, edges, summaries)
+
+    App->>RRFMerger: Merge vector results + graph context
+    RRFMerger->>RRFMerger: Compute RRF scores\nRRF(d) = Σ 1/(60 + rank_i(d))
+    RRFMerger-->>App: Top-M merged context passages
+
+    App->>LLM: Prompt = system + merged context + query
+    LLM-->>App: Draft answer + confidence signal
+
+    alt Confidence above threshold
+        App-->>User: Final answer + provenance path
+    else Confidence below threshold
+        App->>GStore: Expand traversal depth by +1 hop
+        GStore-->>App: Additional graph context
+        App->>LLM: Retry with expanded context
+        LLM-->>App: Revised answer
+        App-->>User: Revised answer + provenance path
+    end

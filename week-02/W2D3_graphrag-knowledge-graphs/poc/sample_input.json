@@ -1,0 +1,22 @@
+{
+  "query": "Who approved Contract_42 and which policy governs it?",
+  "seed_entities": ["Alice", "Contract_42"],
+  "triples": [
+    ["Alice", "APPROVED", "Contract_42"],
+    ["Alice", "REPORTS_TO", "Bob"],
+    ["Bob", "IS_HEAD_OF", "Legal_Department"],
+    ["Contract_42", "GOVERNED_BY", "Policy_GDPR_17"],
+    ["Contract_42", "SIGNED_ON", "2024_03_15"],
+    ["Policy_GDPR_17", "ENFORCED_BY", "GDPR_Compliance_Team"],
+    ["Alice", "MEMBER_OF", "Legal_Department"]
+  ],
+  "entity_types": {
+    "Alice": "Person",
+    "Bob": "Person",
+    "Contract_42": "Document",
+    "Policy_GDPR_17": "Policy",
+    "Legal_Department": "Organization",
+    "GDPR_Compliance_Team": "Organization",
+    "2024_03_15": "Date"
+  }
+}

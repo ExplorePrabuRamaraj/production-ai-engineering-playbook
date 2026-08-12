@@ -1,0 +1,54 @@
+%% W2D3 — GraphRAG & Knowledge Graphs — System Architecture Overview
+%% Two pipelines: Index-time (bottom) and Query-time (top), sharing a Graph Store
+
+graph LR
+    subgraph "Source Documents"
+        Docs[Raw Documents\nPDF, HTML, Text]
+        Chunks[Text Chunks\nFixed-size splits]
+    end
+
+    subgraph "Index Pipeline"
+        NER[Entity Extractor\nLLM or NER Model]
+        Dedup[Deduplication\nEmbedding similarity]
+        GraphBuilder[Graph Builder\nNodes + Typed Edges]
+        Leiden[Community Detection\nLeiden Algorithm]
+        CommSumm[Community Summariser\nLLM-generated summaries]
+    end
+
+    subgraph "Storage Layer"
+        GraphStore[(Knowledge Graph\nNodes + Edges + Weights)]
+        VectorStore[(Vector Index\nChunk Embeddings)]
+        CommStore[(Community Store\nSummary Embeddings)]
+    end
+
+    subgraph "Query Pipeline"
+        QueryIn[User Query]
+        QueryEmbed[Query Embedder]
+        QueryNER[Query Entity\nExtractor]
+        VecSearch[Vector Search\nTop-K Chunks]
+        GraphTraversal[Graph Traversal\nN-hop Neighbourhood]
+        RRF[RRF Merger\nReciprocal Rank Fusion]
+        LLMGen[LLM Generator\nContext-grounded answer]
+        Answer[Final Answer\n+ Provenance Path]
+    end
+
+    Docs -->|split| Chunks
+    Chunks -->|extract triples| NER
+    Chunks -->|embed + store| VectorStore
+    NER -->|merge variants| Dedup
+    Dedup -->|insert nodes + edges| GraphBuilder
+    GraphBuilder -->|persist| GraphStore
+    GraphStore -->|partition nodes| Leiden
+    Leiden -->|generate summaries| CommSumm
+    CommSumm -->|embed + store| CommStore
+
+    QueryIn --> QueryEmbed
+    QueryIn --> QueryNER
+    QueryEmbed -->|cosine similarity| VecSearch
+    VecSearch -->|ranked chunks| RRF
+    QueryNER -->|seed traversal| GraphTraversal
+    GraphStore -->|neighbours + communities| GraphTraversal
+    CommStore -->|global search| GraphTraversal
+    GraphTraversal -->|ranked graph context| RRF
+    RRF -->|merged top-m context| LLMGen
+    LLMGen --> Answer
