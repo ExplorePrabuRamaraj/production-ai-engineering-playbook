@@ -1,0 +1,42 @@
+{
+  "session": "demo-session-001",
+  "tool_calls": [
+    {
+      "step": "tool_discovery",
+      "method": "tools/list",
+      "params": {}
+    },
+    {
+      "step": "valid_search",
+      "method": "tools/call",
+      "params": {
+        "name": "search_documents",
+        "arguments": {
+          "query": "revenue report Q4",
+          "department": "finance",
+          "top_k": 3
+        }
+      }
+    },
+    {
+      "step": "document_lookup",
+      "method": "tools/call",
+      "params": {
+        "name": "get_document",
+        "arguments": {
+          "doc_id": "DOC-001"
+        }
+      }
+    },
+    {
+      "step": "error_case_missing_field",
+      "method": "tools/call",
+      "params": {
+        "name": "search_documents",
+        "arguments": {
+          "query": "budget forecast"
+        }
+      }
+    }
+  ]
+}

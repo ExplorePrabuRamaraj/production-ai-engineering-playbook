@@ -19,7 +19,7 @@ Week 2 maps one intermediate topic per day across the five production AI enginee
 | [W2D1](W2D1_type-safe-schemas-pydantic-ai/) | Type-Safe Schemas (Pydantic AI) | Prompt Engineering & Schemas | ✅ Complete |
 | [W2D2](W2D2_kv-caching-token-trimming/) | KV Caching & Token Trimming | Context Engineering & Tokens | ✅ Complete |
 | [W2D3](W2D3_graphrag-knowledge-graphs/) | GraphRAG & Knowledge Graphs | Advanced RAG | ✅ Complete |
-| W2D4 | Custom MCP Server Build | MCP & Tool Integration | 🔜 Coming |
+| [W2D4](W2D4_custom-mcp-server-build/) | Custom MCP Server Build | MCP & Tool Integration | ✅ Complete |
 | W2D5 | Reflection & Self-Correction Loops | Agent Memory & Capabilities | 🔜 Coming |
 | W2D6 | Supervisor vs. Swarm Networks | Multi-Agent Orchestration | 🔜 Coming |
 | W2D7 | Deterministic Guardrails (NeMo) | Production Evals & Guardrails | 🔜 Coming |
@@ -75,13 +75,14 @@ After completing Week 2, you will be able to:
 
 ---
 
-### W2D4 — Custom MCP Server Build
+### [W2D4 — Custom MCP Server Build](W2D4_custom-mcp-server-build/)
 
 **Vertical:** MCP & Tool Integration  
-**Core problem:** Most teams use pre-built MCP servers. Building a custom server for internal tools requires understanding the full MCP server contract — tool schema, input validation, structured error responses, and transport selection.  
-**Solution:** Implement a production-grade custom MCP server from scratch using the Python SDK, with schema-validated tools, health checks, and HTTP+SSE transport.
+**Core problem:** Hardcoded `if agent_says_X: call_function(args)` wrappers are invisible to agents at runtime, crash the agent loop on invalid arguments (unhandled exceptions instead of recoverable errors), and produce no audit trail. When something goes wrong in production, there is nothing to debug from.  
+**Solution:** Implement the full MCP server contract from scratch: `get_tool_definitions()` exposes JSON Schema tool descriptors agents discover via `tools/list`; `dispatch_tool_call()` routes to typed handlers without exposing internals; defense-in-depth validation (schema layer + handler layer) returns structured JSON-RPC error objects (`-32601`, `-32602`, `-32603`) instead of exceptions; `log_tool_call()` emits a structured audit entry on every call.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `get_tool_definitions()`, `dispatch_tool_call()`, `validate_search_arguments()`, JSON Schema `inputSchema`, LLM-facing `description` as routing signal, JSON-RPC error codes, `handle_search_documents()`, `handle_get_document()`, `handle_list_departments()`, stdio vs. SSE transport, `BEARER_TOKEN`, `MAX_RESULTS`  
+**Status:** ✅ Complete — [Start here →](W2D4_custom-mcp-server-build/README.md)
 
 ---
 

@@ -1,0 +1,63 @@
+{
+  "session": "demo-session-001",
+  "tool_responses": [
+    {
+      "step": "tool_discovery",
+      "method": "tools/list",
+      "result": {
+        "tools": [
+          {
+            "name": "search_documents",
+            "required": ["query", "department"]
+          },
+          {
+            "name": "get_document",
+            "required": ["doc_id"]
+          },
+          {
+            "name": "list_departments",
+            "required": []
+          }
+        ],
+        "count": 3
+      }
+    },
+    {
+      "step": "valid_search",
+      "method": "tools/call",
+      "result": {
+        "results": [
+          {
+            "doc_id": "DOC-001",
+            "title": "Q4 Revenue Report",
+            "department": "finance",
+            "snippet": "Total Q4 revenue reached $4.2M, up 18% YoY..."
+          }
+        ],
+        "count": 1,
+        "department": "finance"
+      }
+    },
+    {
+      "step": "document_lookup",
+      "method": "tools/call",
+      "result": {
+        "document": {
+          "doc_id": "DOC-001",
+          "title": "Q4 Revenue Report",
+          "department": "finance",
+          "snippet": "Total Q4 revenue reached $4.2M, up 18% YoY..."
+        }
+      }
+    },
+    {
+      "step": "error_case_missing_field",
+      "method": "tools/call",
+      "result": {
+        "error": true,
+        "code": -32602,
+        "message": "Field 'department' must be one of ['engineering', 'finance', 'legal'], got ''."
+      }
+    }
+  ]
+}

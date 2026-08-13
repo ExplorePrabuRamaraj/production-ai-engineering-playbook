@@ -1,0 +1,43 @@
+%% W2D4 — Custom MCP Server Build — Architecture Overview
+%% Shows the three-layer MCP architecture: Host, Protocol, and Server/Tool layers
+graph LR
+    subgraph "Host Layer"
+        Agent[AI Agent\nRuntime]
+        MCPClient[MCP Client\nSDK]
+    end
+
+    subgraph "Protocol Layer"
+        Transport{Transport\nstdio or SSE}
+        Auth[Auth\nBearer / mTLS]
+    end
+
+    subgraph "MCP Server"
+        Registry[Tool Registry\nJSON Schemas]
+        Dispatcher[Request\nDispatcher]
+        Validator[Input\nValidator]
+    end
+
+    subgraph "Tool Handlers"
+        ToolA[search_documents\nHandler]
+        ToolB[get_record\nHandler]
+        ToolC[send_notification\nHandler]
+    end
+
+    subgraph "Backend Services"
+        VectorDB[(Vector\nDatabase)]
+        SQLDB[(SQL\nDatabase)]
+        ExtAPI[External\nAPI]
+    end
+
+    Agent -->|generates call args| MCPClient
+    MCPClient -->|tools/list\ntools/call| Transport
+    Transport -->|validates token| Auth
+    Auth -->|authenticated request| Registry
+    Registry -->|schema lookup| Dispatcher
+    Dispatcher -->|validate inputs| Validator
+    Validator -->|valid args| ToolA
+    Validator -->|valid args| ToolB
+    Validator -->|valid args| ToolC
+    ToolA -->|semantic query| VectorDB
+    ToolB -->|parameterised query| SQLDB
+    ToolC -->|HTTP POST| ExtAPI

@@ -1,0 +1,43 @@
+%% W2D4 — Custom MCP Server Build — Request Flow
+%% Shows the full MCP session lifecycle: initialize, tool discovery, tool call, and error handling
+sequenceDiagram
+    autonumber
+    actor User
+    participant Agent as AI Agent Runtime
+    participant Client as MCP Client
+    participant Server as MCP Server
+    participant Handler as Tool Handler
+    participant Backend as Backend Service
+
+    User->>Agent: Submit task requiring tool use
+    Agent->>Client: Start MCP session
+    Client->>Server: initialize (protocolVersion, clientInfo)
+    Server-->>Client: serverInfo, capabilities
+    Client->>Server: initialized (notification)
+
+    Note over Client,Server: Session established — tool discovery begins
+
+    Client->>Server: tools/list
+    Server-->>Client: Tool definitions with JSON Schemas
+    Client-->>Agent: Available tools + schemas
+
+    Agent->>Agent: LLM selects tool and generates arguments
+    Agent->>Client: Invoke tool with arguments
+
+    Client->>Server: tools/call (tool_name, arguments)
+    Server->>Server: Validate arguments against JSON Schema
+
+    alt Validation passes
+        Server->>Handler: Dispatch with validated arguments
+        Handler->>Backend: Execute scoped operation
+        Backend-->>Handler: Raw result
+        Handler-->>Server: Structured result
+        Server-->>Client: content array (TextContent)
+        Client-->>Agent: Tool result
+        Agent-->>User: Final response incorporating result
+    else Validation fails — missing required field
+        Server-->>Client: JSON-RPC error -32602 (Invalid params)
+        Client-->>Agent: Structured error with field name
+        Agent->>Agent: Error handling loop — retry or escalate
+        Agent-->>User: Diagnostic message
+    end

@@ -1,0 +1,22 @@
+# W2D4 — Custom MCP Server Build
+# Install: pip install -r requirements.txt
+
+# MCP protocol SDK — official Anthropic/MCP Python implementation
+# Provides Server, stdio_server, SseServerTransport, and mcp.types
+mcp>=1.0.0,<2.0.0
+
+# Pydantic — input validation and data modelling for tool arguments
+pydantic>=2.0.0,<3.0.0
+
+# HTTP client — used in live mode for SSE transport and external API tool calls
+httpx>=0.27.0,<1.0.0
+
+# ASGI server — required when running SSE transport (production deployment)
+uvicorn>=0.30.0,<1.0.0
+
+# ASGI web framework — used to mount SSE transport endpoints
+starlette>=0.37.0,<1.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
