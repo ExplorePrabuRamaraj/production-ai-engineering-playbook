@@ -1,0 +1,12 @@
+# W2D5 - Reflection & Self-Correction Loops
+# Install: pip install -r requirements.txt
+
+# LLM API client — used for generate, critique, and revise node calls
+openai>=1.30.0,<2.0.0
+
+# Schema validation — used for CriterionResult and CritiqueResult dataclasses
+pydantic>=2.0.0,<3.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0        # Required for any async test extensions

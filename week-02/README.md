@@ -20,7 +20,7 @@ Week 2 maps one intermediate topic per day across the five production AI enginee
 | [W2D2](W2D2_kv-caching-token-trimming/) | KV Caching & Token Trimming | Context Engineering & Tokens | ✅ Complete |
 | [W2D3](W2D3_graphrag-knowledge-graphs/) | GraphRAG & Knowledge Graphs | Advanced RAG | ✅ Complete |
 | [W2D4](W2D4_custom-mcp-server-build/) | Custom MCP Server Build | MCP & Tool Integration | ✅ Complete |
-| W2D5 | Reflection & Self-Correction Loops | Agent Memory & Capabilities | 🔜 Coming |
+| [W2D5](W2D5_reflection-self-correction-loops/) | Reflection & Self-Correction Loops | Agent Memory & Capabilities | ✅ Complete |
 | W2D6 | Supervisor vs. Swarm Networks | Multi-Agent Orchestration | 🔜 Coming |
 | W2D7 | Deterministic Guardrails (NeMo) | Production Evals & Guardrails | 🔜 Coming |
 
@@ -86,13 +86,14 @@ After completing Week 2, you will be able to:
 
 ---
 
-### W2D5 — Reflection & Self-Correction Loops
+### [W2D5 — Reflection & Self-Correction Loops](W2D5_reflection-self-correction-loops/)
 
 **Vertical:** Agent Memory & Capabilities  
-**Core problem:** Agents make reasoning errors silently — wrong tool selection, incomplete answers, internal contradictions — and there is no mechanism to catch and fix them before the response is returned.  
-**Solution:** Reflection loops add a self-critique step after generation: the agent evaluates its own output against a rubric and rewrites if the score falls below threshold.
+**Core problem:** Agents produce reasoning errors silently — hallucinated citations, incomplete answers, format violations — and no downstream check catches them without an explicit self-critique step. In production, the only safety net is human review, which does not scale.  
+**Solution:** A three-node Generate → Critique → Revise loop where the agent evaluates its own draft against a structured rubric (binary pass/fail per criterion), then revises *only* failing sections. A hard `MAX_ITERATIONS` cap guarantees termination; `exited_at_cap=True` routes cap-exit outputs to human review. A confidence gate skips the loop entirely for routine tasks.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `generate_node`, `critique_node`, `revise_node`, `run_reflection_loop`, `DEFAULT_RUBRIC`, `CriterionResult`, `CritiqueResult`, `ReflectionState`, `exited_at_cap`, `build_critique_prompt`, `build_revision_prompt`, `CRITIC_MODEL`, `MAX_ITERATIONS`, `CONFIDENCE_THRESHOLD`  
+**Status:** ✅ Complete — [Start here →](W2D5_reflection-self-correction-loops/README.md)
 
 ---
 

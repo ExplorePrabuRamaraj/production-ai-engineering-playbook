@@ -1,0 +1,23 @@
+{
+  "task": "Summarise the top 3 risks of deploying LLMs in production. Use exactly 3 bullet points, each under 20 words, and cite at least one source for the first risk.",
+  "final_draft": "- Hallucination risk: LLMs confidently produce false outputs; validate every factual claim before surfacing to users (Anthropic, 2024).\n- Prompt injection: adversarial inputs can hijack agent behaviour; sanitise all user-controlled content before interpolation.\n- Cost unpredictability: unbounded context growth spikes token spend; enforce input and output length limits at the gateway.",
+  "iterations_used": 2,
+  "all_criteria_passed": true,
+  "exited_at_cap": false,
+  "iteration_log": [
+    {
+      "iteration": 1,
+      "draft_length": 312,
+      "critique_summary": "Iteration 1: FAIL (2/3 criteria passed)",
+      "failing_criteria": ["completeness"]
+    },
+    {
+      "iteration": 2,
+      "draft_length": 387,
+      "critique_summary": "Iteration 2: PASS (3/3 criteria passed)",
+      "failing_criteria": []
+    }
+  ],
+  "model": "demo",
+  "latency_ms": 0
+}

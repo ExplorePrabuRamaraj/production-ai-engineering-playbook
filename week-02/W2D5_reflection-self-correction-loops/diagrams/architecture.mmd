@@ -1,0 +1,42 @@
+%% W2D5 - Reflection & Self-Correction Loops - System Architecture
+graph LR
+    subgraph "Input Layer"
+        UserReq[User Request]
+        ConfGate{Confidence\nScore Gate}
+    end
+
+    subgraph "Reflection Loop"
+        GenNode[Generate Node\nInitial Draft]
+        CritNode[Critique Node\nRubric Evaluation]
+        RevNode[Revise Node\nTargeted Rewrite]
+        IterRouter{All Criteria\nPassed?}
+        CapCheck{Max Iterations\nReached?}
+    end
+
+    subgraph "State Store"
+        StateObj[(Iteration State\nDraft + History)]
+        RubricCfg[(Rubric Config\nVersioned Criteria)]
+    end
+
+    subgraph "Output Layer"
+        FullPass[Validated Output\nAll Criteria Pass]
+        PartialPass[Partial Output\nWith Failure Flags]
+        ReviewQueue[Human Review\nQueue]
+        AuditLog[(Audit Log\nIteration Trace)]
+    end
+
+    UserReq -->|request + context| ConfGate
+    ConfGate -->|high confidence - skip loop| FullPass
+    ConfGate -->|low confidence - enter loop| GenNode
+    RubricCfg -->|criteria definitions| CritNode
+    GenNode -->|draft v1| StateObj
+    StateObj -->|current draft| CritNode
+    CritNode -->|pass/fail per criterion| IterRouter
+    IterRouter -->|all pass| FullPass
+    IterRouter -->|failures remain| CapCheck
+    CapCheck -->|under limit - revise| RevNode
+    CapCheck -->|at limit - exit| PartialPass
+    RevNode -->|revised sections only| StateObj
+    PartialPass -->|route for oversight| ReviewQueue
+    FullPass --> AuditLog
+    PartialPass --> AuditLog

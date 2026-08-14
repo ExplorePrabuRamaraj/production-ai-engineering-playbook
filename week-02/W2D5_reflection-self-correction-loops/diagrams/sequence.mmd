@@ -1,0 +1,46 @@
+%% W2D5 - Reflection & Self-Correction Loops - Request Flow
+sequenceDiagram
+    autonumber
+    actor User
+    participant App as Application
+    participant Gate as Confidence Gate
+    participant Gen as Generate Node
+    participant Crit as Critique Node
+    participant Rev as Revise Node
+    participant Store as State Store
+    participant Log as Audit Logger
+
+    User->>App: Submit task request
+    App->>Gate: Score request complexity
+    alt High-confidence request - skip reflection
+        Gate-->>App: Confidence above threshold
+        App->>Gen: Generate single-pass output
+        Gen-->>App: Draft output
+        App-->>User: Return validated output
+    else Low-confidence request - enter reflection loop
+        Gate-->>App: Confidence below threshold
+        App->>Gen: Generate initial draft
+        Gen-->>Store: Save draft v1 + iteration=1
+        Store-->>App: State updated
+        App->>Crit: Evaluate draft v1 against rubric
+        Crit-->>App: Criterion results (pass/fail per item)
+        Note over App,Crit: Each criterion evaluated independently
+        alt All criteria pass on first evaluation
+            App->>Log: Log pass at iteration 1
+            App-->>User: Return validated output
+        else Criteria fail - iteration 1 under cap
+            App->>Rev: Revise failing sections only
+            Note over Rev: Revision prompt scoped to failing criteria only
+            Rev-->>Store: Save draft v2 + iteration=2
+            App->>Crit: Re-evaluate draft v2 against rubric
+            Crit-->>App: Updated criterion results
+            alt All criteria pass on second evaluation
+                App->>Log: Log pass at iteration 2
+                App-->>User: Return validated output
+            else Max iterations reached
+                App->>Log: Log partial pass + failing criteria list
+                App-->>User: Return best draft with partial_pass flag
+            end
+        end
+    end
+    App->>Log: Append full iteration history to audit log
