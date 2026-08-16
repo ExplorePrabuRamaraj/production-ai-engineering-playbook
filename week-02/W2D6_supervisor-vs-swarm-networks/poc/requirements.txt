@@ -1,0 +1,8 @@
+# W2D6 -- Supervisor vs. Swarm Networks
+# Core dependencies
+openai>=1.30.0,<2.0.0          # LLM API client (used in live mode)
+pydantic>=2.0.0,<3.0.0         # Schema validation for inter-agent messages
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0         # Async test support for future async agent extensions

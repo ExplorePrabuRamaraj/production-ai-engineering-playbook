@@ -1,0 +1,47 @@
+%% W2D6 — Supervisor vs. Swarm Networks — Hybrid Architecture Overview
+%% Shows: Supervisor decomposing a task, dispatching to a Swarm of specialists,
+%%        message bus infrastructure, and result aggregation back to the user.
+graph LR
+    subgraph "Input Layer"
+        User[User Request]
+        TaskPlan[Task Plan\nDAG]
+    end
+
+    subgraph "Supervisor Layer"
+        Supervisor[Supervisor Agent\nDecompose + Aggregate]
+        StateStore[(Task State\nExternal Store)]
+    end
+
+    subgraph "Message Bus"
+        Bus[Message Bus\nIdempotent Delivery]
+        DLQ[Dead Letter Queue\nUnroutable Messages]
+    end
+
+    subgraph "Specialist Swarm"
+        AgentA[Specialist A\nDomain: Retrieval]
+        AgentB[Specialist B\nDomain: Analysis]
+        AgentC[Specialist C\nDomain: Generation]
+        AgentD[Specialist D\nDomain: Validation]
+    end
+
+    subgraph "Output Layer"
+        Aggregator[Result Aggregator\nMerge + Rank]
+        AuditLog[(Audit Log\nRouting Trace)]
+    end
+
+    User -->|raw request| Supervisor
+    Supervisor -->|persist state| StateStore
+    Supervisor -->|task plan| TaskPlan
+    TaskPlan -->|dispatch subtasks| Bus
+    Bus -->|subtask A| AgentA
+    Bus -->|subtask B| AgentB
+    Bus -->|subtask C| AgentC
+    Bus -->|subtask D| AgentD
+    Bus -->|unroutable| DLQ
+    AgentA -->|result A| Aggregator
+    AgentB -->|result B| Aggregator
+    AgentC -->|result C| Aggregator
+    AgentD -->|result D| Aggregator
+    Aggregator -->|log decisions| AuditLog
+    Aggregator -->|final response| Supervisor
+    Supervisor -->|response| User

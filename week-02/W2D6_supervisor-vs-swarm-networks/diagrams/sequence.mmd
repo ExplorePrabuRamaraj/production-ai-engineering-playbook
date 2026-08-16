@@ -1,0 +1,41 @@
+%% W2D6 — Supervisor vs. Swarm Networks — Request Lifecycle Sequence
+%% Shows: task decomposition, parallel specialist dispatch, timeout handling,
+%%        result aggregation, and partial-result fallback path.
+sequenceDiagram
+    autonumber
+    actor User
+    participant Sup as Supervisor Agent
+    participant Store as State Store
+    participant Bus as Message Bus
+    participant SA as Specialist A
+    participant SB as Specialist B
+    participant Agg as Aggregator
+
+    User->>Sup: Submit request
+    Sup->>Store: Persist initial task state
+    Sup->>Sup: Decompose into subtasks A and B
+    Sup->>Bus: Dispatch subtask A (idempotency key: k1)
+    Sup->>Bus: Dispatch subtask B (idempotency key: k2)
+
+    Note over Bus,SB: Independent subtasks execute in parallel
+
+    Bus->>SA: Deliver subtask A
+    Bus->>SB: Deliver subtask B
+
+    SA->>SA: Execute task A
+    SA-->>Agg: Return result A
+
+    alt Specialist B completes within timeout
+        SB->>SB: Execute task B
+        SB-->>Agg: Return result B
+        Agg->>Agg: Merge result A + result B
+        Agg-->>Sup: Full aggregated result
+    else Specialist B times out
+        Note over SB: Timeout exceeded (e.g. 5s)
+        Sup->>Sup: Apply fallback policy for subtask B
+        Agg->>Agg: Merge result A + partial fallback for B
+        Agg-->>Sup: Partial result with warning flag
+    end
+
+    Sup->>Store: Update task state to complete
+    Sup-->>User: Final response (full or partial)

@@ -1,0 +1,36 @@
+{
+  "supervisor": {
+    "topology": "supervisor",
+    "subtasks_handled": 4,
+    "total_latency_ms": 1.2,
+    "total_tokens": 223,
+    "routing_trace": [
+      "[Supervisor] Decomposed into 4 subtask(s): ['retrieve relevant documents for: ...', 'analyse content for: ...', 'generate a response for: ...', 'validate output for: ...']",
+      "[Supervisor] Dispatching 'retrieve relevant documents for: ...' -> retrieval-agent",
+      "[Supervisor] Received result from retrieval-agent (success=True, latency=0.1ms)",
+      "[Supervisor] Dispatching 'analyse content for: ...' -> analysis-agent",
+      "[Supervisor] Received result from analysis-agent (success=True, latency=0.1ms)",
+      "[Supervisor] Dispatching 'generate a response for: ...' -> generation-agent",
+      "[Supervisor] Received result from generation-agent (success=True, latency=0.1ms)",
+      "[Supervisor] Dispatching 'validate output for: ...' -> validation-agent",
+      "[Supervisor] Received result from validation-agent (success=True, latency=0.1ms)",
+      "[Supervisor] Aggregation complete. Total latency: 1.2ms, tokens: 223"
+    ],
+    "final_output": "[RetrievalAgent] Retrieved 3 relevant documents | [AnalysisAgent] Analysis complete -- sentiment: positive | [GenerationAgent] Draft response generated | [ValidationAgent] Validation passed -- no policy violations"
+  },
+  "swarm": {
+    "topology": "swarm",
+    "subtasks_handled": 4,
+    "total_latency_ms": 0.9,
+    "total_tokens": 223,
+    "routing_trace": [
+      "[Swarm] Received 4 message(s) for routing",
+      "[Swarm] 'retrieve customer purchase history' -> retrieval-agent (hop 1, history: ['retrieval-agent'])",
+      "[Swarm] 'analyse sentiment of recent feedback' -> analysis-agent (hop 1, history: ['analysis-agent'])",
+      "[Swarm] 'generate a personalised response' -> generation-agent (hop 1, history: ['generation-agent'])",
+      "[Swarm] 'validate response for compliance' -> validation-agent (hop 1, history: ['validation-agent'])",
+      "[Swarm] Complete. Handled: 4, DLQ: 0, Total latency: 0.9ms, tokens: 223"
+    ],
+    "final_output": "[RetrievalAgent] Retrieved 3 relevant documents | [AnalysisAgent] Analysis complete -- sentiment: positive | [GenerationAgent] Draft response generated | [ValidationAgent] Validation passed -- no policy violations"
+  }
+}

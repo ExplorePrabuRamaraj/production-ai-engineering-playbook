@@ -1,0 +1,8 @@
+{
+  "task": "retrieve customer purchase history; analyse sentiment of recent feedback; generate a personalised response; validate response for compliance",
+  "description": "Multi-step customer support workflow demonstrating Supervisor and Swarm orchestration",
+  "options": {
+    "topology": "both",
+    "demo_mode": true
+  }
+}
