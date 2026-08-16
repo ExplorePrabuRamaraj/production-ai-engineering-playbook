@@ -65,7 +65,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 | [W2D4](week-02/W2D4_custom-mcp-server-build/) | Custom MCP Server Build | MCP & Tool Integration | ✅ Complete |
 | [W2D5](week-02/W2D5_reflection-self-correction-loops/) | Reflection & Self-Correction Loops | Agent Memory & Capabilities | ✅ Complete |
 | W2D6 | Supervisor vs. Swarm Networks | Multi-Agent Orchestration | 🔜 Coming |
-| W2D7 | Deterministic Guardrails (NeMo) | Production Evals & Guardrails | 🔜 Coming |
+| [W2D7](week-02/W2D7_deterministic-guardrails-nemo/) | Deterministic Guardrails (NeMo) | Production Evals & Guardrails | ✅ Complete |
 
 ### Week 3 — Advanced Techniques
 
@@ -98,7 +98,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 | Week | Theme | Progress |
 |---|---|---|
 | [Week 1](week-01/) | Foundations | 7 / 7 days ✅ |
-| [Week 2](week-02/) | Intermediate Patterns | 5 / 7 days |
+| [Week 2](week-02/) | Intermediate Patterns | 6 / 7 days |
 | Week 3 | Advanced Techniques | 0 / 7 days |
 | Week 4 | Production & Scale | 0 / 7 days |
 
@@ -145,7 +145,7 @@ production-ai-engineering-playbook/
 │   ├── W1D6-langgraph-state-graphs/                # core: state_graph_core.py    | test: test_state_graph.py
 │   └── W1D7-llm-as-a-judge/                        # core: judge_core.py          | test: test_judge.py
 │
-└── week-02/                                        # Week 2 — Intermediate Patterns (5 / 7)
+└── week-02/                                        # Week 2 — Intermediate Patterns (6 / 7)
     ├── README.md
     ├── W2D1_type-safe-schemas-pydantic-ai/         # ⚠ underscore separator; diagram/ (singular)
     │   ├── README.md
@@ -170,7 +170,9 @@ production-ai-engineering-playbook/
     ├── W2D2_kv-caching-token-trimming/             # core: kv_caching_core.py     | test: test_kv_caching.py
     ├── W2D3_graphrag-knowledge-graphs/             # core: graphrag_core.py       | test: test_graphrag.py
     ├── W2D4_custom-mcp-server-build/               # core: mcp_server_core.py     | test: test_mcp_server.py
-    └── W2D5_reflection-self-correction-loops/      # core: reflection_core.py     | test: test_reflection.py
+    ├── W2D5_reflection-self-correction-loops/      # core: reflection_core.py     | test: test_reflection.py
+    ├── W2D6_supervisor-vs-swarm-networks/          # core: swarm_core.py          | test: test_swarm.py
+    └── W2D7_deterministic-guardrails-nemo/         # core: guardrails_core.py     | test: test_guardrails.py
 ```
 
 ---

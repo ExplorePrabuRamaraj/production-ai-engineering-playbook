@@ -22,7 +22,7 @@ Week 2 maps one intermediate topic per day across the five production AI enginee
 | [W2D4](W2D4_custom-mcp-server-build/) | Custom MCP Server Build | MCP & Tool Integration | ✅ Complete |
 | [W2D5](W2D5_reflection-self-correction-loops/) | Reflection & Self-Correction Loops | Agent Memory & Capabilities | ✅ Complete |
 | W2D6 | Supervisor vs. Swarm Networks | Multi-Agent Orchestration | 🔜 Coming |
-| W2D7 | Deterministic Guardrails (NeMo) | Production Evals & Guardrails | 🔜 Coming |
+| [W2D7](W2D7_deterministic-guardrails-nemo/) | Deterministic Guardrails (NeMo) | Production Evals & Guardrails | ✅ Complete |
 
 ---
 
@@ -107,13 +107,14 @@ After completing Week 2, you will be able to:
 
 ---
 
-### W2D7 — Deterministic Guardrails (NeMo)
+### [W2D7 — Deterministic Guardrails (NeMo)](W2D7_deterministic-guardrails-nemo/)
 
 **Vertical:** Production Evals & Guardrails  
-**Core problem:** LLM-as-a-Judge (W1D7) is probabilistic — it can miss policy violations and produces different verdicts on identical inputs. High-stakes applications require deterministic safety enforcement that fires on every request.  
-**Solution:** NeMo Guardrails adds a rule-based safety layer that intercepts inputs and outputs, enforcing defined policies deterministically before any LLM call reaches the user.
+**Core problem:** LLM-as-a-Judge (W1D7) is probabilistic — the same input can produce different verdicts across runs, and adversarial framing can cause it to miss policy violations entirely. For compliance-critical domains (banking, healthcare, legal), "usually safe" is not safe enough.  
+**Solution:** Three deterministic enforcement planes applied in sequence: `evaluate_input_rails()` blocks adversarial queries before any LLM token is consumed (regex + Unicode normalisation to defeat homoglyph attacks); `evaluate_output_rails()` hard-blocks unsafe vocabulary and injects required disclaimers when investment vocabulary is detected; `FlowState` + `get_flow_next_turn()` enforces mandatory multi-step acknowledgment for regulated topics before the LLM is allowed to respond.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `evaluate_input_rails()`, `normalise_text()`, `evaluate_output_rails()`, `FlowState`, `get_flow_next_turn()`, `GuardrailsResult`, `RailResponse`, `blocked_input_patterns`, `required_output_tokens`, `blocked_output_vocab`, `[DISCLAIMER]` token injection, `jailbreak_framing`/`competitor_mention` reason codes  
+**Status:** ✅ Complete — [Start here →](W2D7_deterministic-guardrails-nemo/README.md)
 
 ---
 

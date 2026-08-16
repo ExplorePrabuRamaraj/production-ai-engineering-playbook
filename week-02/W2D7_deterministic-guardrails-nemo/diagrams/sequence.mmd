@@ -1,0 +1,44 @@
+%% W2D7 — Deterministic Guardrails (NeMo) — Request Flow
+%% Shows the full request lifecycle through input rails, flow engine, LLM, and output rails
+sequenceDiagram
+    autonumber
+    actor User
+    participant App as Application
+    participant GR as NeMo Guardrails Runtime
+    participant Flow as Colang Flow Engine
+    participant LLM as LLM Backend
+
+    User->>App: Send message
+    App->>GR: guardrails.generate(messages)
+    GR->>GR: Evaluate input rails in priority order
+    alt Input rail fires (pattern match or PII detected)
+        Note over GR: Rail name + reason logged to audit store
+        GR-->>App: RailResponse(blocked=True, reply=canned_response)
+        App-->>User: Safe canned response (no LLM call made)
+    else All input rails pass
+        GR->>Flow: Match user intent against Colang definitions
+        alt Canonical flow has pending mandatory step
+            Note over Flow: e.g. disclosure acknowledgment not yet received
+            Flow-->>App: Next scripted bot turn from flow definition
+            App-->>User: Mandatory intermediate prompt (e.g. compliance disclosure)
+            User->>App: User acknowledgment response
+            App->>Flow: Resume flow with acknowledgment
+        else All mandatory flow steps satisfied
+            Flow->>LLM: Assembled prompt (system + history + current turn)
+            LLM-->>Flow: Raw response text
+            Flow->>GR: Pass raw response to output rails
+            GR->>GR: Evaluate output rails in priority order
+            alt Output rail blocks response (blocked vocabulary)
+                Note over GR: Rail name + reason logged to audit store
+                GR-->>App: RailResponse(blocked=True, reply=canned_response)
+                App-->>User: Safe canned response
+            else Output rail modifies response (required token missing)
+                Note over GR: Disclaimer or required token injected
+                GR-->>App: GuardrailsResult(response=modified, modified=True)
+                App-->>User: Modified response with required content
+            else All output rails pass
+                GR-->>App: GuardrailsResult(response=original, modified=False)
+                App-->>User: Final validated response
+            end
+        end
+    end

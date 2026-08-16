@@ -1,0 +1,54 @@
+%% W2D7 — Deterministic Guardrails (NeMo) — Architecture Overview
+%% Shows the three enforcement planes: Input Rails, Dialogue Flow Engine, Output Rails
+graph LR
+    subgraph "Application Layer"
+        UserMsg[User Message]
+        AppResp[Application Response]
+    end
+
+    subgraph "Input Enforcement"
+        InputRail[Input Rails\nPattern Match / PII Strip]
+        CannedIn[Canned Safe Response\nblocked at ingress]
+    end
+
+    subgraph "Flow Engine"
+        IntentMatch[Intent Classifier\nColang exact + fuzzy]
+        FlowState[Dialogue Flow State\nmandatory step tracker]
+        FlowResp[Canonical Bot Turn\nscripted response]
+    end
+
+    subgraph "LLM Backend"
+        LLMCall[LLM Inference\ngpt-4o-mini]
+    end
+
+    subgraph "Output Enforcement"
+        OutputRail[Output Rails\nSchema + Vocabulary Check]
+        Modifier[Response Modifier\ninject required tokens]
+        CannedOut[Canned Safe Response\nblocked at egress]
+    end
+
+    subgraph "Policy Store"
+        ColangFiles[Colang Policy Files\n.co intent and flow definitions]
+        TermLists[Term Lists\nblock / allow / required vocabulary]
+        PatternLib[Pattern Library\njailbreak and PII patterns]
+    end
+
+    UserMsg -->|raw input| InputRail
+    InputRail -->|blocked| CannedIn
+    CannedIn --> AppResp
+    InputRail -->|pass| IntentMatch
+    IntentMatch -->|matched flow| FlowState
+    FlowState -->|step pending| FlowResp
+    FlowResp --> AppResp
+    FlowState -->|all steps satisfied| LLMCall
+    LLMCall -->|raw output| OutputRail
+    OutputRail -->|schema fail or vocab block| CannedOut
+    CannedOut --> AppResp
+    OutputRail -->|required token missing| Modifier
+    Modifier --> AppResp
+    OutputRail -->|pass| AppResp
+
+    ColangFiles --> IntentMatch
+    ColangFiles --> FlowState
+    TermLists --> OutputRail
+    PatternLib --> InputRail
