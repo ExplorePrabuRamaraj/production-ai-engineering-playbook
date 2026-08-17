@@ -1,0 +1,11 @@
+{
+  "task": "classify_document",
+  "document_text": "This Non-Disclosure Agreement (\"Agreement\") is entered into as of January 1, 2025, between Acme Corp, a Delaware corporation (\"Disclosing Party\"), and Beta LLC, a California limited liability company (\"Receiving Party\"). The Receiving Party agrees not to disclose any Confidential Information to third parties without prior written consent from the Disclosing Party. Confidential Information includes all technical data, trade secrets, and business information. This Agreement shall remain in effect for a period of three (3) years.",
+  "categories": ["NDA", "SaaS", "Employment", "IP", "Refund", "General"],
+  "metadata": {
+    "source": "legal_triage_system",
+    "volume_per_month": 200000,
+    "current_prompt_tokens": 1800,
+    "target_reduction_pct": 60
+  }
+}

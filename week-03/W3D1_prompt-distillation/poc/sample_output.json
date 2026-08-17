@@ -1,0 +1,16 @@
+{
+  "teacher_tokens": 1800,
+  "student_tokens": 640,
+  "token_reduction_pct": 64.4,
+  "teacher_accuracy": 0.962,
+  "student_accuracy": 0.954,
+  "accuracy_delta": -0.008,
+  "model": "demo",
+  "latency_ms": 0,
+  "mode": "demo",
+  "task": "classify_document",
+  "document_preview": "This Non-Disclosure Agreement (\"Agreement\") is entered into as of January 1, 2025",
+  "student_prompt_preview": "Classify the document into one category: NDA, SaaS, Employment, IP, Refund, or General.",
+  "monthly_savings_usd": 2.9,
+  "note": "DEMO MODE — no API call. Teacher: 1800 tokens, Student: 640 tokens, delta: -0.8pp accuracy."
+}

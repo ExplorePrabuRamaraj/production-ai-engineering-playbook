@@ -1,0 +1,53 @@
+%% W3D1 — Prompt Distillation — Optimization and Deployment Sequence
+%% Shows the full flow from engineer triggering distillation to production deployment
+sequenceDiagram
+    autonumber
+    actor Engineer
+    participant Runner as Distillation Runner
+    participant Optimizer as MIPROv2 Optimizer
+    participant TeacherLLM as Teacher LLM
+    participant StudentLLM as Student LLM
+    participant Metric as Metric Function
+    participant Registry as Prompt Registry
+    participant Prod as Production Service
+
+    Engineer->>Runner: Start distillation(signature, trainset, evalset, budget=700 tokens)
+    Runner->>TeacherLLM: Generate instruction variants for signature
+    TeacherLLM-->>Optimizer: 10 rewritten instruction candidates
+    Runner->>Optimizer: Initialize(num_candidates=25, max_demos=3)
+
+    Note over Optimizer: Outer loop — one iteration per candidate
+
+    loop For each of 25 candidates
+        Optimizer->>Runner: Assemble candidate(instruction_variant + few_shot_subset)
+        Runner->>Runner: Check token count against budget
+        alt Candidate exceeds token budget
+            Runner->>Optimizer: Skip — over budget
+        else Within budget
+            loop For each example in held-out eval set
+                Runner->>StudentLLM: Execute candidate prompt + eval example
+                StudentLLM-->>Runner: Raw prediction output
+            end
+            Runner->>Metric: Score all predictions vs gold labels
+            Metric-->>Runner: Candidate score (0.0–1.0)
+            Runner->>Optimizer: Report score for this candidate
+        end
+    end
+
+    Optimizer->>Runner: Best candidate selected (highest score within budget)
+    Runner->>Runner: Verify score delta vs teacher baseline is within tolerance
+
+    alt Score delta within tolerance (e.g. <= -2 percentage points)
+        Runner->>Registry: Save compiled state file with metadata
+        Registry-->>Engineer: Distillation complete — v2 prompt registered
+        Engineer->>Prod: Deploy canary (5% traffic) using v2 state file
+        Prod-->>Engineer: Canary metrics: live accuracy, latency, cost/call
+        alt Canary passes acceptance criteria
+            Engineer->>Prod: Full rollout — load v2 state file at startup
+            Prod-->>Engineer: Production serving distilled prompt
+        else Canary fails
+            Engineer->>Prod: Rollback — reload v1 state file
+        end
+    else Score delta exceeds tolerance
+        Runner-->>Engineer: Optimization failed — relax budget or collect more data
+    end

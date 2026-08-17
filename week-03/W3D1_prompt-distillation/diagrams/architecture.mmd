@@ -1,0 +1,49 @@
+%% W3D1 — Prompt Distillation — System Architecture Overview
+%% Shows the full pipeline from raw production data to deployed distilled prompt
+graph LR
+    subgraph "Data Preparation"
+        ProdLogs[Production Logs\nor Labelled Dataset]
+        Sanitise[PII Sanitiser\nInput cleaner]
+        TrainSet[(Training Set\n80% split)]
+        EvalSet[(Held-Out Eval Set\n20% split)]
+    end
+
+    subgraph "Distillation Engine"
+        Sig[DSPy Signature\nTask contract]
+        Optimizer[MIPROv2 Optimizer\nCandidate generator]
+        InstrPool[Instruction Variants\nRewritten by LLM]
+        FewShotPool[Few-Shot Subsets\nBootstrap sampler]
+    end
+
+    subgraph "Evaluation Loop"
+        CandRun[Candidate Execution\nLLM inference calls]
+        MetricFn{Metric Function\nExact match or\nLLM-as-judge}
+        Scorer[Score Aggregator\nHeld-out average]
+        BudgetCheck{Token Budget\nCheck}
+    end
+
+    subgraph "Output and Registry"
+        BestPrompt[Best Student Prompt\nMin tokens, max score]
+        StateFile[Compiled State File\n.json versioned artefact]
+        Registry[(Prompt Registry\nVersioned store)]
+        Prod[Production Service\nLoads state at startup]
+    end
+
+    ProdLogs --> Sanitise
+    Sanitise --> TrainSet
+    Sanitise --> EvalSet
+    TrainSet --> Optimizer
+    Sig --> Optimizer
+    Optimizer --> InstrPool
+    Optimizer --> FewShotPool
+    InstrPool --> CandRun
+    FewShotPool --> CandRun
+    EvalSet --> CandRun
+    CandRun --> MetricFn
+    MetricFn --> Scorer
+    Scorer --> BudgetCheck
+    BudgetCheck -->|Within budget| BestPrompt
+    BudgetCheck -->|Over budget| Optimizer
+    BestPrompt --> StateFile
+    StateFile --> Registry
+    Registry -->|Deploy| Prod

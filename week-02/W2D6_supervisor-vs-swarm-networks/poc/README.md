@@ -17,7 +17,7 @@ Two multi-agent orchestration topologies -- Supervisor Network (hub-and-spoke) a
 
 ```bash
 # 1. Navigate to this folder
-cd artifacts/W2D6_supervisor-vs-swarm-networks/03_poc-code
+cd week-02/W2D6_supervisor-vs-swarm-networks/poc
 
 # 2. Install dependencies
 pip install -r requirements.txt
@@ -83,7 +83,7 @@ All tests pass offline. No API key required.
 ## File Structure
 
 ```
-03_poc-code/
+poc/
   src/
     main.py           # Entry point -- run this file
     swarm_core.py     # SupervisorNetwork, SwarmNetwork, Agent base class
@@ -151,9 +151,9 @@ swarm = SwarmNetwork(agents=agents)
 
 ## Read More
 
-- [Technical Documentation](../02_technical-doc/technical-document.md)
-- [Architecture Diagram](../02_technical-doc/diagrams/architecture.mmd)
-- [Sequence Diagram](../02_technical-doc/diagrams/sequence.mmd)
-- [LinkedIn Post](../01_linkedin-post/linkedin_post.md)
+- [Technical Documentation](../docs/technical-document.md)
+- [Architecture Diagram](../diagrams/architecture.mmd)
+- [Sequence Diagram](../diagrams/sequence.mmd)
+- [LinkedIn Post](../README.md)
 - [LangGraph Documentation](https://langchain-ai.github.io/langgraph/)
 - [AutoGen Documentation](https://microsoft.github.io/autogen/)

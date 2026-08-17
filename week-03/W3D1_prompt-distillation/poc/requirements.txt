@@ -1,0 +1,14 @@
+# W3D1 — Prompt Distillation
+# Install: pip install -r requirements.txt
+
+# LLM API client — used in live mode only; not imported in demo mode
+openai>=1.30.0,<2.0.0
+
+# DSPy — programmatic prompt optimisation framework (MIPROv2 optimizer)
+# Used conceptually in the technical doc; the PoC uses the greedy distillation
+# loop from distillation_core.py to avoid requiring a training dataset at demo time
+dspy-ai>=2.4.0,<3.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0      # async test support if extended to async LLM calls

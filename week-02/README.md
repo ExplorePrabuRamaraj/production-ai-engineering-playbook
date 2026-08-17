@@ -21,7 +21,7 @@ Week 2 maps one intermediate topic per day across the five production AI enginee
 | [W2D3](W2D3_graphrag-knowledge-graphs/) | GraphRAG & Knowledge Graphs | Advanced RAG | ✅ Complete |
 | [W2D4](W2D4_custom-mcp-server-build/) | Custom MCP Server Build | MCP & Tool Integration | ✅ Complete |
 | [W2D5](W2D5_reflection-self-correction-loops/) | Reflection & Self-Correction Loops | Agent Memory & Capabilities | ✅ Complete |
-| W2D6 | Supervisor vs. Swarm Networks | Multi-Agent Orchestration | 🔜 Coming |
+| [W2D6](W2D6_supervisor-vs-swarm-networks/) | Supervisor vs. Swarm Networks | Multi-Agent Orchestration | ✅ Complete |
 | [W2D7](W2D7_deterministic-guardrails-nemo/) | Deterministic Guardrails (NeMo) | Production Evals & Guardrails | ✅ Complete |
 
 ---
@@ -97,13 +97,14 @@ After completing Week 2, you will be able to:
 
 ---
 
-### W2D6 — Supervisor vs. Swarm Networks
+### [W2D6 — Supervisor vs. Swarm Networks](W2D6_supervisor-vs-swarm-networks/)
 
 **Vertical:** Multi-Agent Orchestration  
-**Core problem:** Multi-agent systems require a coordination model: either a central supervisor that delegates and aggregates, or a peer-to-peer swarm where agents communicate directly. Choosing the wrong topology causes bottlenecks, coordination failures, or unpredictable emergent behaviour.  
-**Solution:** Explicit topology selection — supervisor for hierarchical tasks with clear subtask boundaries; swarm for parallel tasks requiring dynamic negotiation.
+**Core problem:** Multi-agent systems that hardcode routing logic break when task structure changes. A sequential pipeline misses parallelism opportunities; choosing the wrong topology creates bottlenecks (a supervisor serialising parallelisable work), coordination failures (a swarm cycling with no capable handler), or silent task loss with no audit trail.  
+**Solution:** Two explicit topologies running the same task side-by-side: `SupervisorNetwork` decomposes the task via `decompose()`, scores all agents with `match_score()`, and dispatches to the best match; `SwarmNetwork` routes each semicolon-delimited subtask peer-to-peer via `_route_message()` with cycle prevention (`routing_history`) and `dead_letter_queue` for unroutable messages. `WorkflowResult.routing_trace` makes every delegation decision auditable.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `SupervisorNetwork`, `SwarmNetwork`, `Agent`, `decompose()`, `_find_best_agent()`, `match_score()`, `_route_message()`, `routing_history`, `dead_letter_queue`, `WorkflowResult`, `AgentResult`, `SWARM_MAX_HOPS`, supervisor vs. swarm topology selection  
+**Status:** ✅ Complete — [Start here →](W2D6_supervisor-vs-swarm-networks/README.md)
 
 ---
 
