@@ -1,0 +1,35 @@
+%% W3D2 — Context Compression — Request-to-Response Sequence
+%% Shows query-aware compression pipeline before each LLM call
+sequenceDiagram
+    autonumber
+    actor User
+    participant App as Application
+    participant Retriever as Retrieval Layer
+    participant Router as Segment Router
+    participant Compressor as Compressor Registry
+    participant Assembler as Context Assembler
+    participant LLM as LLM API
+
+    User->>App: Submit query
+    App->>Retriever: Fetch context segments\n(history, docs, tool outputs)
+    Retriever-->>App: Raw segments\n(avg 8,000–12,000 tokens)
+
+    App->>Router: Route segments with query
+    Router->>Router: Score each segment\nagainst query (relevance 0–1)
+
+    alt Segment tokens < 500 (below threshold)
+        Router-->>Assembler: Pass segment uncompressed
+    else Segment tokens >= 500
+        Router->>Compressor: Dispatch with type + budget
+        Note over Compressor: History → Abstractive\nDocuments → Extractive\nTool output → Token-level
+        Compressor->>Compressor: Apply query-aware compression
+        Compressor-->>Assembler: Compressed segment
+    end
+
+    Note over Assembler: System prompt always\nbypasses compression
+    Assembler->>Assembler: Concatenate in fixed order:\nsystem → history → docs → tools
+    Assembler-->>App: Compressed context\n(avg 2,000–3,000 tokens)
+
+    App->>LLM: Compressed context + query
+    LLM-->>App: Completion response
+    App-->>User: Final answer

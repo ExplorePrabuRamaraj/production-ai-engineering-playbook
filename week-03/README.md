@@ -17,7 +17,7 @@ Week 3 maps one advanced topic per day across the five production AI engineering
 | Day | Topic | Vertical | Status |
 |---|---|---|---|
 | [W3D1](W3D1_prompt-distillation/) | Prompt Distillation | Prompt Engineering & Schemas | ✅ Complete |
-| W3D2 | Context Compression | Context Engineering & Tokens | 🔜 Coming |
+| [W3D2](W3D2_context-compression/) | Context Compression | Context Engineering & Tokens | ✅ Complete |
 | W3D3 | Hybrid Search & Reranking | Advanced RAG | 🔜 Coming |
 | W3D4 | Async & Parallel Tool Calls | MCP & Tool Integration | 🔜 Coming |
 | W3D5 | Dynamic Skill Selection | Agent Memory & Capabilities | 🔜 Coming |
@@ -53,13 +53,14 @@ After completing Week 3, you will be able to:
 
 ---
 
-### W3D2 — Context Compression
+### [W3D2 — Context Compression](W3D2_context-compression/)
 
 **Vertical:** Context Engineering & Tokens  
 **Core problem:** As conversation history grows, the context window fills with low-signal turns — early pleasantries, superseded instructions, verbose tool outputs — leaving less room for the current query and recent context. Naive sliding-window eviction discards the oldest turns, but the oldest turns often contain the most important setup context.  
-**Solution:** Semantic compression — summarise evicted segments rather than discard them, preserving high-signal information at a fraction of the original token cost.
+**Solution:** Query-aware context compression — score each sentence by TF-IDF cosine similarity to the current query (`extractive_compress()`), or summarise via LLM (`abstractive_compress()`), reducing input tokens by 40–80% while retaining only what the model needs to answer.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `extractive_compress()`, `abstractive_compress()`, `compress_context()`, `CompressionResult`, TF-IDF cosine similarity, token budget, `min_segment_tokens` bypass, hybrid strategy, demo mode  
+**Status:** ✅ Complete — [Start here →](W3D2_context-compression/README.md)
 
 ---
 

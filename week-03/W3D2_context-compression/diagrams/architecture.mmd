@@ -1,0 +1,46 @@
+%% W3D2 — Context Compression — System Architecture Overview
+%% Shows the compression middleware layer between retrieval and LLM call
+graph LR
+    subgraph "Input Sources"
+        ConvHistory[Conversation\nHistory]
+        RetDocs[Retrieved\nDocuments]
+        ToolOut[Tool Call\nOutputs]
+        SysPrompt[System\nPrompt]
+    end
+
+    subgraph "Compression Middleware"
+        SegRouter[Segment\nRouter]
+        BudgetAlloc[Budget\nAllocator]
+
+        subgraph "Compressor Registry"
+            ExtComp[Extractive\nCompressor\nTF-IDF / Embedding]
+            AbsComp[Abstractive\nCompressor\nLLM Summariser]
+            TokComp[Token-Level\nCompressor\nLLMLingua-2]
+        end
+
+        Assembler[Compressed Context\nAssembler]
+    end
+
+    subgraph "Output Layer"
+        LLMCall[LLM API\nCall]
+        TokenLog[(Token Count\nAudit Log)]
+        Response[Final\nResponse]
+    end
+
+    ConvHistory -->|raw turns| SegRouter
+    RetDocs -->|raw documents| SegRouter
+    ToolOut -->|raw JSON| SegRouter
+    SysPrompt -->|protected — bypass compression| Assembler
+
+    SegRouter -->|segment type + relevance score| BudgetAlloc
+    BudgetAlloc -->|conversation + budget| AbsComp
+    BudgetAlloc -->|documents + budget| ExtComp
+    BudgetAlloc -->|tool output + budget| TokComp
+
+    AbsComp -->|compressed summary| Assembler
+    ExtComp -->|retained sentences| Assembler
+    TokComp -->|compressed tokens| Assembler
+
+    Assembler -->|compressed context| LLMCall
+    Assembler -->|original vs compressed tokens| TokenLog
+    LLMCall -->|completion| Response

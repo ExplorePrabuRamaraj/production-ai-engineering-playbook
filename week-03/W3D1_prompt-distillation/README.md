@@ -242,7 +242,7 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 **Previous:** [W2D1 — Type-Safe Schemas (Pydantic AI)](../../week-02/W2D1_type-safe-schemas-pydantic-ai/README.md) — the Week 2 entry point for Prompt Engineering & Schemas, covering output contracts at the LLM boundary.
 
-**Next:** [W3D2 — Context Compression](../README.md) — compress conversation history and retrieved context rather than the system prompt itself.
+**Next:** [W3D2 — Context Compression](../W3D2_context-compression/README.md) — compress conversation history and retrieved context rather than the system prompt itself.
 
 **Series arc:** [W1D1 — DSPy & Programmatic Prompts](../../week-01/W1D1-dspy-programmatic-prompts/README.md) introduced programmatic prompt construction. W2D1 added type-safe output schemas. W3D1 closes the loop: once prompts are working correctly and output is validated, systematically shrink them to reduce cost while preserving accuracy. The W3D1 greedy heuristic is a stepping stone toward DSPy's `MIPROv2` Bayesian optimiser, which searches over the full instruction + few-shot candidate space.
 
@@ -258,6 +258,6 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 ## Continue Learning
 
-**Next:** [W3D2 — Context Compression](../README.md)
+**Next:** [W3D2 — Context Compression](../W3D2_context-compression/README.md)
 
 Return to [Week 3 overview](../README.md) to explore all advanced techniques.

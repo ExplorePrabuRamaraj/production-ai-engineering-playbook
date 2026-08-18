@@ -1,0 +1,18 @@
+# W3D2 — Context Compression
+# Core LLM client — used for abstractive compression and live mode
+openai>=1.30.0,<2.0.0
+
+# Schema validation — used in config dataclass
+pydantic>=2.0.0,<3.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# Optional: faster, accurate tokenisation (replaces heuristic estimate_tokens)
+# Uncomment for production use — not required for demo/tests
+# tiktoken>=0.7.0,<1.0.0
+
+# Optional: LLMLingua-2 token-level compression (requires GPU for best performance)
+# Uncomment to enable the LLMLingua strategy in context_compression_core.py
+# llmlingua>=0.2.0,<1.0.0

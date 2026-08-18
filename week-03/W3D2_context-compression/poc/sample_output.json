@@ -1,0 +1,31 @@
+{
+  "query": "What is the refund policy for annual subscriptions?",
+  "segments": {
+    "history": {
+      "compressed_text": "I recently upgraded to an annual plan last month and I am not entirely sure it was the right decision for me. I was wondering if there is any way to get a refund or switch back to monthly billing.",
+      "original_tokens": 163,
+      "compressed_tokens": 47,
+      "compression_ratio": 0.288,
+      "strategy_used": "extractive"
+    },
+    "docs": {
+      "compressed_text": "Annual Subscriptions: Customers who purchase annual subscription plans are eligible for a full refund if the refund request is submitted within 30 days of the initial purchase date. After the 30-day window, refunds are calculated on a prorated basis: the refund amount equals the unused portion of the subscription, minus a 10% administrative fee. To request a refund, customers must contact our support team at support@example.com or through the in-app Help Centre.",
+      "original_tokens": 228,
+      "compressed_tokens": 92,
+      "compression_ratio": 0.404,
+      "strategy_used": "extractive"
+    },
+    "tool_output": {
+      "compressed_text": "{\"customer_id\": \"CUST-98234\", \"account_status\": \"active\", \"plan_type\": \"annual\", \"plan_start_date\": \"2024-12-15\", \"plan_end_date\": \"2025-12-14\", \"amount_paid\": 120.00, \"currency\": \"USD\", \"days_since_purchase\": 18, \"eligible_for_full_refund\": true, \"prorated_refund_amount\": null, \"last_login\": \"2025-01-02\", \"open_tickets\": 0, \"preferred_contact\": \"email\", \"marketing_opt_in\": false, \"referral_source\": \"google_ads\", \"account_tier\": \"standard\"}",
+      "original_tokens": 63,
+      "compressed_tokens": 63,
+      "compression_ratio": 1.0,
+      "strategy_used": "bypass"
+    }
+  },
+  "total_original_tokens": 454,
+  "total_compressed_tokens": 202,
+  "overall_compression_ratio": 0.445,
+  "model": "demo",
+  "latency_ms": 0
+}
