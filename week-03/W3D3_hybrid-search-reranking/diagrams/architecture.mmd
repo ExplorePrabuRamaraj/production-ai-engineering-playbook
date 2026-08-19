@@ -1,0 +1,42 @@
+%% W3D3 — Hybrid Search & Reranking — System Architecture
+%% Shows the three-stage pipeline: parallel retrieval → RRF fusion → cross-encoder reranking
+graph LR
+    subgraph "Query Layer"
+        UserQuery[User Query]
+        Dispatcher[Query Dispatcher\nFan-out Controller]
+    end
+
+    subgraph "Retrieval Layer"
+        BM25Index[BM25 Sparse Index\nInverted Index]
+        EmbedModel[Bi-Encoder\nEmbedding Model]
+        VectorStore[("Dense Vector Store\nANN Index - HNSW")]
+    end
+
+    subgraph "Fusion Layer"
+        RRF[Reciprocal Rank Fusion\nk=60 smoothing constant]
+        FusedList[(Fused Candidate List\nTop-50 documents)]
+    end
+
+    subgraph "Reranking Layer"
+        CrossEncoder[Cross-Encoder\nJoint Query-Doc Scoring]
+        TopK[Top-K Results\nK = 5 to 10]
+    end
+
+    subgraph "Generation Layer"
+        ContextAssembler[Context Assembler\nToken budget enforced]
+        LLM[Language Model\nGPT-4o or Claude]
+        Response[Final Response]
+    end
+
+    UserQuery --> Dispatcher
+    Dispatcher -->|raw query text| BM25Index
+    Dispatcher -->|query text| EmbedModel
+    EmbedModel -->|query vector| VectorStore
+    BM25Index -->|ranked list A - top-100| RRF
+    VectorStore -->|ranked list B - top-100| RRF
+    RRF --> FusedList
+    FusedList -->|top-50 candidates + query| CrossEncoder
+    CrossEncoder --> TopK
+    TopK --> ContextAssembler
+    ContextAssembler -->|assembled context| LLM
+    LLM --> Response

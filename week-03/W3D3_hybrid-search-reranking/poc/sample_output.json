@@ -1,0 +1,52 @@
+{
+  "query": "CUDA out of memory error during model training",
+  "results": [
+    {
+      "rank": 1,
+      "doc_id": "d1",
+      "text": "RuntimeError: CUDA out of memory. Tried to allocate 2.50 GiB (GPU 0; 15.78 GiB total capacity). Fix: reduce batch size or use gradient checkpointing.",
+      "rrf_score": 0.0317,
+      "rerank_score": 0.9821,
+      "bm25_rank": 1,
+      "dense_rank": 1
+    },
+    {
+      "rank": 2,
+      "doc_id": "d3",
+      "text": "How to reduce memory usage during PyTorch training loops: del intermediate tensors, call torch.cuda.empty_cache(), and profile with memory_profiler.",
+      "rrf_score": 0.0282,
+      "rerank_score": 0.8743,
+      "bm25_rank": 3,
+      "dense_rank": 2
+    },
+    {
+      "rank": 3,
+      "doc_id": "d6",
+      "text": "Gradient checkpointing in PyTorch: trade compute for memory by recomputing activations during the backward pass instead of storing them.",
+      "rrf_score": 0.0261,
+      "rerank_score": 0.8102,
+      "bm25_rank": 2,
+      "dense_rank": 3
+    },
+    {
+      "rank": 4,
+      "doc_id": "d2",
+      "text": "GPU memory management best practices for deep learning: use mixed precision training, gradient accumulation, and memory-efficient optimizers.",
+      "rrf_score": 0.0245,
+      "rerank_score": 0.7654,
+      "bm25_rank": 4,
+      "dense_rank": 4
+    },
+    {
+      "rank": 5,
+      "doc_id": "d5",
+      "text": "Python exception handling: use try/except/finally blocks to catch RuntimeError and log stack traces for GPU-related failures.",
+      "rrf_score": 0.0198,
+      "rerank_score": 0.5231,
+      "bm25_rank": 5,
+      "dense_rank": null
+    }
+  ],
+  "model": "text-embedding-3-small",
+  "latency_ms": 312
+}

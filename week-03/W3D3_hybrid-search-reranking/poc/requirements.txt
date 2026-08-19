@@ -1,0 +1,21 @@
+# W3D3 — Hybrid Search & Reranking
+# Install: pip install -r requirements.txt
+
+# LLM API client — used for embeddings in live mode
+openai>=1.30.0,<2.0.0
+
+# BM25 sparse retrieval — BM25Okapi implementation
+rank-bm25>=0.2.2,<1.0.0
+
+# Sentence embeddings and cross-encoder support (optional, for live mode)
+sentence-transformers>=2.7.0,<4.0.0
+
+# Ultra-fast CPU cross-encoder reranker using MiniLM models
+flashrank>=0.2.0,<1.0.0
+
+# Numerical operations for cosine similarity (dense retrieval)
+numpy>=1.24.0,<3.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0

@@ -258,7 +258,7 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 **Previous:** [W3D1 — Prompt Distillation](../W3D1_prompt-distillation/README.md) — reduces tokens in the static system prompt using a greedy pruning loop; W3D2 extends the same token-reduction discipline to runtime context.
 
-**Next:** [W3D3 — Hybrid Search & Reranking](../README.md) — improves retrieval precision for entity-rich queries by fusing dense and sparse search, then reranking the merged list.
+**Next:** [W3D3 — Hybrid Search & Reranking](../W3D3_hybrid-search-reranking/README.md) — improves retrieval precision for entity-rich queries by fusing dense and sparse search, then reranking the merged list.
 
 **Series arc:** [W1D2 — "Lost in the Middle" Decay](../../week-01/W1D2-lost-in-the-middle/README.md) established that position in context affects model accuracy. [W2D2 — KV Caching & Token Trimming](../../week-02/W2D2_kv-caching-token-trimming/README.md) covered token trimming and cache reuse. W3D2 closes the context engineering loop: rather than trimming blindly or caching the raw context, compress each segment down to only what the current query needs — preserving the signal while cutting the token cost.
 
@@ -274,6 +274,6 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 ## Continue Learning
 
-**Next:** [W3D3 — Hybrid Search & Reranking](../README.md)
+**Next:** [W3D3 — Hybrid Search & Reranking](../W3D3_hybrid-search-reranking/README.md)
 
 Return to [Week 3 overview](../README.md) to explore all advanced techniques.

@@ -18,7 +18,7 @@ Week 3 maps one advanced topic per day across the five production AI engineering
 |---|---|---|---|
 | [W3D1](W3D1_prompt-distillation/) | Prompt Distillation | Prompt Engineering & Schemas | ✅ Complete |
 | [W3D2](W3D2_context-compression/) | Context Compression | Context Engineering & Tokens | ✅ Complete |
-| W3D3 | Hybrid Search & Reranking | Advanced RAG | 🔜 Coming |
+| [W3D3](W3D3_hybrid-search-reranking/) | Hybrid Search & Reranking | Advanced RAG | ✅ Complete |
 | W3D4 | Async & Parallel Tool Calls | MCP & Tool Integration | 🔜 Coming |
 | W3D5 | Dynamic Skill Selection | Agent Memory & Capabilities | 🔜 Coming |
 | W3D6 | Hierarchical Subagent Teams | Multi-Agent Orchestration | 🔜 Coming |
@@ -64,13 +64,14 @@ After completing Week 3, you will be able to:
 
 ---
 
-### W3D3 — Hybrid Search & Reranking
+### [W3D3 — Hybrid Search & Reranking](W3D3_hybrid-search-reranking/)
 
 **Vertical:** Advanced RAG  
-**Core problem:** Dense vector search excels at semantic similarity but misses exact keyword matches. BM25 sparse search hits exact terms but ignores paraphrase. On entity-rich queries — product codes, legal citations, named individuals — neither alone returns the best results. Precision suffers.  
-**Solution:** Run dense and sparse retrieval in parallel, fuse the ranked lists with Reciprocal Rank Fusion (RRF), then rerank the top-N candidates with a cross-encoder for final precision.
+**Core problem:** Dense vector search excels at semantic similarity but misses exact keyword matches. BM25 sparse search hits exact terms but ignores paraphrase. On entity-rich queries — error codes, product IDs, version strings — neither retriever alone returns the best results. Precision suffers.  
+**Solution:** Three-stage pipeline — BM25 and dense retrieval run in parallel, their ranked lists are merged with Reciprocal Rank Fusion (`reciprocal_rank_fusion()`), and the fused top-N are precision-ranked by a cross-encoder (`rerank_with_flashrank()`). RRF avoids score-scale incompatibility between BM25 and cosine similarity entirely.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `bm25_retrieve()`, `dense_retrieve()`, `reciprocal_rank_fusion()`, `rerank_with_flashrank()`, `hybrid_search_pipeline()`, RRF k=60, BM25Okapi, bi-encoder vs. cross-encoder, graceful fallback  
+**Status:** ✅ Complete — [Start here →](W3D3_hybrid-search-reranking/README.md)
 
 ---
 

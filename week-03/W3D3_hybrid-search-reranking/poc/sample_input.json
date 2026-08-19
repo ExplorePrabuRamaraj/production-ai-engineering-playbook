@@ -1,0 +1,29 @@
+{
+  "query": "CUDA out of memory error during model training",
+  "documents": [
+    {
+      "id": "d1",
+      "text": "RuntimeError: CUDA out of memory. Tried to allocate 2.50 GiB (GPU 0; 15.78 GiB total capacity). Fix: reduce batch size or use gradient checkpointing."
+    },
+    {
+      "id": "d2",
+      "text": "GPU memory management best practices for deep learning: use mixed precision training, gradient accumulation, and memory-efficient optimizers."
+    },
+    {
+      "id": "d3",
+      "text": "How to reduce memory usage during PyTorch training loops: del intermediate tensors, call torch.cuda.empty_cache(), and profile with memory_profiler."
+    },
+    {
+      "id": "d4",
+      "text": "Kubernetes pod scheduling and resource limits: set requests and limits for CPU and memory to prevent OOM kills in production workloads."
+    },
+    {
+      "id": "d5",
+      "text": "Python exception handling: use try/except/finally blocks to catch RuntimeError and log stack traces for GPU-related failures."
+    },
+    {
+      "id": "d6",
+      "text": "Gradient checkpointing in PyTorch: trade compute for memory by recomputing activations during the backward pass instead of storing them."
+    }
+  ]
+}

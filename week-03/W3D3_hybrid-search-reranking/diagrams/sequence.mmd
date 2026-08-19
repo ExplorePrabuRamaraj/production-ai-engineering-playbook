@@ -1,0 +1,36 @@
+%% W3D3 — Hybrid Search & Reranking — Request Flow
+%% Shows parallel retrieval, RRF fusion, cross-encoder reranking, and fallback path
+sequenceDiagram
+    autonumber
+    actor User
+    participant App as Application
+    participant Dispatcher as Query Dispatcher
+    participant BM25 as BM25 Index
+    participant VectorDB as Vector Store
+    participant Fusion as RRF Fusion
+    participant Reranker as Cross-Encoder Reranker
+    participant LLM as Language Model
+
+    User->>App: Submit query string
+    App->>Dispatcher: Forward raw query
+    Note over Dispatcher: Fan-out both retrievers in parallel
+    Dispatcher->>BM25: Sparse retrieval - top-100
+    Dispatcher->>VectorDB: Dense ANN retrieval - top-100
+    BM25-->>Dispatcher: Ranked list A with BM25 scores
+    VectorDB-->>Dispatcher: Ranked list B with cosine scores
+    Dispatcher->>Fusion: Merge lists A and B
+    Fusion->>Fusion: Compute RRF score per document
+    Note over Fusion: score = sum(1 / (60 + rank)) across lists
+    Fusion-->>Dispatcher: Fused top-50 candidates
+    alt Reranker available
+        Dispatcher->>Reranker: Score top-50 with original query
+        Note over Reranker: Cross-encoder sees query + doc jointly
+        Reranker-->>Dispatcher: Reranked top-10 with relevance scores
+        Dispatcher-->>App: Top-5 documents by rerank score
+    else Reranker unavailable - fallback
+        Note over Dispatcher: Degraded mode - use RRF results directly
+        Dispatcher-->>App: Top-5 documents by RRF score
+    end
+    App->>LLM: Query + retrieved context window
+    LLM-->>App: Generated answer with citations
+    App-->>User: Final response
