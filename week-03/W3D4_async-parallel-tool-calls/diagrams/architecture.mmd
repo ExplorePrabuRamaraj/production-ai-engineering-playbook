@@ -1,0 +1,58 @@
+%% W3D4 — Async & Parallel Tool Calls — Architecture Overview
+%% Shows the dependency graph resolver, fan-out dispatcher, semaphore guard,
+%% per-tool timeout wrappers, and result aggregator components.
+graph LR
+    subgraph "Input Layer"
+        UserQuery[User Query]
+        ToolRegistry[Tool Registry\nAvailable Tools]
+    end
+
+    subgraph "Planning Layer"
+        DepResolver[Dependency\nGraph Resolver]
+        ExecPlan[Execution Plan\nWave 1 / Wave 2]
+    end
+
+    subgraph "Dispatch Layer"
+        Semaphore[asyncio.Semaphore\nConcurrency Limiter]
+        Gather[asyncio.gather\nreturn_exceptions=True]
+        TimeoutA[wait_for\nTool A — 1.5s]
+        TimeoutB[wait_for\nTool B — 1.5s]
+        TimeoutC[wait_for\nTool C — 1.5s]
+    end
+
+    subgraph "Tool Layer"
+        ToolA[Tool A\nPricing API]
+        ToolB[Tool B\nInventory API]
+        ToolC[Tool C\nShipping API]
+    end
+
+    subgraph "Aggregation Layer"
+        ResultAgg[Result Aggregator\nException Isolation]
+        Fallback[Fallback Builder\nPartial Results]
+        ContextBuilder[LLM Context\nAssembler]
+    end
+
+    subgraph "Output Layer"
+        LLM[LLM\nResponse Generation]
+        FinalResponse[Final Response\nto User]
+    end
+
+    UserQuery --> DepResolver
+    ToolRegistry --> DepResolver
+    DepResolver --> ExecPlan
+    ExecPlan -->|independent tools| Gather
+    Gather --> Semaphore
+    Semaphore --> TimeoutA
+    Semaphore --> TimeoutB
+    Semaphore --> TimeoutC
+    TimeoutA -->|async call| ToolA
+    TimeoutB -->|async call| ToolB
+    TimeoutC -->|async call| ToolC
+    ToolA -->|ToolResult| ResultAgg
+    ToolB -->|ToolResult| ResultAgg
+    ToolC -->|TimeoutResult| ResultAgg
+    ResultAgg -->|success results| ContextBuilder
+    ResultAgg -->|failed results| Fallback
+    Fallback -->|fallback values| ContextBuilder
+    ContextBuilder -->|assembled context| LLM
+    LLM --> FinalResponse

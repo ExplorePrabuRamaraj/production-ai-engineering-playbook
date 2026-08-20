@@ -1,0 +1,5 @@
+{
+  "product_id": "PROD-001",
+  "user_id": "USER-42",
+  "query": "What is the price, stock level, shipping estimate, and delivery preference for this product?"
+}

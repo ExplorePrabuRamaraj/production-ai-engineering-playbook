@@ -1,0 +1,48 @@
+%% W3D4 — Async & Parallel Tool Calls — Sequence Diagram
+%% Shows a 3-tool fan-out: Tool A and Tool B complete within deadline,
+%% Tool C times out and triggers a fallback before LLM context assembly.
+sequenceDiagram
+    autonumber
+    actor User
+    participant Agent as Agent Orchestrator
+    participant DepRes as Dependency Resolver
+    participant Dispatcher as Async Dispatcher\n(gather + semaphore)
+    participant ToolA as Tool A\nPricing API
+    participant ToolB as Tool B\nInventory API
+    participant ToolC as Tool C\nShipping API
+    participant Agg as Result Aggregator
+    participant LLM as LLM
+
+    User->>Agent: Submit query
+    Agent->>DepRes: Analyse tool call dependencies
+    DepRes-->>Agent: Plan: [A, B, C] are independent — fan out Wave 1
+
+    Note over Dispatcher: Semaphore(3) acquired for all three
+    Agent->>Dispatcher: asyncio.gather(A, B, C, return_exceptions=True)
+
+    Dispatcher->>ToolA: wait_for(call_pricing(), timeout=1.5s)
+    Dispatcher->>ToolB: wait_for(call_inventory(), timeout=1.5s)
+    Dispatcher->>ToolC: wait_for(call_shipping(), timeout=1.5s)
+
+    Note over ToolA,ToolC: All three calls in-flight concurrently
+
+    ToolA-->>Dispatcher: price=$149.99 (312ms)
+    ToolB-->>Dispatcher: stock=42 units (287ms)
+
+    Note over ToolC: Tool C exceeds 1.5s deadline
+    Dispatcher->>ToolC: Cancel coroutine (TimeoutError)
+    Dispatcher-->>Dispatcher: TimeoutResult(tool_name=shipping, timed_out=True)
+
+    Note over Dispatcher: gather() returns — all three results collected
+    Dispatcher-->>Agg: [ToolResult(A, success), ToolResult(B, success), TimeoutResult(C)]
+
+    alt All results successful
+        Agg-->>Agent: Full context assembled
+    else One or more results timed out or errored
+        Agg->>Agg: Build fallback for Tool C\n"shipping_eta: data unavailable"
+        Agg-->>Agent: Partial context with fallback markers
+    end
+
+    Agent->>LLM: Prompt with assembled context\n(includes explicit unavailability note for shipping)
+    LLM-->>Agent: Response acknowledging partial data
+    Agent-->>User: Final response (total wall time ~1.5s vs ~2.1s sequential)

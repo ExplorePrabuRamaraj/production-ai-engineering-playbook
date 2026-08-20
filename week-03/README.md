@@ -19,7 +19,7 @@ Week 3 maps one advanced topic per day across the five production AI engineering
 | [W3D1](W3D1_prompt-distillation/) | Prompt Distillation | Prompt Engineering & Schemas | ✅ Complete |
 | [W3D2](W3D2_context-compression/) | Context Compression | Context Engineering & Tokens | ✅ Complete |
 | [W3D3](W3D3_hybrid-search-reranking/) | Hybrid Search & Reranking | Advanced RAG | ✅ Complete |
-| W3D4 | Async & Parallel Tool Calls | MCP & Tool Integration | 🔜 Coming |
+| [W3D4](W3D4_async-parallel-tool-calls/) | Async & Parallel Tool Calls | MCP & Tool Integration | ✅ Complete |
 | W3D5 | Dynamic Skill Selection | Agent Memory & Capabilities | 🔜 Coming |
 | W3D6 | Hierarchical Subagent Teams | Multi-Agent Orchestration | 🔜 Coming |
 | W3D7 | Distributed Tracing (LangSmith) | Production Evals & Guardrails | 🔜 Coming |
@@ -75,13 +75,14 @@ After completing Week 3, you will be able to:
 
 ---
 
-### W3D4 — Async & Parallel Tool Calls
+### [W3D4 — Async & Parallel Tool Calls](W3D4_async-parallel-tool-calls/)
 
 **Vertical:** MCP & Tool Integration  
-**Core problem:** Sequential tool calls in agent pipelines accumulate latency: if three independent data-fetching tools each take 300ms, the agent waits 900ms before it can synthesise results. At production call volumes, this latency compounds across every user request.  
-**Solution:** Async parallel tool dispatch — fire all independent tool calls concurrently with `asyncio.gather()` and collect results when all complete, reducing wall-clock time to the latency of the slowest single call.
+**Core problem:** Sequential tool calls in agent pipelines accumulate latency: four independent data-fetching tools at ~300ms each = ~1,200ms before synthesis. At 200,000 calls/month that compounds to 240+ hours of aggregate user-facing delay.  
+**Solution:** Async parallel fan-out — `dispatch_tools_parallel()` fires all independent coroutines with `asyncio.gather(return_exceptions=True)`, bounds each with `asyncio.wait_for()`, caps concurrency with `asyncio.Semaphore`, and converts every outcome (success, timeout, error) into a typed `ToolResult` so the LLM always receives an explicit signal.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `dispatch_tools_parallel()`, `aggregate_results()`, `compute_speedup()`, `ToolResult`, `asyncio.gather(return_exceptions=True)`, `asyncio.wait_for()`, `asyncio.Semaphore`, explicit fallback strings, sequential baseline vs parallel wall clock  
+**Status:** ✅ Complete — [Start here →](W3D4_async-parallel-tool-calls/README.md)
 
 ---
 

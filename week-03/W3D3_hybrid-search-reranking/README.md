@@ -256,7 +256,7 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 **Previous:** [W3D2 — Context Compression](../W3D2_context-compression/README.md) — reduces the input token cost of the retrieved context before generation; W3D3 improves what gets retrieved in the first place.
 
-**Next:** [W3D4 — Async & Parallel Tool Calls](../README.md) — moves from retrieval latency to agent execution latency, firing independent tool calls concurrently with `asyncio.gather()`.
+**Next:** [W3D4 — Async & Parallel Tool Calls](../W3D4_async-parallel-tool-calls/README.md) — moves from retrieval latency to agent execution latency, firing independent tool calls concurrently with `asyncio.gather()`.
 
 **Series arc:** [W1D3 — Naive vs. Agentic RAG](../../week-01/W1D3-naive-vs-agentic-rag/README.md) introduced the retrieval gap between naive single-vector search and agentic retrieval. [W2D3 — GraphRAG & Knowledge Graphs](../../week-02/W2D3_graphrag-knowledge-graphs/README.md) added structured knowledge traversal for multi-hop queries. W3D3 closes the retrieval precision loop: for queries that are neither purely semantic nor purely lexical, fuse both retrieval signals and let a cross-encoder make the final call.
 
@@ -273,6 +273,6 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 ## Continue Learning
 
-**Next:** [W3D4 — Async & Parallel Tool Calls](../README.md)
+**Next:** [W3D4 — Async & Parallel Tool Calls](../W3D4_async-parallel-tool-calls/README.md)
 
 Return to [Week 3 overview](../README.md) to explore all advanced techniques.

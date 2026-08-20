@@ -1,0 +1,11 @@
+# W3D4 — Async & Parallel Tool Calls
+# Core dependencies — compatible version ranges, not exact pins
+
+openai>=1.30.0,<2.0.0          # Async OpenAI client (AsyncOpenAI) for live mode
+pydantic>=2.0.0,<3.0.0         # Schema validation for typed tool results
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.23.0         # Required for async test functions with asyncio.run()
+
+# No additional async libraries needed — asyncio is Python stdlib (3.10+)

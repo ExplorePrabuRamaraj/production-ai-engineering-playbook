@@ -1,0 +1,54 @@
+{
+  "results": [
+    {
+      "tool_name": "get_product_price",
+      "success": true,
+      "data": "$149.99",
+      "latency_ms": 312.4,
+      "error": null,
+      "timed_out": false
+    },
+    {
+      "tool_name": "get_stock_status",
+      "success": true,
+      "data": "In Stock (42 units)",
+      "latency_ms": 287.1,
+      "error": null,
+      "timed_out": false
+    },
+    {
+      "tool_name": "get_shipping_eta",
+      "success": false,
+      "data": null,
+      "latency_ms": 2000.0,
+      "error": null,
+      "timed_out": true
+    },
+    {
+      "tool_name": "get_user_preferences",
+      "success": true,
+      "data": "Express shipping preferred",
+      "latency_ms": 198.3,
+      "error": null,
+      "timed_out": false
+    }
+  ],
+  "context": {
+    "get_product_price": "$149.99",
+    "get_stock_status": "In Stock (42 units)",
+    "get_shipping_eta": "data unavailable — please check manually",
+    "get_user_preferences": "Express shipping preferred",
+    "_dispatch_stats": {
+      "total": 4,
+      "success": 3,
+      "timeout": 1,
+      "error": 0
+    }
+  },
+  "speedup": {
+    "sequential_baseline_ms": 2797.8,
+    "parallel_wall_ms": 2000.0,
+    "speedup_ratio": 1.4
+  },
+  "wall_ms": 2003.7
+}
