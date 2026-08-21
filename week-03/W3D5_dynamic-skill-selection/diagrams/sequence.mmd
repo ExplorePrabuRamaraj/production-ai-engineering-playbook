@@ -1,0 +1,35 @@
+sequenceDiagram
+    %% W3D5 — Dynamic Skill Selection — Per-Turn Inference Flow
+    autonumber
+    actor User
+    participant Agent as Agent Orchestrator
+    participant Router as Intent Router
+    participant Registry as Skill Registry
+    participant LLM as LLM API
+    participant Tool as Tool Executor
+
+    User->>Agent: Send message + auth token
+    Agent->>Router: embed(message) + user_roles
+    Router->>Registry: cosine_similarity(query_vec, all_skill_vecs)
+    Registry-->>Router: ranked skill candidates with scores
+    Router->>Router: filter by user_roles, apply top-k cap (k=5)
+    alt Candidates found above threshold
+        Router-->>Agent: top-k skill schemas
+        Agent->>LLM: system_prompt + conversation + top-k tool definitions
+        LLM-->>Agent: tool_call(name, arguments) or text response
+        alt LLM issues a tool call
+            Agent->>Tool: validate_args(schema) then dispatch(name, args)
+            Tool-->>Agent: tool result payload
+            Agent->>Registry: log(skill_name, selected=true, called=true)
+            Agent->>LLM: append tool result to context
+            LLM-->>Agent: final natural language response
+        else LLM produces direct text response
+            Note over Agent,LLM: Tool was selected but not needed this turn
+            Agent->>Registry: log(skill_name, selected=true, called=false)
+        end
+    else All candidates below similarity threshold
+        Router-->>Agent: fallback skill set
+        Agent->>LLM: system_prompt + conversation + fallback tools
+        LLM-->>Agent: response using fallback tools or plain text
+    end
+    Agent-->>User: Final response

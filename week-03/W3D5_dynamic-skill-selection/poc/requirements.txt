@@ -1,0 +1,13 @@
+# W3D5 — Dynamic Skill Selection
+# Core dependencies
+
+openai>=1.30.0,<2.0.0          # LLM and embedding API client (live mode)
+pydantic>=2.0.0,<3.0.0         # Schema validation for skill definitions
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0          # For async test support if extended
+
+# Optional: faster cosine similarity at scale
+# numpy>=1.26.0,<2.0.0          # Uncomment for numpy-backed dot products
+# faiss-cpu>=1.7.4               # Uncomment for approximate nearest-neighbour search (500+ skills)

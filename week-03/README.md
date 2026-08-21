@@ -20,7 +20,7 @@ Week 3 maps one advanced topic per day across the five production AI engineering
 | [W3D2](W3D2_context-compression/) | Context Compression | Context Engineering & Tokens | ✅ Complete |
 | [W3D3](W3D3_hybrid-search-reranking/) | Hybrid Search & Reranking | Advanced RAG | ✅ Complete |
 | [W3D4](W3D4_async-parallel-tool-calls/) | Async & Parallel Tool Calls | MCP & Tool Integration | ✅ Complete |
-| W3D5 | Dynamic Skill Selection | Agent Memory & Capabilities | 🔜 Coming |
+| [W3D5](W3D5_dynamic-skill-selection/) | Dynamic Skill Selection | Agent Memory & Capabilities | ✅ Complete |
 | W3D6 | Hierarchical Subagent Teams | Multi-Agent Orchestration | 🔜 Coming |
 | W3D7 | Distributed Tracing (LangSmith) | Production Evals & Guardrails | 🔜 Coming |
 
@@ -86,13 +86,14 @@ After completing Week 3, you will be able to:
 
 ---
 
-### W3D5 — Dynamic Skill Selection
+### [W3D5 — Dynamic Skill Selection](W3D5_dynamic-skill-selection/)
 
 **Vertical:** Agent Memory & Capabilities  
-**Core problem:** Hardcoded routing (`if task_type == "X": call_tool_Y()`) breaks when new tools are added, when task types overlap, or when the model's description of the task doesn't match the hardcoded string. Agents need to choose tools at runtime based on capability description, not static if-chains.  
-**Solution:** Dynamic skill selection — embed tool capability descriptions and the current task, retrieve the closest-matching skill by vector similarity, and dispatch to it at runtime.
+**Core problem:** Injecting all tool schemas into every LLM prompt wastes thousands of tokens and degrades selection accuracy as similar tools compete for attention. An agent with 30 tools spends ~4,500 tokens per call on tool definitions alone.  
+**Solution:** Treat tool routing as retrieval — `SkillRegistry` stores skill descriptions with embeddings, `EmbeddingRouter.select()` scores all skills by cosine similarity to the query and injects only the top-k, and `SkillInjector.build_tool_block()` serialises them into OpenAI function-calling format. Role-based permission filtering and stale-skill eviction included.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `SkillRegistry`, `EmbeddingRouter`, `SkillInjector`, `SelectionResult`, `similarity_threshold`, `top_k`, `evict_stale()`, role-based permission filtering, fallback activation, FAISS scaling path  
+**Status:** ✅ Complete — [Start here →](W3D5_dynamic-skill-selection/README.md)
 
 ---
 

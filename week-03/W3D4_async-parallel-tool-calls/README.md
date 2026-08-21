@@ -259,7 +259,7 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 **Previous:** [W3D3 — Hybrid Search & Reranking](../W3D3_hybrid-search-reranking/README.md) — reduced retrieval latency by fusing BM25 and dense search; W3D4 tackles execution latency in the tool-calling layer above retrieval.
 
-**Next:** [W3D5 — Dynamic Skill Selection](../README.md) — moves from how to execute tools fast to how an agent chooses the right tool at runtime using vector similarity over capability descriptions.
+**Next:** [W3D5 — Dynamic Skill Selection](../W3D5_dynamic-skill-selection/README.md) — moves from how to execute tools fast to how an agent chooses the right tool at runtime using vector similarity over capability descriptions.
 
 **Series arc:** [W1D4 — Model Context Protocol Intro](../../week-01/W1D4-model-context-protocol/README.md) introduced the tool-calling contract. [W2D4 — Custom MCP Server Build](../../week-02/W2D4_custom-mcp-server-build/README.md) showed how to build and expose tools. W3D4 closes the MCP vertical for Week 3: once you can build tools and expose them, the next problem is executing multiple tools efficiently — which means parallel fan-out, not sequential iteration.
 
@@ -274,6 +274,6 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 ## Continue Learning
 
-**Next:** [W3D5 — Dynamic Skill Selection](../README.md)
+**Next:** [W3D5 — Dynamic Skill Selection](../W3D5_dynamic-skill-selection/README.md)
 
 Return to [Week 3 overview](../README.md) to explore all advanced techniques.

@@ -75,7 +75,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 | [W3D2](week-03/W3D2_context-compression/) | Context Compression | Context Engineering & Tokens | ✅ Complete |
 | [W3D3](week-03/W3D3_hybrid-search-reranking/) | Hybrid Search & Reranking | Advanced RAG | ✅ Complete |
 | [W3D4](week-03/W3D4_async-parallel-tool-calls/) | Async & Parallel Tool Calls | MCP & Tool Integration | ✅ Complete |
-| W3D5 | Dynamic Skill Selection | Agent Memory & Capabilities | 🔜 Coming |
+| [W3D5](week-03/W3D5_dynamic-skill-selection/) | Dynamic Skill Selection | Agent Memory & Capabilities | ✅ Complete |
 | W3D6 | Hierarchical Subagent Teams | Multi-Agent Orchestration | 🔜 Coming |
 | W3D7 | Distributed Tracing (LangSmith) | Production Evals & Guardrails | 🔜 Coming |
 
@@ -99,7 +99,7 @@ No ML research background required. Python proficiency and basic LLM familiarity
 |---|---|---|
 | [Week 1](week-01/) | Foundations | 7 / 7 days ✅ |
 | [Week 2](week-02/) | Intermediate Patterns | 7 / 7 days ✅ |
-| [Week 3](week-03/) | Advanced Techniques | 4 / 7 days |
+| [Week 3](week-03/) | Advanced Techniques | 5 / 7 days |
 | Week 4 | Production & Scale | 0 / 7 days |
 
 ---
@@ -174,12 +174,13 @@ production-ai-engineering-playbook/
 │   ├── W2D6_supervisor-vs-swarm-networks/          # core: swarm_core.py          | test: test_swarm.py
 │   └── W2D7_deterministic-guardrails-nemo/         # core: guardrails_core.py     | test: test_guardrails.py
 │
-└── week-03/                                        # Week 3 — Advanced Techniques (4 / 7)
+└── week-03/                                        # Week 3 — Advanced Techniques (5 / 7)
     ├── README.md
     ├── W3D1_prompt-distillation/                   # core: distillation_core.py          | test: test_distillation.py
     ├── W3D2_context-compression/                   # core: context_compression_core.py   | test: test_context_compression.py
     ├── W3D3_hybrid-search-reranking/               # core: hybrid_search_core.py         | test: test_hybrid_search.py
-    └── W3D4_async-parallel-tool-calls/             # core: parallel_tools_core.py        | test: test_parallel_tools.py
+    ├── W3D4_async-parallel-tool-calls/             # core: parallel_tools_core.py        | test: test_parallel_tools.py
+    └── W3D5_dynamic-skill-selection/               # core: skill_selection_core.py       | test: test_skill_selection.py
 ```
 
 ---

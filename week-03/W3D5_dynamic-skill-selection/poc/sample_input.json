@@ -1,0 +1,29 @@
+{
+  "scenarios": [
+    {
+      "query": "Why is my internet connection so slow today?",
+      "user_roles": ["user"],
+      "description": "Network troubleshooting query — should select network diagnostic tools"
+    },
+    {
+      "query": "I need a refund on my last invoice, I was charged twice",
+      "user_roles": ["billing"],
+      "description": "Billing query — should select billing tools, not network or IT tools"
+    },
+    {
+      "query": "I forgot my password and cannot log in",
+      "user_roles": ["user"],
+      "description": "Password reset query — should select account/security tools"
+    },
+    {
+      "query": "Grant Sarah access to the shared finance drive",
+      "user_roles": ["user"],
+      "description": "Access provisioning query from non-admin — provision_access must be filtered out by role"
+    },
+    {
+      "query": "What is the meaning of life?",
+      "user_roles": ["user"],
+      "description": "Off-domain query — should trigger fallback skill activation"
+    }
+  ]
+}

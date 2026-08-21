@@ -1,0 +1,64 @@
+{
+  "demo_mode": true,
+  "model": "demo",
+  "concept": "Dynamic Skill Selection — top-k cosine similarity routing",
+  "scenarios": [
+    {
+      "query": "Why is my internet connection so slow today?",
+      "user_roles": ["user"],
+      "selected_skills": ["run_ping_diagnostic", "check_network_speed", "create_it_ticket"],
+      "skill_count_injected": 3,
+      "total_skills_registered": 8,
+      "used_fallback": false,
+      "top_scores": {
+        "run_ping_diagnostic": 0.992,
+        "check_network_speed": 0.988,
+        "create_it_ticket": 0.541
+      }
+    },
+    {
+      "query": "I need a refund on my last invoice, I was charged twice",
+      "user_roles": ["billing"],
+      "selected_skills": ["process_refund", "get_invoice"],
+      "skill_count_injected": 2,
+      "total_skills_registered": 8,
+      "used_fallback": false,
+      "top_scores": {
+        "process_refund": 0.996,
+        "get_invoice": 0.991,
+        "create_it_ticket": 0.312
+      }
+    },
+    {
+      "query": "I forgot my password and cannot log in",
+      "user_roles": ["user"],
+      "selected_skills": ["reset_password", "create_it_ticket"],
+      "skill_count_injected": 2,
+      "total_skills_registered": 8,
+      "used_fallback": false,
+      "top_scores": {
+        "reset_password": 0.989,
+        "create_it_ticket": 0.541,
+        "provision_access": 0.421
+      }
+    },
+    {
+      "query": "Grant Sarah access to the shared finance drive",
+      "user_roles": ["user"],
+      "selected_skills": ["reset_password", "create_it_ticket"],
+      "skill_count_injected": 2,
+      "total_skills_registered": 8,
+      "used_fallback": false,
+      "note": "provision_access filtered out — requires admin role, user only has user role"
+    },
+    {
+      "query": "What is the meaning of life?",
+      "user_roles": ["user"],
+      "selected_skills": ["general_response"],
+      "skill_count_injected": 1,
+      "total_skills_registered": 8,
+      "used_fallback": true,
+      "note": "No skills passed similarity threshold — fallback activated"
+    }
+  ]
+}

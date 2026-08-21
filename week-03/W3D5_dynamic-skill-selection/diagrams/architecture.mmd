@@ -1,0 +1,44 @@
+%% W3D5 — Dynamic Skill Selection — Architecture Overview
+%% Shows the routing layer between user request and LLM prompt injection
+graph LR
+    subgraph "Request Layer"
+        UserMsg[User Message]
+        AuthCtx[Auth Context\nUser Roles]
+    end
+
+    subgraph "Routing Layer"
+        Embedder[Query Embedder\ntext-embedding-3-small]
+        Registry[Skill Registry\nEmbeddings + Schemas]
+        Similarity[Cosine Similarity\nTop-K Retrieval]
+        PermFilter[Permission Filter\nRole-Based Gating]
+    end
+
+    subgraph "Prompt Assembly"
+        Injector[Skill Injector\nBuild Tool Block]
+        Fallback[Fallback Skills\nLow-Similarity Guard]
+    end
+
+    subgraph "Execution Layer"
+        LLM[LLM\ngpt-4o-mini]
+        ToolExec[Tool Executor\nValidate + Dispatch]
+    end
+
+    subgraph "Observability"
+        UsageLog[Usage Tracker\nSelection + Call Logs]
+        Eviction[Eviction Policy\nStale Skill Removal]
+    end
+
+    UserMsg --> Embedder
+    AuthCtx --> PermFilter
+    Embedder -->|query vector| Similarity
+    Registry -->|skill vectors| Similarity
+    Similarity -->|ranked candidates| PermFilter
+    PermFilter -->|permitted top-k| Injector
+    PermFilter -->|no candidates| Fallback
+    Fallback --> Injector
+    Injector -->|tool definitions| LLM
+    LLM -->|tool call| ToolExec
+    ToolExec -->|result| LLM
+    ToolExec --> UsageLog
+    UsageLog --> Eviction
+    Eviction -->|remove stale| Registry
