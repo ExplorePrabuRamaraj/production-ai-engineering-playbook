@@ -262,7 +262,7 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 **Previous:** [W3D5 — Dynamic Skill Selection](../W3D5_dynamic-skill-selection/README.md) — selects which tools to give to an agent; W3D6 organises multiple agents into a hierarchy so complex tasks can be decomposed and parallelised safely.
 
-**Next:** [W3D7 — Distributed Tracing (LangSmith)](../README.md) — once a hierarchy is running in production, the next problem is observability: distributed tracing surfaces which tier introduced latency, which worker produced the token-heavy output, and where accuracy regressions originate.
+**Next:** [W3D7 — Distributed Tracing (LangSmith)](../W3D7_distributed-tracing-langsmith/README.md) — once a hierarchy is running in production, the next problem is observability: distributed tracing surfaces which tier introduced latency, which worker produced the token-heavy output, and where accuracy regressions originate.
 
 **Series arc:** [W1D6 — State Graphs (LangGraph)](../../week-01/W1D6-langgraph-state-graphs/README.md) introduced state-based orchestration with explicit transitions. [W2D6 — Supervisor vs. Swarm Networks](../../week-02/W2D6_supervisor-vs-swarm-networks/README.md) contrasted centrally-supervised vs. peer-to-peer coordination. W3D6 advances the arc: a full 3-tier hierarchy with typed contracts, scoped retry, and contract-checked synthesis — the production pattern for complex multi-step goals that neither a flat swarm nor a single supervisor can handle reliably.
 
@@ -278,6 +278,6 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 ## Continue Learning
 
-**Next:** [W3D7 — Distributed Tracing (LangSmith)](../README.md)
+**Next:** [W3D7 — Distributed Tracing (LangSmith)](../W3D7_distributed-tracing-langsmith/README.md)
 
 Return to [Week 3 overview](../README.md) to explore all advanced techniques.

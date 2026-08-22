@@ -1,0 +1,43 @@
+%% W3D7 — Distributed Tracing (LangSmith) — Architecture Overview
+%% Shows the four layers: Application, Pipeline Steps, Tracing Transport, Analysis
+graph LR
+    subgraph "Application Layer"
+        UserReq[User Request]
+        AgentRoot[Root Agent\nTraceable Entry Point]
+    end
+
+    subgraph "Pipeline Spans"
+        Retriever[Retriever Span\nQuery + Doc Chunks]
+        Reranker[Reranker Span\nRanked Results]
+        LLMCall[LLM Call Span\nPrompt + Completion\nToken Counts]
+        ToolCall[Tool Call Span\nTool Name + Result]
+    end
+
+    subgraph "Tracing Transport"
+        SDKQueue[SDK Async Queue\n500ms Flush Interval]
+        LangSmithAPI[(LangSmith API\nRun Tree Storage)]
+    end
+
+    subgraph "Analysis Layer"
+        TraceUI[Trace Explorer\nRun Tree View]
+        AutoEval[Automated Evaluator\nLLM-as-a-Judge]
+        FeedbackAPI[Feedback API\nEval Score Binding]
+        DatasetExport[Dataset Export\nFine-Tuning Data]
+    end
+
+    UserReq -->|query string| AgentRoot
+    AgentRoot -->|child span| Retriever
+    AgentRoot -->|child span| Reranker
+    AgentRoot -->|child span| LLMCall
+    AgentRoot -->|child span| ToolCall
+    AgentRoot -->|async emit| SDKQueue
+    Retriever -->|async emit| SDKQueue
+    Reranker -->|async emit| SDKQueue
+    LLMCall -->|async emit| SDKQueue
+    ToolCall -->|async emit| SDKQueue
+    SDKQueue -->|POST /runs/batch| LangSmithAPI
+    LangSmithAPI -->|run tree| TraceUI
+    LangSmithAPI -->|trigger eval| AutoEval
+    AutoEval -->|score + key| FeedbackAPI
+    FeedbackAPI -->|store feedback| LangSmithAPI
+    TraceUI -->|filtered runs| DatasetExport

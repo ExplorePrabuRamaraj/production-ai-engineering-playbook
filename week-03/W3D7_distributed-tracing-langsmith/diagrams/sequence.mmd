@@ -1,0 +1,37 @@
+%% W3D7 — Distributed Tracing (LangSmith) — Request Flow
+%% Shows span creation, async batching, eval attachment, and dataset export
+sequenceDiagram
+    autonumber
+    actor Engineer
+    participant App as Application
+    participant SDK as LangSmith SDK
+    participant LSApi as LangSmith API
+    participant LLM as LLM Provider
+
+    Engineer->>App: User query arrives
+    App->>SDK: @traceable fires — create root Run (run_id=abc)
+    SDK->>SDK: Store run_id in ContextVar
+    App->>SDK: Retriever call — create child Run (parent_run_id=abc)
+    App->>LLM: Embed query + vector search
+    LLM-->>App: Top-5 document chunks with scores
+    App->>SDK: Capture retriever outputs (chunks + scores)
+    App->>SDK: LLM call — create child Run (parent_run_id=abc)
+    App->>LLM: POST assembled prompt
+    LLM-->>App: Completion text + token usage
+    App->>SDK: Capture LLM outputs (completion, tokens, latency_ms)
+    Note over SDK: Root run end_time recorded
+    SDK->>SDK: Batch completed runs in async queue
+    SDK->>LSApi: POST /runs/batch (flush every 500ms)
+    LSApi-->>SDK: 200 OK — run tree stored
+    alt Automated evaluator configured
+        LSApi->>LLM: LLM-as-a-Judge prompt (answer vs. retrieved docs)
+        LLM-->>LSApi: Grounding score 0.0–1.0
+        LSApi->>LSApi: Attach feedback to root run (key=factual_accuracy)
+    else Human review triggered (score below threshold)
+        Engineer->>LSApi: POST /feedback (run_id=abc, score=0.2)
+        LSApi-->>Engineer: Feedback stored against run
+    end
+    Engineer->>LSApi: GET /runs?filter=feedback_score lt 0.4
+    LSApi-->>Engineer: Filtered low-score runs returned
+    Engineer->>LSApi: POST /datasets/examples (bulk export)
+    LSApi-->>Engineer: Dataset created for fine-tuning

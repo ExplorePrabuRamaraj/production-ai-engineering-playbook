@@ -1,0 +1,7 @@
+{
+  "query": "What is the return window for electronics, and how long do refunds take?",
+  "options": {
+    "top_k": 3,
+    "max_context_chars": 800
+  }
+}

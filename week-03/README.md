@@ -22,7 +22,7 @@ Week 3 maps one advanced topic per day across the five production AI engineering
 | [W3D4](W3D4_async-parallel-tool-calls/) | Async & Parallel Tool Calls | MCP & Tool Integration | ✅ Complete |
 | [W3D5](W3D5_dynamic-skill-selection/) | Dynamic Skill Selection | Agent Memory & Capabilities | ✅ Complete |
 | [W3D6](W3D6_hierarchical-subagent-teams/) | Hierarchical Subagent Teams | Multi-Agent Orchestration | ✅ Complete |
-| W3D7 | Distributed Tracing (LangSmith) | Production Evals & Guardrails | 🔜 Coming |
+| [W3D7](W3D7_distributed-tracing-langsmith/) | Distributed Tracing (LangSmith) | Production Evals & Guardrails | ✅ Complete |
 
 ---
 
@@ -108,13 +108,14 @@ After completing Week 3, you will be able to:
 
 ---
 
-### W3D7 — Distributed Tracing (LangSmith)
+### [W3D7 — Distributed Tracing (LangSmith)](W3D7_distributed-tracing-langsmith/)
 
 **Vertical:** Production Evals & Guardrails  
-**Core problem:** LLM pipelines are opaque: a latency spike or accuracy regression in production has no obvious root cause without tracing through each model call, tool invocation, and retrieval step. Without observability, debugging means adding print statements and re-running — expensive and unreliable.  
-**Solution:** Instrument the pipeline end-to-end with LangSmith distributed tracing — every LLM call, tool call, and retrieval step emits a structured trace, enabling latency attribution, token cost breakdown, and accuracy tracking across runs.
+**Core problem:** A latency spike or accuracy regression has no obvious root cause without per-step observability — logs show that something failed, but not which of the 5 pipeline stages (retrieval, reranking, assembly, generation, validation) introduced the problem.  
+**Solution:** Instrument a 5-step RAG pipeline with LangSmith distributed tracing — each step applies `@traceable(run_type=...)` to emit a typed child span. The full run tree (inputs, outputs, token count, latency per span) is visible in the LangSmith trace explorer. `validate_answer()` attaches a deterministic grounding score to the root span after generation.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `@traceable`, `run_type` (`"retriever"`, `"llm"`, `"chain"`), `RetrievedDocument`, `PipelineResult`, `validate_answer()`, `tracing_enabled` flag, `LANGCHAIN_API_KEY`, span tree, grounding score  
+**Status:** ✅ Complete — [Start here →](W3D7_distributed-tracing-langsmith/README.md)
 
 ---
 

@@ -1,0 +1,41 @@
+{
+  "run_id": "3f8a1c2d-b47e-4d91-a830-e6c2f9d05a1b",
+  "answer": "Based on the return policy, standard items can be returned within 30 days. Electronics must be returned within 15 days in original packaging. Refunds are processed within 5 business days to the original payment method.",
+  "retrieved_docs": [
+    {
+      "doc_id": "policy-001",
+      "content": "Standard return window is 30 days from purchase date for all items.",
+      "score": 0.91,
+      "source": "return_policy_v3.md",
+      "last_updated": "2024-11-01"
+    },
+    {
+      "doc_id": "policy-002",
+      "content": "Electronics must be returned within 15 days and in original packaging.",
+      "score": 0.84,
+      "source": "electronics_policy_v2.md",
+      "last_updated": "2024-10-15"
+    },
+    {
+      "doc_id": "policy-003",
+      "content": "Refunds are issued within 5 business days to the original payment method.",
+      "score": 0.77,
+      "source": "refund_process_v1.md",
+      "last_updated": "2024-09-01"
+    }
+  ],
+  "tokens_used": 87,
+  "latency_ms": 18.4,
+  "model": "demo",
+  "spans_captured": 5,
+  "span_tree": {
+    "root": "rag_pipeline",
+    "children": [
+      "retrieve_documents",
+      "rerank_documents",
+      "assemble_context",
+      "generate_answer",
+      "validate_answer"
+    ]
+  }
+}
