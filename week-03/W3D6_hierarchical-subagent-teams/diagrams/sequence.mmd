@@ -1,0 +1,60 @@
+%% W3D6 — Hierarchical Subagent Teams — Request Flow
+%% Shows full lifecycle: goal ingestion → decomposition → parallel lead dispatch
+%% → worker execution → tier aggregation → final assembly
+sequenceDiagram
+    autonumber
+    actor User
+    participant Orch as Orchestrator
+    participant LeadA as Team Lead A
+    participant LeadB as Team Lead B
+    participant W1 as Worker A1
+    participant W2 as Worker A2
+    participant W3 as Worker B1
+    participant LLM as LLM Endpoint
+
+    User->>Orch: Submit goal + task spec
+    Note over Orch: Tier 1 — Goal Ingestion
+    Orch->>LLM: Decompose goal into SubtaskSpecs
+    LLM-->>Orch: TaskPlan (subtask list with lead assignments)
+
+    Note over Orch,LeadB: Parallel lead dispatch (async)
+    Orch->>LeadA: SubtaskSpec A (domain A only)
+    Orch->>LeadB: SubtaskSpec B (domain B only)
+
+    Note over LeadA: Tier 2 — Lead A decomposes subtask
+    LeadA->>W1: Atomic instruction A1 (bounded context)
+    LeadA->>W2: Atomic instruction A2 (bounded context)
+
+    Note over W1,W2: Tier 3 — Workers execute in parallel
+    W1->>LLM: Bounded prompt / tool call
+    LLM-->>W1: WorkerResult A1
+    W2->>LLM: Bounded prompt / tool call
+    LLM-->>W2: WorkerResult A2
+
+    W1-->>LeadA: WorkerResult A1 (typed)
+    W2-->>LeadA: WorkerResult A2 (typed)
+
+    alt All workers succeeded
+        LeadA->>LLM: Aggregate WorkerResult A1 + A2
+        LLM-->>LeadA: Aggregated output
+        LeadA-->>Orch: LeadResult A (validated, success=true)
+    else Worker A2 failed after retries
+        Note over LeadA: Scoped retry — only W2, not full pipeline
+        LeadA-->>Orch: LeadResult A (partial=true, success=false)
+    end
+
+    Note over LeadB: Tier 2 — Lead B decomposes subtask
+    LeadB->>W3: Atomic instruction B1 (bounded context)
+    W3->>LLM: Bounded prompt / tool call
+    LLM-->>W3: WorkerResult B1
+    W3-->>LeadB: WorkerResult B1 (typed)
+    LeadB-->>Orch: LeadResult B (validated, success=true)
+
+    Note over Orch: Tier 1 — Final Assembly
+    alt All leads succeeded
+        Orch->>LLM: Synthesize LeadResult A + LeadResult B
+        LLM-->>Orch: Final assembled output
+        Orch-->>User: Complete response
+    else One or more leads returned partial result
+        Orch-->>User: Partial response with warning flag
+    end

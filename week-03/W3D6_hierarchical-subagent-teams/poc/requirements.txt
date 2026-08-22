@@ -1,0 +1,14 @@
+# W3D6 — Hierarchical Subagent Teams
+# Install: pip install -r requirements.txt
+
+# LLM API client — used by worker agents and team leads for bounded LLM calls
+openai>=1.30.0,<2.0.0
+
+# Schema validation — enforces typed result contracts at tier boundaries
+pydantic>=2.0.0,<3.0.0
+
+# Test runner
+pytest>=7.0.0
+
+# Async test support (for future async lead dispatch extension)
+pytest-asyncio>=0.21.0

@@ -21,7 +21,7 @@ Week 3 maps one advanced topic per day across the five production AI engineering
 | [W3D3](W3D3_hybrid-search-reranking/) | Hybrid Search & Reranking | Advanced RAG | ✅ Complete |
 | [W3D4](W3D4_async-parallel-tool-calls/) | Async & Parallel Tool Calls | MCP & Tool Integration | ✅ Complete |
 | [W3D5](W3D5_dynamic-skill-selection/) | Dynamic Skill Selection | Agent Memory & Capabilities | ✅ Complete |
-| W3D6 | Hierarchical Subagent Teams | Multi-Agent Orchestration | 🔜 Coming |
+| [W3D6](W3D6_hierarchical-subagent-teams/) | Hierarchical Subagent Teams | Multi-Agent Orchestration | ✅ Complete |
 | W3D7 | Distributed Tracing (LangSmith) | Production Evals & Guardrails | 🔜 Coming |
 
 ---
@@ -97,13 +97,14 @@ After completing Week 3, you will be able to:
 
 ---
 
-### W3D6 — Hierarchical Subagent Teams
+### [W3D6 — Hierarchical Subagent Teams](W3D6_hierarchical-subagent-teams/)
 
 **Vertical:** Multi-Agent Orchestration  
-**Core problem:** A flat swarm of peer-to-peer agents (W2D6) works for homogeneous parallel tasks but degrades on tasks that require decomposition, dependency tracking, and result aggregation. Without a planner layer, complex multi-step tasks either run sequentially or produce uncoordinated outputs.  
-**Solution:** Hierarchical teams — a planner agent decomposes the task into a dependency graph, dispatches independent subtasks to specialist subagents in parallel, and aggregates their results before returning to the user.
+**Core problem:** A flat agent pool accumulates each other's context, retries fail across the whole pool, and the synthesiser sees raw, inconsistently-formatted worker outputs — leading to context bleed, duplicate work, and silent data loss on partial failures.  
+**Solution:** A 3-tier hierarchy — `run_orchestrator()` decomposes and synthesises, `run_team_lead()` owns a domain and retries individual workers with scoped retry, `run_worker()` executes one atomic task statelessly. Typed contracts (`WorkerResult`, `LeadResult`, `FinalResult`) at every tier boundary prevent raw LLM strings from crossing tiers.
 
-**Status:** 🔜 Coming soon
+**Key concepts:** `run_orchestrator()`, `run_team_lead()`, `run_worker()`, `SubtaskSpec`, `WorkerResult`, `LeadResult`, `FinalResult`, `ExecutionOrder`, scoped retry, partial result flag, typed tier contracts, context bleed prevention  
+**Status:** ✅ Complete — [Start here →](W3D6_hierarchical-subagent-teams/README.md)
 
 ---
 

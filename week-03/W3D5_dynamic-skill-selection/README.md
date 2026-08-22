@@ -242,7 +242,7 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 **Previous:** [W3D4 — Async & Parallel Tool Calls](../W3D4_async-parallel-tool-calls/README.md) — executes multiple known tools in parallel; W3D5 solves the upstream problem of which tools to execute in the first place.
 
-**Next:** [W3D6 — Hierarchical Subagent Teams](../README.md) — once agents can select skills dynamically, the next step is organising multiple agents into hierarchical teams where a planner decomposes tasks and dispatches to specialists.
+**Next:** [W3D6 — Hierarchical Subagent Teams](../W3D6_hierarchical-subagent-teams/README.md) — once agents can select skills dynamically, the next step is organising multiple agents into hierarchical teams where a planner decomposes tasks and dispatches to specialists.
 
 **Series arc:** [W1D5 — Episodic vs. Semantic Memory](../../week-01/W1D5-agent-memory/README.md) introduced how agents store and retrieve knowledge about their world. [W2D5 — Reflection & Self-Correction Loops](../../week-02/W2D5_reflection-self-correction-loops/README.md) added self-improvement over multiple turns. W3D5 closes the Agent Memory & Capabilities vertical for Week 3: the agent's knowledge of its own capabilities is now dynamically retrieved — not statically wired — enabling adaptation as the tool set grows.
 
@@ -258,6 +258,6 @@ All settings are loaded from environment variables. Defaults run fully in demo m
 
 ## Continue Learning
 
-**Next:** [W3D6 — Hierarchical Subagent Teams](../README.md)
+**Next:** [W3D6 — Hierarchical Subagent Teams](../W3D6_hierarchical-subagent-teams/README.md)
 
 Return to [Week 3 overview](../README.md) to explore all advanced techniques.

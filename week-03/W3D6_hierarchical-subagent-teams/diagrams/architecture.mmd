@@ -1,0 +1,61 @@
+%% W3D6 — Hierarchical Subagent Teams — Architecture Overview
+%% Shows the 3-tier hierarchy: Orchestrator → Team Leads → Worker Agents
+%% with typed result contracts at every tier boundary
+graph LR
+    subgraph "Input Layer"
+        UserGoal[User Goal\nTask Spec]
+    end
+
+    subgraph "Tier 1 — Orchestrator"
+        Orch[Orchestrator\nDecompose + Assemble]
+        TaskPlan[TaskPlan\nSubtask List]
+    end
+
+    subgraph "Tier 2 — Team Leads"
+        LeadA[Team Lead A\nDomain Specialist]
+        LeadB[Team Lead B\nDomain Specialist]
+        LeadResultA[LeadResult A\nValidated Contract]
+        LeadResultB[LeadResult B\nValidated Contract]
+    end
+
+    subgraph "Tier 3 — Worker Agents"
+        W1[Worker A1\nAtomic Executor]
+        W2[Worker A2\nAtomic Executor]
+        W3[Worker B1\nAtomic Executor]
+        W4[Worker B2\nAtomic Executor]
+    end
+
+    subgraph "External Services"
+        LLM[(LLM Endpoint)]
+        Tools[(Tools / APIs\nVector DB / Search)]
+    end
+
+    subgraph "Output Layer"
+        FinalOutput[Final Output\nAssembled Response]
+    end
+
+    UserGoal -->|goal + metadata| Orch
+    Orch -->|decompose| TaskPlan
+    TaskPlan -->|SubtaskSpec A| LeadA
+    TaskPlan -->|SubtaskSpec B| LeadB
+    LeadA -->|instruction A1| W1
+    LeadA -->|instruction A2| W2
+    LeadB -->|instruction B1| W3
+    LeadB -->|instruction B2| W4
+    W1 -->|WorkerResult| LeadA
+    W2 -->|WorkerResult| LeadA
+    W3 -->|WorkerResult| LeadB
+    W4 -->|WorkerResult| LeadB
+    LeadA -->|aggregate + validate| LeadResultA
+    LeadB -->|aggregate + validate| LeadResultB
+    LeadResultA -->|typed contract| Orch
+    LeadResultB -->|typed contract| Orch
+    Orch -->|synthesize| FinalOutput
+    W1 -->|bounded prompt| LLM
+    W2 -->|tool call| Tools
+    W3 -->|bounded prompt| LLM
+    W4 -->|tool call| Tools
+    LLM -->|completion| W1
+    LLM -->|completion| W3
+    Tools -->|result| W2
+    Tools -->|result| W4
